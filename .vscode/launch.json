@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+      "name": "Development (Local Network)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_development.dart",
+      "flutterMode": "debug",
+      "deviceId": "192.168.2.120:5555",
+      // "deviceId": "192.168.2.110:43905",
+      "args": ["--debug"]
+    },
+  ]
+} 

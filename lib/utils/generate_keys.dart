@@ -1,0 +1,21 @@
+import 'package:doza_flutter/ui/auth/view_models/utils.dart';
+import 'package:doza_flutter/utils/constants.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pointycastle/export.dart';
+
+Future<({RSAPublicKey publicKey, RSAPrivateKey privateKey})>
+generateKeys() async {
+  final FlutterSecureStorage storage = .new();
+
+  final keyPair = generateRSAkeyPair(secureRandom());
+
+  await storage.write(
+    key: ConstantsEnum.privateKey.value,
+    value: encodePrivateKey(keyPair.privateKey),
+  );
+  await storage.write(
+    key: ConstantsEnum.publicKey.value,
+    value: encodePublicKey(keyPair.publicKey),
+  );
+  return (publicKey: keyPair.publicKey, privateKey: keyPair.privateKey);
+}
