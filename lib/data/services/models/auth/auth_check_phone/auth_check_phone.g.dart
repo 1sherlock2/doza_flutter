@@ -7,7 +7,11 @@ part of 'auth_check_phone.dart';
 // **************************************************************************
 
 _AuthCheckPhone _$AuthCheckPhoneFromJson(Map<String, dynamic> json) =>
-    _AuthCheckPhone(number: json['number'] as String);
+    _AuthCheckPhone(
+      number: json['number'] as String,
+    );
 
 Map<String, dynamic> _$AuthCheckPhoneToJson(_AuthCheckPhone instance) =>
-    <String, dynamic>{'number': instance.number};
+    <String, dynamic>{
+      'number': instance.number,
+    };

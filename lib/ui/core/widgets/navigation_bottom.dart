@@ -18,7 +18,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
     switch (location) {
       case Routes.home:
         return 0;
-      case Routes.map:
+      case Routes.favorites:
         return 1;
       case Routes.profile:
         return 2;
@@ -43,7 +43,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
                 context.go(Routes.home);
                 break;
               case 1:
-                context.go(Routes.map);
+                context.go(Routes.favorites);
                 break;
               case 2:
                 context.go(Routes.profile);
@@ -53,30 +53,41 @@ class _NavigationBottomState extends State<NavigationBottom> {
             }
           },
           backgroundColor: AppColors.white2,
-          indicatorColor: AppColors.green2,
+          indicatorColor: AppColors.customBlue,
           selectedIndex: _getSelectedIndex(context),
           destinations: const [
             NavigationDestination(
               enabled: true,
-              icon: Icon(Icons.list_outlined),
+              icon: Badge(
+                isLabelVisible: false,
+                child: Icon(Icons.list_outlined),
+              ),
               label: 'Каталог',
             ),
             NavigationDestination(
               enabled: true,
-              icon: Icon(Icons.heat_pump_rounded),
+              icon: Badge(
+                isLabelVisible: false,
+                child: Icon(Icons.favorite_outline),
+              ),
               label: 'Избранное',
             ),
             NavigationDestination(
-              icon: Icon(Icons.shopping_basket),
+              icon: Badge(
+                isLabelVisible: false,
+                child: Icon(Icons.shopping_basket_outlined),
+              ),
               label: 'Корзина',
             ),
             NavigationDestination(
-              icon: Icon(Icons.account_circle_outlined),
+              icon: Badge(
+                isLabelVisible: false,
+                child: Icon(Icons.account_circle_outlined),
+              ),
               label: 'Профиль',
             ),
           ],
         ),
-
         body: widget.child,
       ),
     );

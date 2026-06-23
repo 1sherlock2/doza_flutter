@@ -14,6 +14,8 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
@@ -33,8 +35,6 @@ void main() async {
   Command.globalExceptionHandler = (context, error) {
     Logger('Command').severe('Command error: $error');
   };
-
-  WidgetsFlutterBinding.ensureInitialized();
 }
 
 class MainApp extends StatefulWidget {
@@ -45,25 +45,20 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  late final Future<GoRouter> _routerFuture;
-  GoRouter? _router;
+  late final GoRouter _router;
   StreamSubscription<Uri>? _deepLinkSub;
 
   @override
   void initState() {
     super.initState();
-    _routerFuture =
-        router(
-          context.read<AuthApiClient>(),
-          context.read<AuthStateNotifier>(),
-        ).then((r) {
-          _router = r;
-          return r;
-        });
+    _router = router(
+      context.read<AuthApiClient>(),
+      context.read<AuthStateNotifier>(),
+    );
 
     _deepLinkSub = AppLinks().uriLinkStream.listen((uri) {
       if (uri.scheme == 'trackingapp') {
-        _router?.go(Routes.subscription);
+        _router.go(Routes.subscription);
       }
     });
   }
@@ -76,20 +71,28 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _routerFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return MaterialApp.router(
-            routerConfig: snapshot.data,
-            themeMode: ThemeMode.system,
-            theme: AppTheme.lightTheme,
-          );
-        }
-        return const MaterialApp(
-          home: Scaffold(body: Center(child: CircularProgressIndicator())),
-        );
-      },
+    return MaterialApp.router(
+      routerConfig: _router,
+      themeMode: ThemeMode.system,
+      theme: AppTheme.lightTheme,
     );
   }
 }
+
+  // Widget build(BuildContext context) {
+  //   return FutureBuilder(
+  //     future: _routerFuture,
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasData) {
+  //         return MaterialApp.router(
+  //           routerConfig: snapshot.data,
+  //           themeMode: ThemeMode.system,
+  //           theme: AppTheme.lightTheme,
+  //         );
+  //       }
+  //       return const MaterialApp(
+  //         home: Scaffold(body: Center(child: CircularProgressIndicator())),
+  //       );
+  //     },
+  //   );
+  // }

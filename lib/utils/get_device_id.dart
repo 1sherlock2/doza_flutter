@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-const _channel = MethodChannel('tracking_client/sim_cards');
+const _channel = MethodChannel('doza_flutter/device_id');
 
 Future<String> getDeviceId() async {
   try {

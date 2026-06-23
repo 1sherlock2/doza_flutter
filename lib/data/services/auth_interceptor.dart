@@ -21,7 +21,7 @@ class AuthInterceptor extends Interceptor {
       : 4000;
   String get _baseUrl => 'http://$_host:$_port';
 
-  final Dio _dio = .new();
+  final Dio _dio = Dio();
   final AuthApiClient _authApiClient;
   final FlutterSecureStorage _storage;
   final AuthStateNotifier _authStateNotifier;

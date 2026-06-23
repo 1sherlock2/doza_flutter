@@ -5,7 +5,7 @@ import 'package:pointycastle/export.dart';
 
 Future<({RSAPublicKey publicKey, RSAPrivateKey privateKey})>
 generateKeys() async {
-  final FlutterSecureStorage storage = .new();
+  final FlutterSecureStorage storage = FlutterSecureStorage();
 
   final keyPair = generateRSAkeyPair(secureRandom());
 

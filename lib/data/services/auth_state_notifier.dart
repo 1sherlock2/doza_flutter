@@ -36,7 +36,7 @@ class AuthStateNotifier extends ChangeNotifier {
   bool _isNewUserRegistration = false;
   bool get isNewUserRegistration => _isNewUserRegistration;
 
-  final FlutterSecureStorage _storage = .new();
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   Future<void> initialize() async {
     final payload = await _storage.read(key: ConstantsEnum.authPayload.value);

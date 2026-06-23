@@ -6,140 +6,141 @@ import 'package:doza_flutter/data/services/call_state_service.dart';
 import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/auth/auth_screen.dart';
 import 'package:doza_flutter/ui/auth/view_models/auth_view_models.dart';
+import 'package:doza_flutter/ui/catalog/catalog_screen.dart';
 import 'package:doza_flutter/ui/core/widgets/navigation_bottom.dart';
+import 'package:doza_flutter/ui/favorites/favorites_screen.dart';
+import 'package:doza_flutter/ui/subscription/subscription_select_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-Future<GoRouter> router(
+GoRouter router(
   AuthApiClient authApiClient,
   AuthStateNotifier authStateNotifier,
-) async => GoRouter(
-  initialLocation: Routes.home,
-  debugLogDiagnostics: true,
-  redirect: await _redirect(authApiClient, authStateNotifier),
-  refreshListenable: Listenable.merge([authStateNotifier]),
-  onException: (context, state, router) {
-    if (state.uri.scheme == 'dozaapp') {
-      router.go(Routes.home);
-    }
-  },
-  routes: [
-    ShellRoute(
-      builder: (BuildContext context, GoRouterState state, Widget child) {
-        List<String> excludePaths = [Routes.auth];
-        if (state.fullPath != null) {
-          bool isAuthPath = excludePaths.any(
-            (excludePath) => state.fullPath!.startsWith(excludePath),
-          );
-
-          if (!isAuthPath) {
-            return NavigationBottom(child: child);
-          }
-          return SafeArea(bottom: false, top: false, child: child);
+) =>
+    GoRouter(
+      initialLocation: Routes.home,
+      debugLogDiagnostics: true,
+      redirect: _redirect(authApiClient, authStateNotifier),
+      refreshListenable: Listenable.merge([authStateNotifier]),
+      onException: (context, state, router) {
+        if (state.uri.scheme == 'dozaapp') {
+          router.go(Routes.home);
         }
-        return SafeArea(bottom: false, top: false, child: child);
       },
       routes: [
-        GoRoute(
-          path: Routes.auth,
-          builder: (context, state) {
-            final callStateService = CallStateService();
-            final viewModel = AuthViewModel(
-              authRepository: context.read<AuthRepository>(),
-              callStateService: callStateService,
-              authStateNotifier: context.read<AuthStateNotifier>(),
-            );
-            return AuthScreen(authViewModel: viewModel);
+        ShellRoute(
+          builder: (BuildContext context, GoRouterState state, Widget child) {
+            List<String> excludePaths = [
+              Routes.auth,
+              Routes.subscriptionSelect
+            ];
+            if (state.fullPath != null) {
+              bool isAuthPath = excludePaths.any(
+                (excludePath) => state.fullPath!.startsWith(excludePath),
+              );
+
+              if (!isAuthPath) {
+                return NavigationBottom(child: child);
+              }
+              return SafeArea(bottom: false, top: false, child: child);
+            }
+            return SafeArea(bottom: false, top: false, child: child);
           },
+          routes: [
+            GoRoute(
+              path: Routes.auth,
+              builder: (context, state) {
+                final callStateService = CallStateService();
+                final viewModel = AuthViewModel(
+                  authRepository: context.read<AuthRepository>(),
+                  callStateService: callStateService,
+                  authStateNotifier: context.read<AuthStateNotifier>(),
+                );
+                return AuthScreen(authViewModel: viewModel);
+              },
+            ),
+            GoRoute(
+              path: Routes.subscriptionSelect,
+              builder: (context, state) => SubscriptionSelectScreen(
+                authStateNotifier: context.read<AuthStateNotifier>(),
+              ),
+            ),
+            GoRoute(
+              path: Routes.home,
+              builder: (context, state) => CatalogScreen(),
+            ),
+            GoRoute(
+              path: Routes.favorites,
+              builder: (context, state) => FavoritesScreen(),
+            )
+            // GoRoute(
+            //   path: Routes.profile,
+            //   builder: (context, state) {
+            //     final viewModel = ProfileViewModel(
+            //       subscriptionRepository: context.read<SubscriptionRepository>(),
+            //       authStateNotifier: context.read<AuthStateNotifier>(),
+            //     );
+            //     return ProfileScreen(viewModel: viewModel);
+            //   },
+            // ),
+          ],
         ),
-        // GoRoute(
-        //   path: Routes.home,
-        //   builder: (context, state) {
-        //     final viewModel = CatalogViewModel(
-        //       catalogRepository: context.read(),
-        //     );
-        //     return CatalogScreen(viewModel: viewModel);
-        //   },
-        // ),
-        // GoRoute(
-        //   path: Routes.profile,
-        //   builder: (context, state) {
-        //     final viewModel = ProfileViewModel(
-        //       subscriptionRepository: context.read<SubscriptionRepository>(),
-        //       authStateNotifier: context.read<AuthStateNotifier>(),
-        //     );
-        //     return ProfileScreen(viewModel: viewModel);
-        //   },
-        // ),
       ],
-    ),
-  ],
+    );
+
+typedef GoRouterRedirect = Future<String?> Function(
+  BuildContext context,
+  GoRouterState state,
 );
 
-Future<Future<String?> Function(BuildContext context, GoRouterState state)>
-_redirect(
+GoRouterRedirect _redirect(
   AuthApiClient authApiClient,
   AuthStateNotifier authStateNotifier,
-) async {
+) {
   return (BuildContext context, GoRouterState state) async {
-    final FlutterSecureStorage storage = .new();
     final Logger log = Logger('router');
 
-    if (authStateNotifier.isLogged) {
-      // Подписка только что активирована — перенаправить на home
-      if (authStateNotifier.consumeHomeRedirect()) {
-        return Routes.home;
-      }
-      // Новый пользователь — показать экран выбора подписки,
-      // но если у него уже есть активная платная подписка — сразу на home
-      if (authStateNotifier.isNewUserRegistration) {
-        final subscriptionRepo = context.read<SubscriptionRepository>();
-        final result = await subscriptionRepo.getStatus();
-
-        // Страховочная проверка: если у нового пользователя уже есть
-        // платная подписка (нестандартный случай) — не показываем экран выбора
-        final hasActiveSubscription = result.fold(
-          (status) => status.hasActiveSubscription,
-          (_) => false,
-        );
-        if (hasActiveSubscription) {
-          authStateNotifier.clearNewUserRegistration();
+    try {
+      if (authStateNotifier.isLogged) {
+        // Подписка только что активирована — перенаправить на home
+        if (authStateNotifier.consumeHomeRedirect()) {
+          log.fine('redirect: homeRedirect → /');
           return Routes.home;
         }
+        // Новый пользователь — показать экран выбора подписки,
+        // но если у него уже есть активная платная подписка — сразу на home
+        if (authStateNotifier.isNewUserRegistration) {
+          final subscriptionRepo = context.read<SubscriptionRepository>();
+          final result = await subscriptionRepo.getStatus();
 
-        // Новый пользователь без платной подписки → экран выбора
-        // (пробный период уже выдан автоматически сервером)
-        if (state.matchedLocation == Routes.subscriptionSelect) return null;
-        return Routes.subscriptionSelect;
-      }
-      // 402 — подписка требуется, перенаправить на экран подписки
-      if (authStateNotifier.isSubscriptionRequired) {
-        if (state.matchedLocation == Routes.subscription) return null;
-        return Routes.subscription;
-      }
-      // Возвращающийся пользователь только что прошёл аутентификацию:
-      // проверяем статус подписки/триала и направляем соответственно
-      if (state.matchedLocation == Routes.auth) {
-        final subscriptionRepo = context.read<SubscriptionRepository>();
-        final result = await subscriptionRepo.getStatus();
-        final hasAccess = result.fold(
-          (status) => status.hasActiveSubscription || status.isTrialActive,
-          (_) => true, // при ошибке сети не блокируем пользователя
-        );
-        if (!hasAccess) {
-          return Routes.subscription; // триал истёк и нет платной подписки
+          final hasActiveSubscription = result.fold(
+            (status) => status.hasActiveSubscription,
+            (_) => false,
+          );
+          if (hasActiveSubscription) {
+            authStateNotifier.clearNewUserRegistration();
+            log.fine('redirect: newUser+hasActiveSubscription → /');
+            return Routes.home;
+          }
+
+          if (state.matchedLocation == Routes.subscriptionSelect) return null;
+          log.fine('redirect: newUser → /subscription_select');
+          return Routes.subscriptionSelect;
         }
+
         return Routes.home;
+      } else {
+        final isPublicRoute = state.matchedLocation == Routes.auth;
+        if (!isPublicRoute) {
+          log.fine('redirect: notLogged → /auth');
+        }
+        return isPublicRoute ? null : Routes.auth;
       }
-      // Иначе — не мешать навигации
-      return null;
-    } else {
-      // Не залогинен: не трогать /auth и /phoneError, всё остальное → /auth
-      final isPublicRoute = state.matchedLocation == Routes.auth;
-      return isPublicRoute ? null : Routes.auth;
+    } catch (e, stack) {
+      log.severe('redirect error: $e\n$stack');
+      return null; // при ошибке редиректа не блокируем навигацию
     }
   };
 }

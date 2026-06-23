@@ -7,15 +7,15 @@ part of 'auth_register_api_model.dart';
 // **************************************************************************
 
 _AuthRegisterApiModel _$AuthRegisterApiModelFromJson(
-  Map<String, dynamic> json,
-) => _AuthRegisterApiModel(
-  authPayload: json['authPayload'] as String,
-  isNewUser: json['isNewUser'] as bool? ?? false,
-);
+        Map<String, dynamic> json) =>
+    _AuthRegisterApiModel(
+      authPayload: json['authPayload'] as String,
+      isNewUser: json['isNewUser'] as bool? ?? false,
+    );
 
 Map<String, dynamic> _$AuthRegisterApiModelToJson(
-  _AuthRegisterApiModel instance,
-) => <String, dynamic>{
-  'authPayload': instance.authPayload,
-  'isNewUser': instance.isNewUser,
-};
+        _AuthRegisterApiModel instance) =>
+    <String, dynamic>{
+      'authPayload': instance.authPayload,
+      'isNewUser': instance.isNewUser,
+    };

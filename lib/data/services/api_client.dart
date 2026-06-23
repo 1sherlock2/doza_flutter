@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:doza_flutter/data/services/models/categories/categories_api_model.dart';
+import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
+import 'package:doza_flutter/data/services/models/subscription/subscription_plan_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_status_model.dart';
+import 'package:doza_flutter/data/services/models/user_favorites/user_favorites_api_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logging/logging.dart';
 import 'package:result_dart/result_dart.dart';
@@ -19,7 +23,8 @@ class ApiClient {
 
   Failure<T, Exception> formatExceptionFailure<T extends Object>(
     Object error,
-  ) => Failure<T, Exception>(FormatException('Failed to parse $error'));
+  ) =>
+      Failure<T, Exception>(FormatException('Failed to parse $error'));
 
   AsyncResult<SubscriptionStatusModel> getSubscriptionStatus() async {
     try {
@@ -37,6 +42,119 @@ class ApiClient {
       return Failure(Exception(error.message));
     } catch (error) {
       return Failure(FormatException('Failed to query $error'));
+    }
+  }
+
+  // ─── Subscription endpoints ───────────────────────────────────────────────
+
+  AsyncResult<List<SubscriptionPlanModel>> getSubscriptionPlans() async {
+    try {
+      final response = await _dio.get('$_baseUrl/subscriptions/plans');
+      try {
+        final list = response.data as List<dynamic>;
+        return Success(
+          list
+              .map(
+                (e) =>
+                    SubscriptionPlanModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList(),
+        );
+      } catch (error) {
+        return formatExceptionFailure<List<SubscriptionPlanModel>>(error);
+      }
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      return Failure(FormatException('Failed to query $error'));
+    }
+  }
+
+  /// Создаёт подписку на сервере. Возвращает confirmation_url для открытия в браузере.
+  AsyncResult<String> createSubscription(
+    int planId,
+    String paymentMethod,
+  ) async {
+    try {
+      final response = await _dio.post(
+        '$_baseUrl/subscriptions/create',
+        data: {'planId': planId, 'paymentMethod': paymentMethod},
+      );
+      final url =
+          (response.data as Map<String, dynamic>)['confirmationUrl'] as String?;
+      if (url == null) {
+        return Failure(Exception('No confirmationUrl in response'));
+      }
+      return Success(url);
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      return Failure(FormatException('Failed to query $error'));
+    }
+  }
+
+  AsyncResult<List<CategoriesApiModel>> getCategoriesApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/categories');
+      try {
+        final list = response.data as List<dynamic>;
+        return Success(list
+            .map((e) => CategoriesApiModel.fromJson(e as Map<String, dynamic>))
+            .toList());
+      } catch (error) {
+        return formatExceptionFailure<List<CategoriesApiModel>>(error);
+      }
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<List<ProductsApiModel>> getProductsApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/products');
+      try {
+        final list = response.data as List<dynamic>;
+        return Success(list
+            .map((e) => ProductsApiModel.fromJson(e as Map<String, dynamic>))
+            .toList());
+      } catch (error) {
+        return formatExceptionFailure<List<ProductsApiModel>>(error);
+      }
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<List<int>> getFavoritesApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/user-favorites');
+
+      final list = response.data as List<dynamic>;
+      return Success(list.cast<int>().toList());
+    } on DioException catch (error) {
+      return formatExceptionFailure<List<int>>(error);
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<List<UserFavoritesApiModel>> toggleFavoritesApi(
+      int productId) async {
+    try {
+      final response = await _dio
+          .post('$_baseUrl/user-favorites', data: {'productId': productId});
+      final list = response.data as List<dynamic>;
+      return Success(list
+          .map((e) => UserFavoritesApiModel.fromJson(e as Map<String, dynamic>))
+          .toList());
+    } on DioException catch (error) {
+      return formatExceptionFailure<List<UserFavoritesApiModel>>(error);
+    } catch (error) {
+      throw FormatException('Failed to query $error');
     }
   }
 }

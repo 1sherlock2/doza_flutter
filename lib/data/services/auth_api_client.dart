@@ -8,14 +8,14 @@ import 'package:logging/logging.dart';
 import 'package:result_dart/result_dart.dart';
 
 class AuthApiClient {
-  final Logger _log = .new('AuthApiClient');
-  final Dio _dio = .new();
+  final Logger _log = Logger('AuthApiClient');
+  final Dio _dio = Dio();
   final Dio _externalDio = Dio(); // zvonok.com — без интерсептора
 
   final String _host = dotenv.env['SERVER_IP'] ?? '10.0.2.2';
   final int _port = dotenv.env['SERVER_PORT'] != null
       ? (int.tryParse(dotenv.env['SERVER_PORT']!) ?? 6000)
-      : 4000;
+      : 6000;
 
   String get _baseUrl => 'http://$_host:$_port';
 

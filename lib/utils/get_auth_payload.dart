@@ -4,7 +4,7 @@ import 'package:doza_flutter/utils/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 Future<({String accessToken, String refreshToken})?> getAuthPayload() async {
-  final FlutterSecureStorage storage = .new();
+  final FlutterSecureStorage storage = FlutterSecureStorage();
   final String? payload = await storage.read(
     key: ConstantsEnum.authPayload.value,
   );

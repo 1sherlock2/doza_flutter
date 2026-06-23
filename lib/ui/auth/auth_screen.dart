@@ -1,4 +1,5 @@
 import 'package:doza_flutter/ui/auth/view_models/auth_view_models.dart';
+import 'package:doza_flutter/ui/auth/widgets/auth_status_messages.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -166,6 +167,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                   widget.authViewModel.handleClickCall(),
                               child: Text('Подтвердить номер'),
                             ),
+                          ),
+                          AuthStatusMessages(
+                            authViewModel: widget.authViewModel,
                           ),
                         ],
                       ),

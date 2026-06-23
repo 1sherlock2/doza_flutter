@@ -33,7 +33,7 @@ class AuthViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
   final Logger _log;
   final CallStateService _callStateService;
-  final FlutterSecureStorage _storage = .new();
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   String? _authPhone;
   String? _userPhone;
@@ -222,6 +222,7 @@ class AuthViewModel extends ChangeNotifier {
 
       if (_authPhone == null) {
         _log.warning('Auth phone is not defined');
+        _isStatusFailed = true;
         return;
       }
 
