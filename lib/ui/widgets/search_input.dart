@@ -6,14 +6,14 @@ class SearchInput extends StatefulWidget {
       {super.key,
       required this.controller,
       required this.onSearch,
-      required this.isEnabled});
+      this.isEnabled});
 
   @override
   State<SearchInput> createState() => _SearchInputState();
 
   final TextEditingController controller;
   final VoidCallback onSearch;
-  final bool isEnabled;
+  final bool? isEnabled;
 }
 
 class _SearchInputState extends State<SearchInput> {
@@ -23,7 +23,7 @@ class _SearchInputState extends State<SearchInput> {
       enabled: widget.isEnabled,
       controller: widget.controller,
       decoration: InputDecoration(
-        enabled: widget.isEnabled,
+        enabled: widget.isEnabled ?? true,
         hintText: 'Поиск напитков...',
         hintStyle: TextStyle(color: Colors.grey.shade500),
         prefixIcon: const Icon(Icons.search),

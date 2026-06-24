@@ -1,5 +1,5 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/screens/catalog/widgets/products/product_card.dart';
 import 'package:flutter/material.dart';
 

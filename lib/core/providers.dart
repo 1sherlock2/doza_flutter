@@ -15,7 +15,7 @@ import 'package:doza_flutter/data/services/api_client.dart';
 import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_interceptor.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +53,7 @@ Future<List<SingleChildWidget>> get providers async {
         create: (_) => ProductsRepositoryRemote(apiClient: apiClient)),
     Provider<FavoritesRepository>(
         create: (_) => FavoritesRepositoryRemote(apiClient: apiClient)),
+    ChangeNotifierProvider(create: )
     ChangeNotifierProvider(
         create: (context) => GeneralFavoritesViewModel(
             favoritesRepository: context.read<FavoritesRepository>())),

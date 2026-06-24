@@ -6,6 +6,7 @@ class FavoritesViewModel extends ChangeNotifier {
   FavoritesViewModel({required FavoritesRepository favoritesRepository})
       : _favoritesRepository = favoritesRepository {
     getFavoritesProducts();
+    searchInputController.addListener(handleSearch);
   }
 
   final FavoritesRepository _favoritesRepository;
@@ -33,7 +34,7 @@ class FavoritesViewModel extends ChangeNotifier {
     }
     notifyListeners();
 
-    _filteredFavoritesProducts = _filteredFavoritesProducts
+    _filteredFavoritesProducts = _favoritesProducts
         .where((product) => product.name
             .toLowerCase()
             .contains(searchInputController.text.toLowerCase()))

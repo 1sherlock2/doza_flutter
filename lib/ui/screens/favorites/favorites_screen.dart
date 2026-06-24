@@ -1,6 +1,6 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/favorites/favorites_list.dart';
-import 'package:doza_flutter/ui/screens/favorites/view_model/favorites_view_model.dart';
+import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
 import 'package:doza_flutter/ui/widgets/search_input.dart';
 import 'package:doza_flutter/ui/widgets/sort_catalog.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +31,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   spacing: 16,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                        child: SearchInput(
-                      controller:
-                          widget._favoritesViewModel.searchInputController,
-                      onSearch: widget._favoritesViewModel.handleSearch,
-                      isEnabled: widget
-                          ._favoritesViewModel.favoritesProducts.isNotEmpty,
-                    )),
+                    ListenableBuilder(
+                        listenable: widget._favoritesViewModel,
+                        builder: (context, child) => Expanded(
+                                child: SearchInput(
+                              controller: widget
+                                  ._favoritesViewModel.searchInputController,
+                              onSearch: widget._favoritesViewModel.handleSearch,
+                              isEnabled: widget._favoritesViewModel
+                                  .favoritesProducts.isNotEmpty,
+                            ))),
                     SortCatalog()
                   ],
                 ),

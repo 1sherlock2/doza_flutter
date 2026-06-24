@@ -1,5 +1,5 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/screens/catalog/widgets/categories/categories.dart';
 import 'package:doza_flutter/ui/screens/catalog/widgets/products/products.dart';
 import 'package:doza_flutter/ui/widgets/search_input.dart';
@@ -31,13 +31,17 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   spacing: 16,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                        child: SearchInput(
-                      controller:
-                          widget._catalogViewModel.searchInputController,
-                      onSearch: () => widget._catalogViewModel.handleSearch(),
-                      isEnabled: widget._catalogViewModel.products.isNotEmpty,
-                    )),
+                    ListenableBuilder(
+                        listenable: widget._catalogViewModel,
+                        builder: ((context, child) => Expanded(
+                                child: SearchInput(
+                              controller: widget
+                                  ._catalogViewModel.searchInputController,
+                              onSearch: () =>
+                                  widget._catalogViewModel.handleSearch(),
+                              isEnabled:
+                                  widget._catalogViewModel.products.isNotEmpty,
+                            )))),
                     SortCatalog()
                   ],
                 ),

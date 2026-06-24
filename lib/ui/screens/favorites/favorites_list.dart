@@ -1,5 +1,5 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/favorites/view_model/favorites_view_model.dart';
+import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
 import 'package:doza_flutter/ui/screens/favorites/widgets/favorites_card.dart';
 import 'package:flutter/material.dart';
 

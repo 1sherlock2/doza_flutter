@@ -11,9 +11,9 @@ import 'package:doza_flutter/ui/core/widgets/navigation_bottom.dart';
 import 'package:doza_flutter/ui/screens/auth/auth_screen.dart';
 import 'package:doza_flutter/ui/screens/auth/view_models/auth_view_models.dart';
 import 'package:doza_flutter/ui/screens/catalog/catalog_screen.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/screens/favorites/favorites_screen.dart';
-import 'package:doza_flutter/ui/screens/favorites/view_model/favorites_view_model.dart';
+import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -88,7 +88,16 @@ GoRouter router(
                     favoritesRepository: context.read<FavoritesRepository>());
                 return FavoritesScreen(favoritesViewModel: favoritesViewModel);
               },
-            )
+            ),
+            GoRoute(
+                path: Routes.productId,
+                builder: ((context, state) {
+                  final id = state.pathParameters['id'];
+                  final viewModel = ProductDetailsViewModel(
+                      productRepository: context.read<ProductsRepository>(), productId: id);
+                  return ProductDetailsScreen(productDetailViewModel: viewModel)
+                }))
+
             // GoRoute(
             //   path: Routes.profile,
             //   builder: (context, state) {

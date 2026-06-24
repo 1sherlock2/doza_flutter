@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class GeneralFavoritesViewModel extends ChangeNotifier {
   GeneralFavoritesViewModel({required FavoritesRepository favoritesRepository})
-      : _favoritesRepository = favoritesRepository;
+      : _favoritesRepository = favoritesRepository {
+    getFavorites();
+  }
 
   final FavoritesRepository _favoritesRepository;
 

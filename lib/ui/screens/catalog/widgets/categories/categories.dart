@@ -1,4 +1,4 @@
-import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/screens/catalog/widgets/categories/categories_item.dart';
 import 'package:flutter/material.dart';
 

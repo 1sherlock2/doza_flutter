@@ -1,6 +1,7 @@
 abstract final class Routes {
   static const home = '/';
   static const favorites = '/favorites';
+  static const productId = '/:id';
   static const basket = '/basket';
   static const profile = '/profile';
   static const auth = '/auth';

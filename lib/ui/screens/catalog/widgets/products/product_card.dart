@@ -1,6 +1,6 @@
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
