@@ -5,7 +5,7 @@ import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/call_state_service.dart';
 import 'package:doza_flutter/data/services/models/auth/auth_api_model/auth_api_model.dart';
 import 'package:doza_flutter/data/services/models/auth/call_status_api_model/call_status_api_model.dart';
-import 'package:doza_flutter/ui/auth/view_models/utils.dart';
+import 'package:doza_flutter/ui/screens/auth/view_models/utils.dart';
 import 'package:doza_flutter/utils/constants.dart';
 import 'package:doza_flutter/utils/generate_keys.dart';
 import 'package:doza_flutter/utils/get_device_id.dart';
@@ -22,10 +22,10 @@ class AuthViewModel extends ChangeNotifier {
     required AuthRepository authRepository,
     required CallStateService callStateService,
     required AuthStateNotifier authStateNotifier,
-  }) : _authRepository = authRepository,
-       _callStateService = callStateService,
-       _authStateNotifier = authStateNotifier,
-       _log = Logger('AuthViewModel') {
+  })  : _authRepository = authRepository,
+        _callStateService = callStateService,
+        _authStateNotifier = authStateNotifier,
+        _log = Logger('AuthViewModel') {
     _initialGetAuthPhone();
   }
 
@@ -76,7 +76,7 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<({RSAPublicKey publicKey, RSAPrivateKey privateKey, bool isNew})>
-  _initKeys() async {
+      _initKeys() async {
     final existingKey = await _storage.read(
       key: ConstantsEnum.privateKey.value,
     );
@@ -120,8 +120,8 @@ class AuthViewModel extends ChangeNotifier {
             await Future.delayed(Duration(seconds: 5));
 
             // Получение информации о статусе звонка
-            final CallStatusApiModel? statusCallResponse = await _authRepository
-                .verifyCall(phoneStatus: statusPhone);
+            final CallStatusApiModel? statusCallResponse =
+                await _authRepository.verifyCall(phoneStatus: statusPhone);
 
             if (statusCallResponse == null ||
                 statusCallResponse.dialStatusDisplay == null) {

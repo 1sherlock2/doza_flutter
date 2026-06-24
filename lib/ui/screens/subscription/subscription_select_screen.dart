@@ -1,8 +1,8 @@
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/subscription/widgets/premium_card.dart';
-import 'package:doza_flutter/ui/subscription/widgets/trial_card.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/premium_card.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/trial_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -2,26 +2,28 @@ import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class SearchInput extends StatefulWidget {
-  const SearchInput({
-    super.key,
-    required this.controller,
-    required this.onSearch,
-  });
+  const SearchInput(
+      {super.key,
+      required this.controller,
+      required this.onSearch,
+      required this.isEnabled});
 
   @override
   State<SearchInput> createState() => _SearchInputState();
 
   final TextEditingController controller;
   final VoidCallback onSearch;
+  final bool isEnabled;
 }
 
 class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      // onChanged: ,
+      enabled: widget.isEnabled,
       controller: widget.controller,
       decoration: InputDecoration(
+        enabled: widget.isEnabled,
         hintText: 'Поиск напитков...',
         hintStyle: TextStyle(color: Colors.grey.shade500),
         prefixIcon: const Icon(Icons.search),

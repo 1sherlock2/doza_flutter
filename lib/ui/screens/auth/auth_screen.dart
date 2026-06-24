@@ -1,6 +1,6 @@
-import 'package:doza_flutter/ui/auth/view_models/auth_view_models.dart';
-import 'package:doza_flutter/ui/auth/widgets/auth_status_messages.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
+import 'package:doza_flutter/ui/screens/auth/view_models/auth_view_models.dart';
+import 'package:doza_flutter/ui/screens/auth/widgets/auth_status_messages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -91,7 +91,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             margin: EdgeInsetsGeometry.only(top: 20),
                             child: TextField(
                               cursorColor: AppColors.black1,
-
                               controller: _phoneController,
                               focusNode: _focusNode,
                               keyboardType: TextInputType.phone,

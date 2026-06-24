@@ -17,7 +17,6 @@ class CatalogViewModel extends ChangeNotifier {
         _productsRepository = productsRepository {
     _getCategories();
     _getProducts();
-    _getFavorites();
     searchInputController.addListener(handleSearch);
   }
 
@@ -41,13 +40,6 @@ class CatalogViewModel extends ChangeNotifier {
   List<ProductsApiModel> _filteredProducts = [];
   List<ProductsApiModel> get filteredProducts => _filteredProducts;
 
-  final Set<int> _favoritesProductIds = {};
-  Set<int> get favoritesProductIds => _favoritesProductIds;
-
-  void handleTapCard() {
-    _log.warning('Tap on Card');
-  }
-
   void handleSearch() {
     _selectedCategories.clear();
     _selectedCategories.add(_uniqueCategoryId);
@@ -63,27 +55,6 @@ class CatalogViewModel extends ChangeNotifier {
             .contains(searchInputController.text.toLowerCase()))
         .toList();
     notifyListeners();
-  }
-
-  void _getFavorites() async {
-    final favoritesResponse = await _productsRepository.getFavorites();
-    final favoritesReponseSet = favoritesResponse.toSet();
-    _favoritesProductIds.addAll(favoritesReponseSet);
-    notifyListeners();
-  }
-
-  void handleTapFavorites(int productId) async {
-    await _productsRepository.toggleFavorites(productId);
-    if (_favoritesProductIds.contains(productId)) {
-      _favoritesProductIds.remove(productId);
-    } else {
-      _favoritesProductIds.add(productId);
-    }
-    notifyListeners();
-  }
-
-  bool isFavorites(int productId) {
-    return _favoritesProductIds.contains(productId);
   }
 
   void _getProducts() async {

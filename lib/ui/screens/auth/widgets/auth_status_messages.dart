@@ -1,4 +1,4 @@
-import 'package:doza_flutter/ui/auth/view_models/auth_view_models.dart';
+import 'package:doza_flutter/ui/screens/auth/view_models/auth_view_models.dart';
 import 'package:flutter/material.dart';
 
 class AuthStatusMessages extends StatelessWidget {

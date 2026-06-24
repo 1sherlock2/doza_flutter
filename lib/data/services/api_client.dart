@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:doza_flutter/data/services/models/categories/categories_api_model.dart';
+import 'package:doza_flutter/data/services/models/favorites_products/favorites_products_api_model.dart';
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_plan_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_status_model.dart';
@@ -153,6 +154,21 @@ class ApiClient {
           .toList());
     } on DioException catch (error) {
       return formatExceptionFailure<List<UserFavoritesApiModel>>(error);
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<List<FavoritesProductsApiModel>> getFavoritesProductsApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/user-favorites/products');
+      final list = response.data as List<dynamic>;
+      return Success(list
+          .map((e) =>
+              FavoritesProductsApiModel.fromJson(e as Map<String, dynamic>))
+          .toList());
+    } on DioException catch (error) {
+      return formatExceptionFailure<List<FavoritesProductsApiModel>>(error);
     } catch (error) {
       throw FormatException('Failed to query $error');
     }

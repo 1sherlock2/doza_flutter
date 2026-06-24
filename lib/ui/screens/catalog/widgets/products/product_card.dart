@@ -1,6 +1,7 @@
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
-import 'package:doza_flutter/ui/catalog/view_model/catalog_view_model.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,6 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: context.watch<CatalogViewModel>().handleTapCard,
       child: Column(
         children: [
           Stack(
@@ -31,9 +31,9 @@ class _ProductCardState extends State<ProductCard> {
                       children: [
                         Image.network(
                           widget._product.imageUrl,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           width: constraints.maxWidth,
-                          height: 170,
+                          height: 200,
                           alignment: Alignment.center,
                         )
                       ],
@@ -44,7 +44,7 @@ class _ProductCardState extends State<ProductCard> {
                   right: 20,
                   child: GestureDetector(
                     onTap: () => context
-                        .read<CatalogViewModel>()
+                        .read<GeneralFavoritesViewModel>()
                         .handleTapFavorites(widget._product.id),
                     child: Container(
                       padding: const EdgeInsets.all(10),
@@ -52,7 +52,7 @@ class _ProductCardState extends State<ProductCard> {
                           borderRadius: BorderRadius.all(Radius.circular(50)),
                           color: AppColors.white2),
                       child: context
-                              .watch<CatalogViewModel>()
+                              .watch<GeneralFavoritesViewModel>()
                               .isFavorites(widget._product.id)
                           ? Icon(Icons.favorite_rounded, color: AppColors.red1)
                           : Icon(
@@ -81,8 +81,8 @@ class _ProductCardState extends State<ProductCard> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Text(
                     widget._product.volumeMl.isNotEmpty
-                        ? 'от ${widget._product.volumeMl.first}₽'
-                        : 'от ${widget._product.basePrice}₽',
+                        ? 'от ${widget._product.volumeMl.first} ₽'
+                        : 'от ${widget._product.basePrice} ₽',
                     style: TextStyle(fontSize: 14, color: AppColors.white2),
                   ),
                 )

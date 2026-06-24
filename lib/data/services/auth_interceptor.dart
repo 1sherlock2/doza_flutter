@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/models/auth/auth_register_api_model/auth_register_api_model.dart';
-import 'package:doza_flutter/ui/auth/view_models/utils.dart';
+import 'package:doza_flutter/ui/screens/auth/view_models/utils.dart';
 import 'package:doza_flutter/utils/constants.dart';
 import 'package:doza_flutter/utils/get_device_id.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

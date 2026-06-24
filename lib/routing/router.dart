@@ -1,15 +1,20 @@
 import 'package:doza_flutter/data/repositories/auth/auth_repository.dart';
+import 'package:doza_flutter/data/repositories/categories/categories_repository.dart';
+import 'package:doza_flutter/data/repositories/favorites/favorites_repository.dart';
+import 'package:doza_flutter/data/repositories/products/products_repository.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository.dart';
 import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/call_state_service.dart';
 import 'package:doza_flutter/routing/routes.dart';
-import 'package:doza_flutter/ui/auth/auth_screen.dart';
-import 'package:doza_flutter/ui/auth/view_models/auth_view_models.dart';
-import 'package:doza_flutter/ui/catalog/catalog_screen.dart';
 import 'package:doza_flutter/ui/core/widgets/navigation_bottom.dart';
-import 'package:doza_flutter/ui/favorites/favorites_screen.dart';
-import 'package:doza_flutter/ui/subscription/subscription_select_screen.dart';
+import 'package:doza_flutter/ui/screens/auth/auth_screen.dart';
+import 'package:doza_flutter/ui/screens/auth/view_models/auth_view_models.dart';
+import 'package:doza_flutter/ui/screens/catalog/catalog_screen.dart';
+import 'package:doza_flutter/ui/screens/catalog/view_model/catalog_view_model.dart';
+import 'package:doza_flutter/ui/screens/favorites/favorites_screen.dart';
+import 'package:doza_flutter/ui/screens/favorites/view_model/favorites_view_model.dart';
+import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -69,11 +74,20 @@ GoRouter router(
             ),
             GoRoute(
               path: Routes.home,
-              builder: (context, state) => CatalogScreen(),
+              builder: (context, state) {
+                final catalogViewModel = CatalogViewModel(
+                    categoriesRepository: context.read<CategoriesRepository>(),
+                    productsRepository: context.read<ProductsRepository>());
+                return CatalogScreen(catalogViewModel: catalogViewModel);
+              },
             ),
             GoRoute(
               path: Routes.favorites,
-              builder: (context, state) => FavoritesScreen(),
+              builder: (context, state) {
+                final favoritesViewModel = FavoritesViewModel(
+                    favoritesRepository: context.read<FavoritesRepository>());
+                return FavoritesScreen(favoritesViewModel: favoritesViewModel);
+              },
             )
             // GoRoute(
             //   path: Routes.profile,
@@ -130,7 +144,7 @@ GoRouterRedirect _redirect(
           return Routes.subscriptionSelect;
         }
 
-        return Routes.home;
+        return null;
       } else {
         final isPublicRoute = state.matchedLocation == Routes.auth;
         if (!isPublicRoute) {

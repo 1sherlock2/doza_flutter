@@ -1,4 +1,4 @@
-import 'package:doza_flutter/ui/subscription/widgets/payment_method_option.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/payment_method_option.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethodSection extends StatelessWidget {

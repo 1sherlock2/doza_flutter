@@ -2,12 +2,12 @@ import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_plan_model.dart';
 import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/subscription/view_models/subscription_view_model.dart';
-import 'package:doza_flutter/ui/subscription/widgets/active_subscription_card.dart';
-import 'package:doza_flutter/ui/subscription/widgets/auto_renew_notice.dart';
-import 'package:doza_flutter/ui/subscription/widgets/payment_checking_widget.dart';
-import 'package:doza_flutter/ui/subscription/widgets/payment_method_section.dart';
-import 'package:doza_flutter/ui/subscription/widgets/price_and_button.dart';
+import 'package:doza_flutter/ui/screens/subscription/view_models/subscription_view_model.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/active_subscription_card.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/auto_renew_notice.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/payment_checking_widget.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/payment_method_section.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/price_and_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -43,11 +43,11 @@ class SubscriptionScreen extends StatelessWidget {
                   onPressed: () => context.pop(),
                 )
               : authStateNotifier.showSubscriptionBackButton
-              ? IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => context.go(Routes.subscriptionSelect),
-                )
-              : null,
+                  ? IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () => context.go(Routes.subscriptionSelect),
+                    )
+                  : null,
         ),
         body: ListenableBuilder(
           listenable: viewModel,
@@ -205,7 +205,9 @@ class _SelectPlanSection extends StatelessWidget {
                             children: [
                               Text(
                                 plan.displayName,
-                                style: Theme.of(context).textTheme.titleMedium
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
                                     ?.copyWith(fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(height: 4),
@@ -276,7 +278,3 @@ class _SelectPlanSection extends StatelessWidget {
     );
   }
 }
-
-
-
-
