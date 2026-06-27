@@ -1,6 +1,7 @@
 import 'package:doza_flutter/data/repositories/auth/auth_repository.dart';
 import 'package:doza_flutter/data/repositories/categories/categories_repository.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository.dart';
+import 'package:doza_flutter/data/repositories/product_details/product_details_repository.dart';
 import 'package:doza_flutter/data/repositories/products/products_repository.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository.dart';
 import 'package:doza_flutter/data/services/auth_api_client.dart';
@@ -14,6 +15,8 @@ import 'package:doza_flutter/ui/screens/catalog/catalog_screen.dart';
 import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/screens/favorites/favorites_screen.dart';
 import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
+import 'package:doza_flutter/ui/screens/product_details/product_details_screen.dart';
+import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -35,8 +38,37 @@ GoRouter router(
         }
       },
       routes: [
-        ShellRoute(
-          builder: (BuildContext context, GoRouterState state, Widget child) {
+        StatefulShellRoute.indexedStack(
+            builder: (BuildContext context, GoRouterState state,
+                StatefulNavigationShell navigationShell) {
+              return SafeArea(
+                  bottom: false, top: false, child: navigationShell);
+            },
+            branches: [
+              StatefulShellBranch(routes: [
+                GoRoute(
+                  path: Routes.auth,
+                  builder: (context, state) {
+                    final callStateService = CallStateService();
+                    final viewModel = AuthViewModel(
+                      authRepository: context.read<AuthRepository>(),
+                      callStateService: callStateService,
+                      authStateNotifier: context.read<AuthStateNotifier>(),
+                    );
+                    return AuthScreen(authViewModel: viewModel);
+                  },
+                ),
+                GoRoute(
+                  path: Routes.subscriptionSelect,
+                  builder: (context, state) => SubscriptionSelectScreen(
+                    authStateNotifier: context.read<AuthStateNotifier>(),
+                  ),
+                ),
+              ])
+            ]),
+        StatefulShellRoute.indexedStack(
+          builder: (BuildContext context, GoRouterState state,
+              StatefulNavigationShell navigationShell) {
             List<String> excludePaths = [
               Routes.auth,
               Routes.subscriptionSelect
@@ -47,56 +79,53 @@ GoRouter router(
               );
 
               if (!isAuthPath) {
-                return NavigationBottom(child: child);
+                return NavigationBottom(navigationShell: navigationShell);
               }
-              return SafeArea(bottom: false, top: false, child: child);
+              return SafeArea(
+                  bottom: false, top: false, child: navigationShell);
             }
-            return SafeArea(bottom: false, top: false, child: child);
+            return SafeArea(bottom: false, top: false, child: navigationShell);
           },
-          routes: [
-            GoRoute(
-              path: Routes.auth,
-              builder: (context, state) {
-                final callStateService = CallStateService();
-                final viewModel = AuthViewModel(
-                  authRepository: context.read<AuthRepository>(),
-                  callStateService: callStateService,
-                  authStateNotifier: context.read<AuthStateNotifier>(),
-                );
-                return AuthScreen(authViewModel: viewModel);
-              },
-            ),
-            GoRoute(
-              path: Routes.subscriptionSelect,
-              builder: (context, state) => SubscriptionSelectScreen(
-                authStateNotifier: context.read<AuthStateNotifier>(),
+          branches: [
+            StatefulShellBranch(routes: [
+              GoRoute(
+                path: Routes.home,
+                builder: (context, state) {
+                  final catalogViewModel = CatalogViewModel(
+                      categoriesRepository:
+                          context.read<CategoriesRepository>(),
+                      productsRepository: context.read<ProductsRepository>());
+                  return CatalogScreen(catalogViewModel: catalogViewModel);
+                },
               ),
-            ),
-            GoRoute(
-              path: Routes.home,
-              builder: (context, state) {
-                final catalogViewModel = CatalogViewModel(
-                    categoriesRepository: context.read<CategoriesRepository>(),
-                    productsRepository: context.read<ProductsRepository>());
-                return CatalogScreen(catalogViewModel: catalogViewModel);
-              },
-            ),
-            GoRoute(
-              path: Routes.favorites,
-              builder: (context, state) {
-                final favoritesViewModel = FavoritesViewModel(
-                    favoritesRepository: context.read<FavoritesRepository>());
-                return FavoritesScreen(favoritesViewModel: favoritesViewModel);
-              },
-            ),
-            GoRoute(
-                path: Routes.productId,
-                builder: ((context, state) {
-                  final id = state.pathParameters['id'];
-                  final viewModel = ProductDetailsViewModel(
-                      productRepository: context.read<ProductsRepository>(), productId: id);
-                  return ProductDetailsScreen(productDetailViewModel: viewModel)
-                }))
+              GoRoute(
+                  path: Routes.productId,
+                  builder: ((context, state) {
+                    final id = state.pathParameters['id'];
+                    if (id == null) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        context.go(Routes.home);
+                      });
+                    }
+                    final viewModel = ProductDetailsViewModel(
+                        productDetailsRepository:
+                            context.read<ProductDetailsRepository>(),
+                        productId: id!);
+                    return ProductDetailsScreen(
+                        productDetailsViewModel: viewModel);
+                  }))
+            ]),
+            StatefulShellBranch(routes: [
+              GoRoute(
+                path: Routes.favorites,
+                builder: (context, state) {
+                  final favoritesViewModel = FavoritesViewModel(
+                      favoritesRepository: context.read<FavoritesRepository>());
+                  return FavoritesScreen(
+                      favoritesViewModel: favoritesViewModel);
+                },
+              ),
+            ]),
 
             // GoRoute(
             //   path: Routes.profile,

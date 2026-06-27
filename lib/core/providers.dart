@@ -7,6 +7,8 @@ import 'package:doza_flutter/data/repositories/categories/categories_repository.
 import 'package:doza_flutter/data/repositories/categories/categories_repository.remote.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository_remote.dart';
+import 'package:doza_flutter/data/repositories/product_details/product_details_repository.dart';
+import 'package:doza_flutter/data/repositories/product_details/product_details_repository_remote.dart';
 import 'package:doza_flutter/data/repositories/products/products_repository.dart';
 import 'package:doza_flutter/data/repositories/products/products_repository_remote.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository.dart';
@@ -53,7 +55,8 @@ Future<List<SingleChildWidget>> get providers async {
         create: (_) => ProductsRepositoryRemote(apiClient: apiClient)),
     Provider<FavoritesRepository>(
         create: (_) => FavoritesRepositoryRemote(apiClient: apiClient)),
-    ChangeNotifierProvider(create: )
+    Provider<ProductDetailsRepository>(
+        create: (_) => ProductDetailsRepositoryRemote(apiClient: apiClient)),
     ChangeNotifierProvider(
         create: (context) => GeneralFavoritesViewModel(
             favoritesRepository: context.read<FavoritesRepository>())),

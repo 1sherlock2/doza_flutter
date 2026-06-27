@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:doza_flutter/data/services/models/categories/categories_api_model.dart';
 import 'package:doza_flutter/data/services/models/favorites_products/favorites_products_api_model.dart';
+import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_plan_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_status_model.dart';
@@ -27,6 +28,7 @@ class ApiClient {
   ) =>
       Failure<T, Exception>(FormatException('Failed to parse $error'));
 
+  // ─── Subscription endpoints ───────────────────────────────────────────────
   AsyncResult<SubscriptionStatusModel> getSubscriptionStatus() async {
     try {
       final response = await _dio.get('$_baseUrl/subscriptions/status');
@@ -45,8 +47,6 @@ class ApiClient {
       return Failure(FormatException('Failed to query $error'));
     }
   }
-
-  // ─── Subscription endpoints ───────────────────────────────────────────────
 
   AsyncResult<List<SubscriptionPlanModel>> getSubscriptionPlans() async {
     try {
@@ -169,6 +169,21 @@ class ApiClient {
           .toList());
     } on DioException catch (error) {
       return formatExceptionFailure<List<FavoritesProductsApiModel>>(error);
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<ProductDetailsApiModel> getProductDetails(
+      String productId) async {
+    try {
+      final response = await _dio.get('$_baseUrl/product-details/$productId');
+      final responseData = response.data as Map<String, dynamic>;
+      final serialazableResponse =
+          ProductDetailsApiModel.fromJson(responseData);
+      return Success(serialazableResponse);
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
     } catch (error) {
       throw FormatException('Failed to query $error');
     }

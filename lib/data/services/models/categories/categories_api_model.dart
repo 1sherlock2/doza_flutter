@@ -9,7 +9,7 @@ abstract class CategoriesApiModel with _$CategoriesApiModel {
     required int id,
     required String name,
     required String slug,
-    String? desctiprion,
+    String? description,
     String? imageUrl,
   }) = _CategoriesApiModel;
 

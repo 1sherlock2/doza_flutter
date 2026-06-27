@@ -45,7 +45,7 @@ class _FilterCatalogState extends State<Categories> {
                                     name: category.name,
                                     categoryId: category.id,
                                     imageUrl: category.imageUrl,
-                                    description: category.desctiprion,
+                                    description: category.description,
                                     onSelected:
                                         widget._catalogViewModel.toggleCategory,
                                     isSelected: widget._catalogViewModel

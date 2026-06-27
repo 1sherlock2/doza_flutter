@@ -17,7 +17,7 @@ mixin _$CategoriesApiModel {
   int get id;
   String get name;
   String get slug;
-  String? get desctiprion;
+  String? get description;
   String? get imageUrl;
 
   /// Create a copy of CategoriesApiModel
@@ -39,8 +39,8 @@ mixin _$CategoriesApiModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.slug, slug) || other.slug == slug) &&
-            (identical(other.desctiprion, desctiprion) ||
-                other.desctiprion == desctiprion) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl));
   }
@@ -48,11 +48,11 @@ mixin _$CategoriesApiModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, slug, desctiprion, imageUrl);
+      Object.hash(runtimeType, id, name, slug, description, imageUrl);
 
   @override
   String toString() {
-    return 'CategoriesApiModel(id: $id, name: $name, slug: $slug, desctiprion: $desctiprion, imageUrl: $imageUrl)';
+    return 'CategoriesApiModel(id: $id, name: $name, slug: $slug, description: $description, imageUrl: $imageUrl)';
   }
 }
 
@@ -66,7 +66,7 @@ abstract mixin class $CategoriesApiModelCopyWith<$Res> {
       {int id,
       String name,
       String slug,
-      String? desctiprion,
+      String? description,
       String? imageUrl});
 }
 
@@ -86,7 +86,7 @@ class _$CategoriesApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? slug = null,
-    Object? desctiprion = freezed,
+    Object? description = freezed,
     Object? imageUrl = freezed,
   }) {
     return _then(_self.copyWith(
@@ -102,9 +102,9 @@ class _$CategoriesApiModelCopyWithImpl<$Res>
           ? _self.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String,
-      desctiprion: freezed == desctiprion
-          ? _self.desctiprion
-          : desctiprion // ignore: cast_nullable_to_non_nullable
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String?,
       imageUrl: freezed == imageUrl
           ? _self.imageUrl
@@ -207,7 +207,7 @@ extension CategoriesApiModelPatterns on CategoriesApiModel {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String name, String slug, String? desctiprion,
+    TResult Function(int id, String name, String slug, String? description,
             String? imageUrl)?
         $default, {
     required TResult orElse(),
@@ -215,7 +215,7 @@ extension CategoriesApiModelPatterns on CategoriesApiModel {
     final _that = this;
     switch (_that) {
       case _CategoriesApiModel() when $default != null:
-        return $default(_that.id, _that.name, _that.slug, _that.desctiprion,
+        return $default(_that.id, _that.name, _that.slug, _that.description,
             _that.imageUrl);
       case _:
         return orElse();
@@ -237,14 +237,14 @@ extension CategoriesApiModelPatterns on CategoriesApiModel {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String name, String slug, String? desctiprion,
+    TResult Function(int id, String name, String slug, String? description,
             String? imageUrl)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _CategoriesApiModel():
-        return $default(_that.id, _that.name, _that.slug, _that.desctiprion,
+        return $default(_that.id, _that.name, _that.slug, _that.description,
             _that.imageUrl);
       case _:
         throw StateError('Unexpected subclass');
@@ -265,14 +265,14 @@ extension CategoriesApiModelPatterns on CategoriesApiModel {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String name, String slug, String? desctiprion,
+    TResult? Function(int id, String name, String slug, String? description,
             String? imageUrl)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _CategoriesApiModel() when $default != null:
-        return $default(_that.id, _that.name, _that.slug, _that.desctiprion,
+        return $default(_that.id, _that.name, _that.slug, _that.description,
             _that.imageUrl);
       case _:
         return null;
@@ -287,7 +287,7 @@ class _CategoriesApiModel implements CategoriesApiModel {
       {required this.id,
       required this.name,
       required this.slug,
-      this.desctiprion,
+      this.description,
       this.imageUrl});
   factory _CategoriesApiModel.fromJson(Map<String, dynamic> json) =>
       _$CategoriesApiModelFromJson(json);
@@ -299,7 +299,7 @@ class _CategoriesApiModel implements CategoriesApiModel {
   @override
   final String slug;
   @override
-  final String? desctiprion;
+  final String? description;
   @override
   final String? imageUrl;
 
@@ -326,8 +326,8 @@ class _CategoriesApiModel implements CategoriesApiModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.slug, slug) || other.slug == slug) &&
-            (identical(other.desctiprion, desctiprion) ||
-                other.desctiprion == desctiprion) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl));
   }
@@ -335,11 +335,11 @@ class _CategoriesApiModel implements CategoriesApiModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, slug, desctiprion, imageUrl);
+      Object.hash(runtimeType, id, name, slug, description, imageUrl);
 
   @override
   String toString() {
-    return 'CategoriesApiModel(id: $id, name: $name, slug: $slug, desctiprion: $desctiprion, imageUrl: $imageUrl)';
+    return 'CategoriesApiModel(id: $id, name: $name, slug: $slug, description: $description, imageUrl: $imageUrl)';
   }
 }
 
@@ -355,7 +355,7 @@ abstract mixin class _$CategoriesApiModelCopyWith<$Res>
       {int id,
       String name,
       String slug,
-      String? desctiprion,
+      String? description,
       String? imageUrl});
 }
 
@@ -375,7 +375,7 @@ class __$CategoriesApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? slug = null,
-    Object? desctiprion = freezed,
+    Object? description = freezed,
     Object? imageUrl = freezed,
   }) {
     return _then(_CategoriesApiModel(
@@ -391,9 +391,9 @@ class __$CategoriesApiModelCopyWithImpl<$Res>
           ? _self.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String,
-      desctiprion: freezed == desctiprion
-          ? _self.desctiprion
-          : desctiprion // ignore: cast_nullable_to_non_nullable
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String?,
       imageUrl: freezed == imageUrl
           ? _self.imageUrl

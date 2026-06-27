@@ -2,7 +2,8 @@ enum ConstantsEnum {
   authPayload('auth_payload'),
   publicKey('public_key'),
   privateKey('private_key'),
-  userPhone('user_phone');
+  userPhone('user_phone'),
+  catalogProductsGrid('catalog_products_grid');
 
   final String value;
   const ConstantsEnum(this.value);
@@ -15,3 +16,5 @@ enum ConstantsEnum {
     }
   }
 }
+
+enum CardAction { increment, decrement }

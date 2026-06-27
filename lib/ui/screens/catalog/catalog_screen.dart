@@ -17,6 +17,14 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +60,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   ),
                 ),
                 Expanded(
-                    child: Products(catalogViewModel: widget._catalogViewModel))
+                    child: Products(
+                  catalogViewModel: widget._catalogViewModel,
+                  scrollController: _scrollController,
+                ))
               ],
             ),
           )),

@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 class NavigationBottom extends StatefulWidget {
-  const NavigationBottom({super.key, required this.child});
-  final Widget child;
+  const NavigationBottom({super.key, required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
 
   @override
   State<NavigationBottom> createState() => _NavigationBottomState();
@@ -37,20 +38,26 @@ class _NavigationBottomState extends State<NavigationBottom> {
       child: Scaffold(
         bottomNavigationBar: NavigationBar(
           height: 70,
+          // onDestinationSelected: (int index) {
+          //   switch (index) {
+          //     case 0:
+          //       context.go(Routes.home);
+          //       break;
+          //     case 1:
+          //       context.go(Routes.favorites);
+          //       break;
+          //     case 2:
+          //       context.go(Routes.profile);
+          //     case 3:
+          //       context.go(Routes.basket);
+          //       break;
+          //   }
+          // },
           onDestinationSelected: (int index) {
-            switch (index) {
-              case 0:
-                context.go(Routes.home);
-                break;
-              case 1:
-                context.go(Routes.favorites);
-                break;
-              case 2:
-                context.go(Routes.profile);
-              case 3:
-                context.go(Routes.basket);
-                break;
-            }
+            widget.navigationShell.goBranch(
+              index,
+              initialLocation: index == widget.navigationShell.currentIndex,
+            );
           },
           backgroundColor: AppColors.white2,
           indicatorColor: AppColors.customBlue,
@@ -88,7 +95,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
             ),
           ],
         ),
-        body: widget.child,
+        body: widget.navigationShell,
       ),
     );
   }

@@ -11,7 +11,7 @@ _CategoriesApiModel _$CategoriesApiModelFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       slug: json['slug'] as String,
-      desctiprion: json['desctiprion'] as String?,
+      description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
     );
 
@@ -20,6 +20,6 @@ Map<String, dynamic> _$CategoriesApiModelToJson(_CategoriesApiModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'slug': instance.slug,
-      'desctiprion': instance.desctiprion,
+      'description': instance.description,
       'imageUrl': instance.imageUrl,
     };
