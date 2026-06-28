@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 class VolumeInfoCount extends StatefulWidget {
   const VolumeInfoCount(
       {super.key,
-      required VolumeCardItemUiModel cardItemState,
+      required VolumeCardItemUiModel cardItem,
       required VolumeInfoApiModel volumeInfo,
       required void Function(CardAction action) onChange})
       : _volumeInfo = volumeInfo,
         _onChanged = onChange,
-        _cardItemState = cardItemState;
+        _cardItemState = cardItem;
 
   final VolumeInfoApiModel _volumeInfo;
   final void Function(CardAction action) _onChanged;
@@ -44,7 +44,7 @@ class _VolumeInfoCountState extends State<VolumeInfoCount> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: AppColors.customBlue3,
+                        color: AppColors.customBlue5,
                         borderRadius: BorderRadius.all(Radius.circular(16))),
                     child: Container(
                       padding:
@@ -54,14 +54,14 @@ class _VolumeInfoCountState extends State<VolumeInfoCount> {
                           Text(
                             widget._volumeInfo.volumeMl.toString(),
                             style: TextStyle(
-                                color: AppColors.white1,
+                                color: AppColors.customBlue4,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500),
                           ),
                           Text(
                             'мл',
                             style: TextStyle(
-                                color: AppColors.white1,
+                                color: AppColors.customBlue4,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400),
                           )

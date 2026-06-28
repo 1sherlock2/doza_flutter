@@ -1,24 +1,21 @@
 import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/product_details/models/volume_card_item_ui_model.dart';
+import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/widgets/volume_info_count.dart';
-import 'package:doza_flutter/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 class ProductVolumeCount extends StatefulWidget {
   final ProductDetailsApiModel? _productInfo;
-  final List<VolumeCardItemUiModel> _cardItems;
-  final void Function(int index, CardAction action) _onItemChanged;
 
   const ProductVolumeCount(
       {super.key,
       ProductDetailsApiModel? productInfo,
-      required List<VolumeCardItemUiModel> cardItems,
-      required void Function(int index, CardAction action) onItemChanged})
+      required CardItemsViewModel cardItemViewModel})
       : _productInfo = productInfo,
-        _onItemChanged = onItemChanged,
-        _cardItems = cardItems;
+        _cardItemsViewModel = cardItemViewModel;
+
+  final CardItemsViewModel _cardItemsViewModel;
 
   @override
   State<ProductVolumeCount> createState() => _ProductVolumeCountState();
@@ -26,6 +23,8 @@ class ProductVolumeCount extends StatefulWidget {
 
 class _ProductVolumeCountState extends State<ProductVolumeCount> {
   final _log = Logger('ProductVolumeCount');
+
+  bool isActiveBanner = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,57 +36,77 @@ class _ProductVolumeCountState extends State<ProductVolumeCount> {
           padding: const EdgeInsets.only(top: 16),
           child: Column(
             children: [
-              // TODO if() добавить условие наличия подписки
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: AppColors.customBlue5),
-                  child: Align(
-                    alignment: AlignmentGeometry.centerLeft,
-                    child: Wrap(
-                      alignment: WrapAlignment.start,
-                      spacing: 16,
+              if (isActiveBanner == true)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: AppColors.customBlue5),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: AppColors.customBlue2,
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          child: Icon(
-                            Icons.emoji_events,
-                            color: AppColors.customBlue4,
+                        Icon(
+                          Icons.emoji_events,
+                          color: AppColors.customBlue4,
+                          size: 32,
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: RichText(
+                            softWrap: true,
+                            textHeightBehavior: TextHeightBehavior(
+                                applyHeightToLastDescent: true,
+                                leadingDistribution:
+                                    TextLeadingDistribution.even),
+                            textAlign: TextAlign.start,
+                            text: TextSpan(
+                              style: TextStyle(
+                                  color: AppColors.customBlue4, fontSize: 14),
+                              children: [
+                                TextSpan(text: 'Оформите подписку и получите '),
+                                TextSpan(
+                                  text: 'скидку 30%',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        Column(
-                          children: [
-                            Text(
-                              'Оформите подписку и получите ',
-                              style: TextStyle(color: AppColors.customBlue4),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(
+                                  AppColors.customBlue2,
+                                ),
+                              ),
+                              onPressed: () => setState(() {
+                                isActiveBanner = false;
+                              }),
+                              icon: Icon(
+                                Icons.close_outlined,
+                                color: AppColors.customBlue4,
+                                size: 18,
+                              ),
                             ),
-                            //TODO подгружать скидку с сервера
-                            Text(
-                              'скидку 30%',
-                              style: TextStyle(
-                                  color: AppColors.customBlue4,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        )
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-              ),
               if (widget._productInfo != null &&
                   widget._productInfo!.volumeInfo.isNotEmpty)
                 Expanded(
                     child: Padding(
                   padding: const EdgeInsets.only(
-                      top: 16, left: 16, right: 8, bottom: 8),
+                      top: 8, left: 16, right: 8, bottom: 8),
                   child: Scrollbar(
                       thumbVisibility: true,
                       child: Padding(
@@ -99,14 +118,16 @@ class _ProductVolumeCountState extends State<ProductVolumeCount> {
                               .map((entry) {
                             final index = entry.key;
                             final item = entry.value;
-                            final cardItemState = widget._cardItems[index];
+                            final cardItem =
+                                widget._cardItemsViewModel.cardItems[index];
                             return Padding(
                               padding: EdgeInsets.only(bottom: 16),
                               child: VolumeInfoCount(
-                                  cardItemState: cardItemState,
+                                  cardItem: cardItem,
                                   volumeInfo: item,
-                                  onChange: (action) =>
-                                      widget._onItemChanged(index, action)),
+                                  onChange: (action) => widget
+                                      ._cardItemsViewModel
+                                      .onItemChanged(index, action)),
                             );
                           }).toList(),
                         ),

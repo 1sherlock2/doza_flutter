@@ -16,6 +16,7 @@ import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.d
 import 'package:doza_flutter/ui/screens/favorites/favorites_screen.dart';
 import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/product_details_screen.dart';
+import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
 import 'package:flutter/material.dart';
@@ -107,12 +108,15 @@ GoRouter router(
                         context.go(Routes.home);
                       });
                     }
-                    final viewModel = ProductDetailsViewModel(
+                    final productDetailsViewModel = ProductDetailsViewModel(
                         productDetailsRepository:
                             context.read<ProductDetailsRepository>(),
                         productId: id!);
+                    final cardItemViewModel = CardItemsViewModel();
+
                     return ProductDetailsScreen(
-                        productDetailsViewModel: viewModel);
+                        cardItemViewModel: cardItemViewModel,
+                        productDetailsViewModel: productDetailsViewModel);
                   }))
             ]),
             StatefulShellBranch(routes: [

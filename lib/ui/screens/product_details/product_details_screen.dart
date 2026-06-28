@@ -1,83 +1,31 @@
-import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
-import 'package:doza_flutter/ui/screens/product_details/models/volume_card_item_ui_model.dart';
+import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/widgets/product_volume_count.dart';
+import 'package:doza_flutter/ui/screens/product_details/widgets/total_price.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
-import 'package:doza_flutter/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({
-    super.key,
-    required ProductDetailsViewModel productDetailsViewModel,
-  }) : _productDetailsViewModel = productDetailsViewModel;
+  const ProductDetailsScreen(
+      {super.key,
+      required ProductDetailsViewModel productDetailsViewModel,
+      required CardItemsViewModel cardItemViewModel})
+      : _productDetailsViewModel = productDetailsViewModel,
+        _cardItemViewModel = cardItemViewModel;
 
   final ProductDetailsViewModel _productDetailsViewModel;
-
+  final CardItemsViewModel _cardItemViewModel;
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  bool _isShowAdditionalInfo = false;
-  List<VolumeCardItemUiModel> _cardItems = [];
   final _log = Logger('ProductDetailsScreen');
-
-  double get _totalOrderPrice =>
-      _cardItems.fold(0.0, (sum, item) => sum + item.totalPrice);
-
-  int get _totalOrderCount => _cardItems.where((item) => item.count > 0).length;
-
-  List<CardItemRequest> get _cardItemRequest => _cardItems
-      .where((item) => item.count > 0)
-      .map((item) => CardItemRequest(
-          variantId: item.volumeInfo.variantId,
-          quantity: item.count,
-          price: item.volumeInfo.price))
-      .toList();
-
-  void _addToBasket() {
-    final items = _cardItemRequest;
-    if (items.isEmpty) return;
-    _log.info('$items');
-    // отправка на сервер
-  }
-
-  void _initCartItems(ProductDetailsApiModel? info) {
-    if (info != null) {
-      _cardItems = info.volumeInfo
-          .map((v) => VolumeCardItemUiModel(volumeInfo: v))
-          .toList();
-    }
-  }
-
-  void _onItemChanged(int index, CardAction changed) {
-    HapticFeedback.vibrate();
-    setState(() {
-      switch (changed) {
-        case CardAction.increment:
-          _cardItems[index].increment();
-          break;
-        case CardAction.decrement:
-          _cardItems[index].decrement();
-          break;
-      }
-      _log.info(_cardItems[index].volumeInfo);
-    });
-  }
-
-  void openAdditiionalInfo() {
-    setState(() {
-      _isShowAdditionalInfo = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +36,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             builder: (context, constraints) {
               final productInfo =
                   widget._productDetailsViewModel.productDetailsInfo;
-
-              _initCartItems(
-                  widget._productDetailsViewModel.productDetailsInfo);
+              widget._cardItemViewModel.initCartItems(productInfo);
 
               return Skeletonizer(
                 enabled: productInfo == null,
@@ -209,13 +155,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                   ),
-                  Expanded(
-                      child: ProductVolumeCount(
-                    productInfo: productInfo,
-                    cardItems: _cardItems,
-                    onItemChanged: _onItemChanged,
-                  )),
-                  Text('sdfsdfsdfsdfsdfsf')
+                  ListenableBuilder(
+                      listenable: widget._cardItemViewModel,
+                      builder: (context, _) {
+                        return Expanded(
+                            child: ProductVolumeCount(
+                          cardItemViewModel: widget._cardItemViewModel,
+                          productInfo: productInfo,
+                        ));
+                      }),
+                  TotalPrice(
+                    cardItemViewModel: widget._cardItemViewModel,
+                  )
                 ]),
               );
             }));

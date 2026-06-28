@@ -64,8 +64,5 @@ Future<List<SingleChildWidget>> get providers async {
         create: (context) => CatalogViewModel(
             categoriesRepository: context.read<CategoriesRepository>(),
             productsRepository: context.read<ProductsRepository>())),
-    // Provider<SupportRepository>(
-    //   create: (_) => SupportRepositoryRemote(apiClient: apiClient),
-    // ),
   ];
 }

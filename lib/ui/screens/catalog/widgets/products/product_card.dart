@@ -20,6 +20,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () => context.push('/${widget._product.id}'),
       child: Column(
         children: [
