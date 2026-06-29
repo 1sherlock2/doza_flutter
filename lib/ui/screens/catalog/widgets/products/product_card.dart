@@ -1,6 +1,6 @@
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
+import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +21,7 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => context.push('/${widget._product.id}'),
+      onTap: () => context.push('/product/${widget._product.id}'),
       child: Column(
         children: [
           Stack(

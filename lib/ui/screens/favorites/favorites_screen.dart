@@ -1,6 +1,6 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/favorites/favorites_list.dart';
 import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
+import 'package:doza_flutter/ui/screens/favorites/widgets/favorites_list.dart';
 import 'package:doza_flutter/ui/widgets/search_input.dart';
 import 'package:doza_flutter/ui/widgets/sort_catalog.dart';
 import 'package:flutter/material.dart';

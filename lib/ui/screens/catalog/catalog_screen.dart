@@ -1,7 +1,7 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/screens/catalog/widgets/categories/categories.dart';
 import 'package:doza_flutter/ui/screens/catalog/widgets/products/products.dart';
+import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/widgets/search_input.dart';
 import 'package:doza_flutter/ui/widgets/sort_catalog.dart';
 import 'package:flutter/material.dart';

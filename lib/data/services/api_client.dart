@@ -6,6 +6,7 @@ import 'package:doza_flutter/data/services/models/products/products_api_model.da
 import 'package:doza_flutter/data/services/models/subscription/subscription_plan_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_status_model.dart';
 import 'package:doza_flutter/data/services/models/user_favorites/user_favorites_api_model.dart';
+import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logging/logging.dart';
 import 'package:result_dart/result_dart.dart';
@@ -182,6 +183,20 @@ class ApiClient {
       final serialazableResponse =
           ProductDetailsApiModel.fromJson(responseData);
       return Success(serialazableResponse);
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  // ─── Cart endpoints ───────────────────────────────────────────────
+  AsyncResult<bool> addToCart(List<CardItemRequest> cartItems) async {
+    try {
+      final response =
+          await _dio.post('$_baseUrl/cart', data: {'cartItems': cartItems});
+      final isSuccess = response.statusCode == 201;
+      return Success(isSuccess);
     } on DioException catch (error) {
       return Failure(Exception(error.message));
     } catch (error) {

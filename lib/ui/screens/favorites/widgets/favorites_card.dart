@@ -2,6 +2,7 @@ import 'package:doza_flutter/data/services/models/favorites_products/favorites_p
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class FavoritesCard extends StatefulWidget {
@@ -19,6 +20,8 @@ class _FavoritesCardState extends State<FavoritesCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => context.push('/product/${widget._favoritesProduct.id}'),
       child: Column(children: [
         Stack(
           children: [

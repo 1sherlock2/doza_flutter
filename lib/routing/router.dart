@@ -1,8 +1,7 @@
 import 'package:doza_flutter/data/repositories/auth/auth_repository.dart';
-import 'package:doza_flutter/data/repositories/categories/categories_repository.dart';
+import 'package:doza_flutter/data/repositories/cart/cart_repository.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository.dart';
 import 'package:doza_flutter/data/repositories/product_details/product_details_repository.dart';
-import 'package:doza_flutter/data/repositories/products/products_repository.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository.dart';
 import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
@@ -11,14 +10,16 @@ import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/core/widgets/navigation_bottom.dart';
 import 'package:doza_flutter/ui/screens/auth/auth_screen.dart';
 import 'package:doza_flutter/ui/screens/auth/view_models/auth_view_models.dart';
+import 'package:doza_flutter/ui/screens/cart/cart_screen.dart';
 import 'package:doza_flutter/ui/screens/catalog/catalog_screen.dart';
-import 'package:doza_flutter/ui/screens/catalog/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/screens/favorites/favorites_screen.dart';
 import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/product_details_screen.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
+import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
+import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -92,11 +93,8 @@ GoRouter router(
               GoRoute(
                 path: Routes.home,
                 builder: (context, state) {
-                  final catalogViewModel = CatalogViewModel(
-                      categoriesRepository:
-                          context.read<CategoriesRepository>(),
-                      productsRepository: context.read<ProductsRepository>());
-                  return CatalogScreen(catalogViewModel: catalogViewModel);
+                  return CatalogScreen(
+                      catalogViewModel: context.read<CatalogViewModel>());
                 },
               ),
               GoRoute(
@@ -112,7 +110,8 @@ GoRouter router(
                         productDetailsRepository:
                             context.read<ProductDetailsRepository>(),
                         productId: id!);
-                    final cardItemViewModel = CardItemsViewModel();
+                    final cardItemViewModel = CardItemsViewModel(
+                        cartRepository: context.read<CartRepository>());
 
                     return ProductDetailsScreen(
                         cardItemViewModel: cardItemViewModel,
@@ -124,23 +123,22 @@ GoRouter router(
                 path: Routes.favorites,
                 builder: (context, state) {
                   final favoritesViewModel = FavoritesViewModel(
-                      favoritesRepository: context.read<FavoritesRepository>());
+                      favoritesRepository: context.read<FavoritesRepository>(),
+                      generalFavoritesViewModel:
+                          context.read<GeneralFavoritesViewModel>(),
+                      catalogViewModel: context.read<CatalogViewModel>());
                   return FavoritesScreen(
                       favoritesViewModel: favoritesViewModel);
                 },
               ),
             ]),
-
-            // GoRoute(
-            //   path: Routes.profile,
-            //   builder: (context, state) {
-            //     final viewModel = ProfileViewModel(
-            //       subscriptionRepository: context.read<SubscriptionRepository>(),
-            //       authStateNotifier: context.read<AuthStateNotifier>(),
-            //     );
-            //     return ProfileScreen(viewModel: viewModel);
-            //   },
-            // ),
+            StatefulShellBranch(routes: [
+              GoRoute(
+                  path: Routes.cart,
+                  builder: (context, state) {
+                    return CartScreen();
+                  })
+            ])
           ],
         ),
       ],

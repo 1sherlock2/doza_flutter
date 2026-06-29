@@ -1,3 +1,4 @@
+import 'package:doza_flutter/data/repositories/cart/cart_repository.dart';
 import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/volume_card_item_ui_model.dart';
@@ -7,10 +8,15 @@ import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 
 class CardItemsViewModel extends ChangeNotifier {
+  CardItemsViewModel({required CartRepository cartRepository})
+      : _cartRepository = cartRepository;
+
+  final CartRepository _cartRepository;
   List<VolumeCardItemUiModel> _cardItems = [];
   List<VolumeCardItemUiModel> get cardItems => _cardItems;
 
   final _log = Logger('count');
+  bool isErrorAddCart = false;
 
   double get totalOrderPrice =>
       _cardItems.fold(0.0, (sum, item) => sum + item.totalPrice);
@@ -35,9 +41,15 @@ class CardItemsViewModel extends ChangeNotifier {
           price: item.volumeInfo.price))
       .toList();
 
-  void _addToBasket() {
+  Future<void> addToBasket() async {
     final items = _cardItemRequest;
     if (items.isEmpty) return;
+    final responseAddCart = await _cartRepository.addToCart(_cardItemRequest);
+    if (!responseAddCart) {
+      isErrorAddCart = true;
+      notifyListeners();
+    }
+    clear();
   }
 
   void initCartItems(ProductDetailsApiModel? info) {

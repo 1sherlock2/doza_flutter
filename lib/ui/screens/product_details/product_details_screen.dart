@@ -150,7 +150,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             productInfo?.categoryName ?? BoneMock.name,
                             style:
                                 TextStyle(fontSize: 14, color: AppColors.grey5),
-                          ), // ... остальная информация
+                          ),
                         ],
                       ),
                     ),
@@ -165,6 +165,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ));
                       }),
                   TotalPrice(
+                    productInfo: productInfo,
                     cardItemViewModel: widget._cardItemViewModel,
                   )
                 ]),
