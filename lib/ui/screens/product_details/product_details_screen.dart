@@ -108,7 +108,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ],
                   ),
                   Transform.translate(
-                    offset: Offset(0, -20),
+                    offset: Offset(0, -24),
                     child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.only(top: 10, left: 16, right: 16),

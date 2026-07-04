@@ -21,6 +21,28 @@ class CartViewModel extends ChangeNotifier {
   List<CartItemApiModel> _cartItems = [];
   List<CartItemApiModel> get cartItems => _cartItems;
 
+  final Set<int> _selectedCartItemIds = {};
+  Set<int> get selectedCartItemIds => _selectedCartItemIds;
+
+  int totalPrice() {
+    final selectedProducts = _cartItems
+        .where((item) => selectedCartItemIds.contains(item.cartItemId));
+    final totalPrice = selectedProducts.fold(
+        0, (prev, value) => prev + value.price * value.quantity);
+    return totalPrice;
+  }
+
+  Function(bool?) handleSelectedChange(int value) {
+    return (bool? selected) {
+      if (_selectedCartItemIds.contains(value)) {
+        _selectedCartItemIds.remove(value);
+      } else {
+        _selectedCartItemIds.add(value);
+      }
+      notifyListeners();
+    };
+  }
+
   void _onCartChanged() {
     _log.warning(_cartItems);
     _cartItems = _cartStateNorifier.cartItems;

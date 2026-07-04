@@ -32,6 +32,7 @@ final class AppColors {
   static const red1 = Color(0xFFE74C3C);
   static const red2 = Color.fromARGB(255, 251, 242, 241);
   static const red3 = Color.fromRGBO(243, 222, 222, 1);
+  static const red4 = Color.fromRGBO(236, 174, 174, 1);
 
   static const lightColorScheme = ColorScheme(
     brightness: Brightness.light,

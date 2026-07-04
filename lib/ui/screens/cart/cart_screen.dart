@@ -1,6 +1,7 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/cart/view_models/cart_view_model.dart';
 import 'package:doza_flutter/ui/screens/cart/widgets/cart_list_item.dart';
+import 'package:doza_flutter/ui/screens/cart/widgets/price_purchase.dart';
 import 'package:doza_flutter/ui/widgets/modal_agree.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -18,8 +19,6 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final _log = Logger('CartScreenState');
-
-  final Set<int> _selectedCartItemIds = {};
 
   bool _isShowModalRemoveCartItem = false;
   int? _cartItemIdByDelete;
@@ -39,18 +38,6 @@ class _CartScreenState extends State<CartScreen> {
       _cartItemIdByDelete = null;
       _isShowModalRemoveCartItem = false;
     });
-  }
-
-  Function(bool?) handleSelectedChange(int value) {
-    return (bool? selected) {
-      setState(() {
-        if (_selectedCartItemIds.contains(value)) {
-          _selectedCartItemIds.remove(value);
-        } else {
-          _selectedCartItemIds.add(value);
-        }
-      });
-    };
   }
 
   @override
@@ -88,17 +75,19 @@ class _CartScreenState extends State<CartScreen> {
                                                 final cartItem = widget
                                                     ._cartViewModel
                                                     .cartItems[index];
-                                                final selected =
-                                                    _selectedCartItemIds
-                                                        .contains(cartItem
-                                                            .cartItemId);
+                                                final selected = widget
+                                                    ._cartViewModel
+                                                    .selectedCartItemIds
+                                                    .contains(
+                                                        cartItem.cartItemId);
                                                 return CartListItem(
                                                   showRemoveCartItem:
                                                       _showRemoveCartItem,
                                                   selected: selected,
                                                   cartItem: cartItem,
-                                                  handleSelectedChange:
-                                                      handleSelectedChange(
+                                                  handleSelectedChange: widget
+                                                      ._cartViewModel
+                                                      .handleSelectedChange(
                                                           cartItem.cartItemId),
                                                 );
                                               }))))
@@ -106,6 +95,13 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         )),
                   ),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 80,
+                      child:
+                          PricePurchase(cartViewModel: widget._cartViewModel)),
                   ModalAgree(
                       open: _isShowModalRemoveCartItem,
                       onClose: () =>

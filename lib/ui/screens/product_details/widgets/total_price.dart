@@ -71,7 +71,7 @@ class _TotalPriceState extends State<TotalPrice> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 4),
                                 decoration: BoxDecoration(
-                                    color: AppColors.red2,
+                                    color: AppColors.red4,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10))),
                                 child: Row(
