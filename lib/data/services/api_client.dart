@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:doza_flutter/data/services/models/cart_item/cart_item_api_model.dart';
 import 'package:doza_flutter/data/services/models/categories/categories_api_model.dart';
 import 'package:doza_flutter/data/services/models/favorites_products/favorites_products_api_model.dart';
 import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
@@ -197,6 +198,34 @@ class ApiClient {
           await _dio.post('$_baseUrl/cart', data: {'cartItems': cartItems});
       final isSuccess = response.statusCode == 201;
       return Success(isSuccess);
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<List<CartItemApiModel>> getCartItems() async {
+    try {
+      final response = await _dio.get('$_baseUrl/cart');
+      final responseData = response.data as List<dynamic>;
+      return Success(
+          responseData.map((item) => CartItemApiModel.fromJson(item)).toList());
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<bool> removeCartItem({required int cartItemId}) async {
+    try {
+      final response = await _dio.delete('$_baseUrl/cart/$cartItemId');
+      if (response.statusCode == 200) {
+        return Success(true);
+      } else {
+        return Failure(Exception('Failed request'));
+      }
     } on DioException catch (error) {
       return Failure(Exception(error.message));
     } catch (error) {

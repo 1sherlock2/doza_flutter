@@ -11,6 +11,7 @@ import 'package:doza_flutter/ui/core/widgets/navigation_bottom.dart';
 import 'package:doza_flutter/ui/screens/auth/auth_screen.dart';
 import 'package:doza_flutter/ui/screens/auth/view_models/auth_view_models.dart';
 import 'package:doza_flutter/ui/screens/cart/cart_screen.dart';
+import 'package:doza_flutter/ui/screens/cart/view_models/cart_view_model.dart';
 import 'package:doza_flutter/ui/screens/catalog/catalog_screen.dart';
 import 'package:doza_flutter/ui/screens/favorites/favorites_screen.dart';
 import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
@@ -18,6 +19,7 @@ import 'package:doza_flutter/ui/screens/product_details/product_details_screen.d
 import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
+import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +113,7 @@ GoRouter router(
                             context.read<ProductDetailsRepository>(),
                         productId: id!);
                     final cardItemViewModel = CardItemsViewModel(
-                        cartRepository: context.read<CartRepository>());
+                        cartStateNorifier: context.read<CartStateNotifier>());
 
                     return ProductDetailsScreen(
                         cardItemViewModel: cardItemViewModel,
@@ -136,7 +138,11 @@ GoRouter router(
               GoRoute(
                   path: Routes.cart,
                   builder: (context, state) {
-                    return CartScreen();
+                    final cartViewModel = CartViewModel(
+                        cartStateNorifier: context.read<CartStateNotifier>(),
+                        cartRepository: context.read<CartRepository>());
+
+                    return CartScreen(cartViewModel: cartViewModel);
                   })
             ])
           ],
