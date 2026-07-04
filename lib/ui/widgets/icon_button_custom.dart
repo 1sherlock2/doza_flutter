@@ -4,20 +4,23 @@ class IconButtonCustom extends StatelessWidget {
   const IconButtonCustom({
     super.key,
     required GestureTapCallback onClick,
-    required String text,
+    required String? text,
     required Color color,
+    IconData? icon,
     Color? overlayColor,
     Color? backgroundColor = Colors.transparent,
   })  : _onClick = onClick,
         _text = text,
+        _icon = icon,
         _overlayColor = overlayColor,
         _backgroundColor = backgroundColor,
         _color = color;
 
   final Color? _overlayColor;
   final GestureTapCallback _onClick;
-  final String _text;
+  final String? _text;
   final Color _color;
+  final IconData? _icon;
   final Color? _backgroundColor;
 
   @override
@@ -36,16 +39,19 @@ class IconButtonCustom extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(10),
             child: Row(
-              spacing: 10,
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 8,
               children: [
-                Icon(
-                  Icons.cancel_outlined,
-                  color: _color,
-                ),
-                Text(
-                  _text,
-                  style: TextStyle(color: _color),
-                )
+                if (_icon != null)
+                  Icon(
+                    _icon,
+                    color: _color,
+                  ),
+                if (_text != null)
+                  Text(
+                    _text!,
+                    style: TextStyle(color: _color),
+                  )
               ],
             ),
           ),

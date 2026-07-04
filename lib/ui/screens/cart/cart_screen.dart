@@ -52,56 +52,67 @@ class _CartScreenState extends State<CartScreen> {
                   Container(
                     color: AppColors.white2,
                     child: SafeArea(
-                        bottom: false,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 24, right: 24, top: 20),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                  child: Scrollbar(
-                                      thumbVisibility: true,
-                                      child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8),
-                                          child: ListView.separated(
-                                              itemCount: widget._cartViewModel
-                                                  .cartItems.length,
-                                              separatorBuilder:
-                                                  (context, index) => SizedBox(
-                                                        height: 10,
-                                                      ),
-                                              itemBuilder: (context, index) {
-                                                final cartItem = widget
+                      bottom: false,
+                      child: Column(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 10, top: 20),
+                            child: ScrollbarTheme(
+                                data: ScrollbarThemeData(
+                                    thumbColor:
+                                        WidgetStateProperty<Color>.fromMap({
+                                  WidgetState.any: AppColors.customBlue7,
+                                  WidgetState.scrolledUnder:
+                                      AppColors.customBlue7,
+                                  WidgetState.dragged: AppColors.customBlue4
+                                })),
+                                child: Scrollbar(
+                                    thumbVisibility: true,
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 10),
+                                        child: ListView.separated(
+                                            itemCount: widget._cartViewModel
+                                                .cartItems.length,
+                                            separatorBuilder:
+                                                (context, index) => SizedBox(
+                                                      height: 10,
+                                                    ),
+                                            itemBuilder: (context, index) {
+                                              final cartItem = widget
+                                                  ._cartViewModel
+                                                  .cartItems[index];
+                                              final selected = widget
+                                                  ._cartViewModel
+                                                  .selectedCartItemIds
+                                                  .contains(
+                                                      cartItem.cartItemId);
+                                              return CartListItem(
+                                                showRemoveCartItem:
+                                                    _showRemoveCartItem,
+                                                selected: selected,
+                                                cartItem: cartItem,
+                                                handleSelectedChange: widget
                                                     ._cartViewModel
-                                                    .cartItems[index];
-                                                final selected = widget
-                                                    ._cartViewModel
-                                                    .selectedCartItemIds
-                                                    .contains(
-                                                        cartItem.cartItemId);
-                                                return CartListItem(
-                                                  showRemoveCartItem:
-                                                      _showRemoveCartItem,
-                                                  selected: selected,
-                                                  cartItem: cartItem,
-                                                  handleSelectedChange: widget
-                                                      ._cartViewModel
-                                                      .handleSelectedChange(
-                                                          cartItem.cartItemId),
-                                                );
-                                              }))))
-                            ],
-                          ),
-                        )),
+                                                    .handleSelectedChange(
+                                                        cartItem.cartItemId),
+                                              );
+                                            })))),
+                          )),
+                          PricePurchase(cartViewModel: widget._cartViewModel)
+                        ],
+                      ),
+                    ),
                   ),
-                  Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: 80,
-                      child:
-                          PricePurchase(cartViewModel: widget._cartViewModel)),
+                  // Positioned(
+                  //     bottom: 0,
+                  //     left: 0,
+                  //     right: 0,
+                  //     height: 80,
+                  //     child:
+                  //         PricePurchase(cartViewModel: widget._cartViewModel)),
                   ModalAgree(
                       open: _isShowModalRemoveCartItem,
                       onClose: () =>

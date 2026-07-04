@@ -95,33 +95,40 @@ class _CartItemState extends State<CartListItem> {
                       ],
                     ),
                     Align(
-                      alignment: Alignment.bottomRight,
-                      child: GestureDetector(
-                        onTap: () => widget
-                            ._showRemoveCartItem(widget._cartItem.cartItemId),
-                        child: Container(
-                          width: 34,
-                          padding: EdgeInsets.all(4),
-                          alignment: Alignment.bottomRight,
-                          decoration: BoxDecoration(
-                              color: AppColors.red3,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              )),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 4,
-                            children: [
-                              Icon(
-                                Icons.delete_outline_outlined,
-                                color: AppColors.red1,
-                                size: 24,
-                              ),
-                            ],
+                        alignment: Alignment.bottomRight,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                color: AppColors.red3,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                )),
+                            child: InkWell(
+                                onTap: () => widget._showRemoveCartItem(
+                                    widget._cartItem.cartItemId),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                overlayColor:
+                                    WidgetStateProperty<Color>.fromMap(
+                                        {WidgetState.pressed: AppColors.red4}),
+                                child: SizedBox(
+                                  height: 34,
+                                  width: 34,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    spacing: 4,
+                                    children: [
+                                      Icon(
+                                        Icons.delete_outline_outlined,
+                                        color: AppColors.red1,
+                                        size: 24,
+                                      ),
+                                    ],
+                                  ),
+                                )),
                           ),
-                        ),
-                      ),
-                    )
+                        ))
                   ],
                 )),
               ],
@@ -132,3 +139,28 @@ class _CartItemState extends State<CartListItem> {
     );
   }
 }
+// GestureDetector(
+//                         onTap: () => widget
+//                             ._showRemoveCartItem(widget._cartItem.cartItemId),
+//                         child: Container(
+//                           width: 34,
+//                           padding: EdgeInsets.all(4),
+//                           alignment: Alignment.bottomRight,
+//                           decoration: BoxDecoration(
+//                               color: AppColors.red3,
+//                               borderRadius: BorderRadius.all(
+//                                 Radius.circular(10),
+//                               )),
+//                           child: Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             spacing: 4,
+//                             children: [
+//                               Icon(
+//                                 Icons.delete_outline_outlined,
+//                                 color: AppColors.red1,
+//                                 size: 24,
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ),

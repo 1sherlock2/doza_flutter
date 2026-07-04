@@ -55,6 +55,7 @@ class ModalAgree extends StatelessWidget {
                         spacing: 24,
                         children: [
                           IconButtonCustom(
+                            icon: Icons.cancel_outlined,
                             onClick: _onClose,
                             text: 'Нет',
                             color: AppColors.red1,
@@ -63,6 +64,7 @@ class ModalAgree extends StatelessWidget {
                                 const Color.fromARGB(255, 252, 153, 142),
                           ),
                           IconButtonCustom(
+                            icon: Icons.delete_forever_outlined,
                             onClick: _onAgree,
                             text: 'Да',
                             color: AppColors.customBlue3,
