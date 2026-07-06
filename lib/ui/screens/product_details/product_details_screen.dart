@@ -4,6 +4,7 @@ import 'package:doza_flutter/ui/screens/product_details/view_models/product_deta
 import 'package:doza_flutter/ui/screens/product_details/widgets/product_volume_count.dart';
 import 'package:doza_flutter/ui/screens/product_details/widgets/total_price.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
+import 'package:doza_flutter/ui/widgets/arrow_left_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -63,20 +64,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Positioned(
                                 top: 20,
                                 left: 20,
-                                child: GestureDetector(
-                                  onTap: () => context.pop(),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(6),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(50)),
-                                        color: AppColors.white2),
-                                    child: Icon(
-                                      size: 34,
-                                      Icons.keyboard_arrow_left,
-                                      color: AppColors.grey5,
-                                    ),
-                                  ),
+                                child: ArrowLeftIcon(
+                                  onClick: () => context.pop(),
                                 )),
                             Positioned(
                                 top: 20,

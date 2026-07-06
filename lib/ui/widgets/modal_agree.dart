@@ -7,12 +7,15 @@ class ModalAgree extends StatelessWidget {
       {super.key,
       required bool open,
       required GestureTapCallback onClose,
+      required String title,
       required GestureTapCallback onAgree})
       : _open = open,
         _onAgree = onAgree,
+        _title = title,
         _onClose = onClose;
 
   final bool _open;
+  final String _title;
   final GestureTapCallback _onClose;
   final GestureTapCallback _onAgree;
 
@@ -40,7 +43,7 @@ class ModalAgree extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Вы действительно хотите удалить товар из корзины?',
+                      _title,
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       style: TextStyle(

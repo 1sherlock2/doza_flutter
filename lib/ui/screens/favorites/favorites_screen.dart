@@ -20,7 +20,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.white2,
+      color: AppColors.white1,
       child: SafeArea(
           bottom: false,
           child: Padding(

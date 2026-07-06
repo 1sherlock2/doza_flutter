@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final class AppColors {
   static const white1 = Color(0xFFFFFFFF);
-  static const white2 = Color(0xfff9fafb);
+  static const white2 = Color.fromARGB(255, 243, 246, 249);
 
   static final green1 = Colors.lightGreen[100];
   static final green2 = Colors.lightGreen[200];

@@ -31,9 +31,10 @@ class CartRepositoryRemote implements CartRepository {
   }
 
   @override
-  Future<List<CartItemApiModel>> getCartElements() async {
+  Future<List<CartItemApiModel>> getCartElements(
+      {Set<int>? selectedIds}) async {
     try {
-      final resultAddToCart = await _apiClient.getCartItems();
+      final resultAddToCart = await _apiClient.getCartItems(selectedIds);
       if (resultAddToCart.isError()) {
         warningMessage(resultAddToCart.exceptionOrNull());
         return [];
@@ -55,6 +56,22 @@ class CartRepositoryRemote implements CartRepository {
         return false;
       }
       return resultRemoveCartItem.getOrThrow();
+    } catch (e) {
+      _log.warning('Error $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> removeSelectedCart({required Set<int> cartItemIds}) async {
+    try {
+      final resultRemoveSelectedCart =
+          await _apiClient.removeSelectedCart(cartItemIds: cartItemIds);
+      if (resultRemoveSelectedCart.isError()) {
+        warningMessage(resultRemoveSelectedCart.exceptionOrNull());
+        return false;
+      }
+      return resultRemoveSelectedCart.getOrThrow();
     } catch (e) {
       _log.warning('Error $e');
       return false;

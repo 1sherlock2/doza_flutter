@@ -43,6 +43,26 @@ class CartViewModel extends ChangeNotifier {
     };
   }
 
+  void handleSelectedAll() {
+    final cartItemIds = _cartItems.map((item) => item.cartItemId);
+    _selectedCartItemIds.addAll(cartItemIds);
+    notifyListeners();
+  }
+
+  void handleClearAll() {
+    _selectedCartItemIds.clear();
+    notifyListeners();
+  }
+
+  Future<void> handleDeleteSelected() async {
+    final success = await _cartRepository.removeSelectedCart(
+        cartItemIds: _selectedCartItemIds);
+    if (!success) return;
+    _cartStateNorifier.removeSelectedItem(_selectedCartItemIds);
+    _selectedCartItemIds.clear();
+    notifyListeners();
+  }
+
   void _onCartChanged() {
     _log.warning(_cartItems);
     _cartItems = _cartStateNorifier.cartItems;

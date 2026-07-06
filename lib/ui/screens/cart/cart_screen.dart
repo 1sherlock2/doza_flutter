@@ -1,5 +1,6 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/cart/view_models/cart_view_model.dart';
+import 'package:doza_flutter/ui/screens/cart/widgets/cart_bar.dart';
 import 'package:doza_flutter/ui/screens/cart/widgets/cart_list_item.dart';
 import 'package:doza_flutter/ui/screens/cart/widgets/price_purchase.dart';
 import 'package:doza_flutter/ui/widgets/modal_agree.dart';
@@ -22,13 +23,27 @@ class _CartScreenState extends State<CartScreen> {
 
   bool _isShowModalRemoveCartItem = false;
   int? _cartItemIdByDelete;
+  bool _isShowModalRemoveSelectedCartItem = false;
 
   void _showRemoveCartItem(int cartItemId) {
     setState(() {
       _cartItemIdByDelete = cartItemId;
       _isShowModalRemoveCartItem = true;
     });
-    _log.info({_cartItemIdByDelete});
+  }
+
+  void _showRemoveSelectedCartItem() {
+    setState(() {
+      _isShowModalRemoveSelectedCartItem = true;
+    });
+  }
+
+  void _handleClickRemoveSelectedCartItem() {
+    if (widget._cartViewModel.selectedCartItemIds.isEmpty) return;
+    widget._cartViewModel.handleDeleteSelected();
+    setState(() {
+      _isShowModalRemoveSelectedCartItem = false;
+    });
   }
 
   void _handleClickRemoveCartItem() {
@@ -55,10 +70,15 @@ class _CartScreenState extends State<CartScreen> {
                       bottom: false,
                       child: Column(
                         children: [
+                          CartBar(
+                            showRemoveSelectedCartItem:
+                                _showRemoveSelectedCartItem,
+                            cartViewModel: widget._cartViewModel,
+                          ),
                           Expanded(
                               child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 20, right: 10, top: 20),
+                                left: 20, right: 10, top: 16),
                             child: ScrollbarTheme(
                                 data: ScrollbarThemeData(
                                     thumbColor:
@@ -106,15 +126,17 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                   ),
-                  // Positioned(
-                  //     bottom: 0,
-                  //     left: 0,
-                  //     right: 0,
-                  //     height: 80,
-                  //     child:
-                  //         PricePurchase(cartViewModel: widget._cartViewModel)),
+                  ModalAgree(
+                      title:
+                          'Вы действительно хотите удалить выбранные товары?',
+                      open: _isShowModalRemoveSelectedCartItem,
+                      onClose: () => setState(
+                          () => _isShowModalRemoveSelectedCartItem = false),
+                      onAgree: _handleClickRemoveSelectedCartItem),
                   ModalAgree(
                       open: _isShowModalRemoveCartItem,
+                      title:
+                          'Вы действительно хотите удалить товар из корзины?',
                       onClose: () =>
                           setState(() => _isShowModalRemoveCartItem = false),
                       onAgree: _handleClickRemoveCartItem),

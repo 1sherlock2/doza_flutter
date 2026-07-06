@@ -28,7 +28,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.white2,
+      color: AppColors.white1,
       child: SafeArea(
           bottom: false,
           child: Padding(

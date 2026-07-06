@@ -1,7 +1,11 @@
+import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/cart/view_models/cart_view_model.dart';
+import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/widgets/icon_button_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class PricePurchase extends StatefulWidget {
   const PricePurchase({super.key, required CartViewModel cartViewModel})
@@ -14,6 +18,14 @@ class PricePurchase extends StatefulWidget {
 }
 
 class _PricePurchaseState extends State<PricePurchase> {
+  void _handleClickPurchase() {
+    if (widget._cartViewModel.selectedCartItemIds.isEmpty) return;
+    context
+        .read<CartStateNotifier>()
+        .handleSelectedCartByPayment(widget._cartViewModel.selectedCartItemIds);
+    context.push(Routes.additionalInfoPayment);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,12 +52,17 @@ class _PricePurchaseState extends State<PricePurchase> {
           ),
           Expanded(
               child: IconButtonCustom(
-            onClick: () => {},
+            onClick: _handleClickPurchase,
             icon: Icons.shopping_cart_outlined,
             text: 'Оформить заказ',
             color: AppColors.white1,
-            backgroundColor: AppColors.customBlue3,
-            overlayColor: AppColors.customBlue4,
+            backgroundColor:
+                widget._cartViewModel.selectedCartItemIds.isNotEmpty
+                    ? AppColors.customBlue3
+                    : AppColors.customBlue7,
+            overlayColor: widget._cartViewModel.selectedCartItemIds.isNotEmpty
+                ? AppColors.customBlue4
+                : null,
           ))
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:doza_flutter/ui/screens/product_details/models/card_item_request
 
 abstract class CartRepository {
   Future<bool> addToCart(List<CardItemRequest> cartItems);
-  Future<List<CartItemApiModel>> getCartElements();
+  Future<List<CartItemApiModel>> getCartElements({Set<int>? selectedIds});
   Future<bool> removeCartItem({required int cartItemId});
+  Future<bool> removeSelectedCart({required Set<int> cartItemIds});
 }

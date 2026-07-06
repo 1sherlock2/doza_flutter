@@ -12,6 +12,9 @@ class CartStateNotifier extends ChangeNotifier {
   List<CartItemApiModel> _cartItems = [];
   List<CartItemApiModel> get cartItems => _cartItems;
 
+  final Set<int> _selectedCartByPayment = {};
+  Set<int> get selectedCartByPayment => _selectedCartByPayment;
+
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
@@ -21,6 +24,18 @@ class CartStateNotifier extends ChangeNotifier {
 
   void removeCartItem(int cartItemId) {
     _cartItems.removeWhere((cartItem) => cartItem.cartItemId == cartItemId);
+  }
+
+  void removeSelectedItem(Set<int> selectedIds) {
+    if (selectedIds.isEmpty) return;
+    _cartItems
+        .removeWhere((cartItem) => selectedIds.contains(cartItem.cartItemId));
+  }
+
+  void handleSelectedCartByPayment(Set<int> selectedItems) {
+    _selectedCartByPayment.clear();
+    _selectedCartByPayment.addAll(selectedItems);
+    notifyListeners();
   }
 
   Future<bool> addToCart(List<CardItemRequest> items) async {

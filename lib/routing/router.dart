@@ -8,6 +8,8 @@ import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/call_state_service.dart';
 import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/core/widgets/navigation_bottom.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/additional_info_payment.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/view_models/additional_payment_info_view_model.dart';
 import 'package:doza_flutter/ui/screens/auth/auth_screen.dart';
 import 'package:doza_flutter/ui/screens/auth/view_models/auth_view_models.dart';
 import 'package:doza_flutter/ui/screens/cart/cart_screen.dart';
@@ -143,7 +145,20 @@ GoRouter router(
                         cartRepository: context.read<CartRepository>());
 
                     return CartScreen(cartViewModel: cartViewModel);
-                  })
+                  }),
+              GoRoute(
+                  path: Routes.additionalInfoPayment,
+                  builder: ((context, state) {
+                    final additionalPaymentInfoViewModel =
+                        AdditionalPaymentInfoViewModel(
+                            cartRepository: context.read<CartRepository>(),
+                            cartStateNotifier:
+                                context.read<CartStateNotifier>());
+                    return AdditionalInfoPayment(
+                      additionalPaymentInfoViewModel:
+                          additionalPaymentInfoViewModel,
+                    );
+                  }))
             ])
           ],
         ),

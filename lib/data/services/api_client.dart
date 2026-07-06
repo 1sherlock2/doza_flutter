@@ -205,9 +205,12 @@ class ApiClient {
     }
   }
 
-  AsyncResult<List<CartItemApiModel>> getCartItems() async {
+  AsyncResult<List<CartItemApiModel>> getCartItems(
+      Set<int>? selectedIds) async {
     try {
-      final response = await _dio.get('$_baseUrl/cart');
+      final response = await _dio.get('$_baseUrl/cart',
+          queryParameters:
+              selectedIds != null ? {'ids': selectedIds.toList()} : null);
       final responseData = response.data as List<dynamic>;
       return Success(
           responseData.map((item) => CartItemApiModel.fromJson(item)).toList());
@@ -221,6 +224,22 @@ class ApiClient {
   AsyncResult<bool> removeCartItem({required int cartItemId}) async {
     try {
       final response = await _dio.delete('$_baseUrl/cart/$cartItemId');
+      if (response.statusCode == 200) {
+        return Success(true);
+      } else {
+        return Failure(Exception('Failed request'));
+      }
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<bool> removeSelectedCart({required Set<int> cartItemIds}) async {
+    try {
+      final response = await _dio.delete('$_baseUrl/cart/remove',
+          data: {'cartItemIds': cartItemIds.toList()});
       if (response.statusCode == 200) {
         return Success(true);
       } else {
