@@ -1,9 +1,13 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/view_models/additional_payment_info_view_model.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/address_delivery.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/product_info_payment.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/recipient_info.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/total_price_purchase.dart';
 import 'package:doza_flutter/ui/widgets/arrow_left_icon.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class AdditionalInfoPayment extends StatefulWidget {
   const AdditionalInfoPayment(
@@ -18,47 +22,84 @@ class AdditionalInfoPayment extends StatefulWidget {
 }
 
 class _AdditionalInfoPaymentState extends State<AdditionalInfoPayment> {
+  final form = FormGroup({
+    'secondName': FormControl<String>(validators: [
+      Validators.required,
+    ]),
+    'firstName': FormControl<String>(validators: [Validators.required]),
+    'city': FormControl<int>(validators: [Validators.required]),
+    'street': FormControl<String>(validators: [Validators.required]),
+    'house': FormControl<String>(validators: [Validators.required]),
+    'apartment': FormControl<String>()
+  });
+
+  final bool _showErrors = false;
+  bool get showErrors => _showErrors;
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget._additionalPaymentInfoViewModel.getSelectedCartItems();
+    widget._additionalPaymentInfoViewModel.getCityDelivery();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.white2,
-      child: Column(
-        children: [
-          Container(
-            color: AppColors.white1,
-            padding: EdgeInsets.only(top: 44, left: 16, right: 16, bottom: 10),
-            child: Row(
-              spacing: 16,
-              children: [
-                ArrowLeftIcon(
-                  onClick: () => context.pop(),
-                  backgroundColor: AppColors.customBlue2,
-                  iconColor: AppColors.customBlue,
+      child: ReactiveForm(
+          formGroup: form,
+          child: Column(
+            children: [
+              Container(
+                color: AppColors.white1,
+                padding:
+                    EdgeInsets.only(top: 44, left: 16, right: 16, bottom: 10),
+                child: Row(
+                  spacing: 16,
+                  children: [
+                    ArrowLeftIcon(
+                      onClick: () => context.pop(),
+                      backgroundColor: AppColors.customBlue2,
+                      iconColor: AppColors.customBlue,
+                    ),
+                    Text(
+                      'Оформление заказа',
+                      style: TextStyle(fontSize: 20),
+                    )
+                  ],
                 ),
-                Text(
-                  'Оформление заказа',
-                  style: TextStyle(fontSize: 20),
-                )
-              ],
-            ),
-          ),
-          ListenableBuilder(
-            listenable: widget._additionalPaymentInfoViewModel,
-            builder: (context, child) => Expanded(
-                child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  ProductInfoPayment(
-                    additionalPaymentInfoViewModel:
-                        widget._additionalPaymentInfoViewModel,
-                  )
-                ],
               ),
-            )),
-          )
-        ],
-      ),
+              Expanded(
+                child: ListenableBuilder(
+                  listenable: widget._additionalPaymentInfoViewModel,
+                  builder: (context, child) => SingleChildScrollView(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        spacing: 14,
+                        children: [
+                          ProductInfoPayment(
+                            additionalPaymentInfoViewModel:
+                                widget._additionalPaymentInfoViewModel,
+                          ),
+                          RecipientInfo(
+                            showErrors: showErrors,
+                          ),
+                          AddressDelivery(
+                              form: form,
+                              additionalPaymentInfoViewModel:
+                                  widget._additionalPaymentInfoViewModel),
+                          TotalPricePurchase(
+                              form: form,
+                              additionalPaymentInfoViewModel:
+                                  widget._additionalPaymentInfoViewModel)
+                        ],
+                      )),
+                ),
+              )
+            ],
+          )),
     );
   }
 }

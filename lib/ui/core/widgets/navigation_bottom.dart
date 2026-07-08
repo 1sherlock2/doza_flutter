@@ -38,6 +38,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         bottomNavigationBar: NavigationBar(
           height: 70,
           onDestinationSelected: (int index) {

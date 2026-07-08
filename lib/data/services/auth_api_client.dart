@@ -21,7 +21,22 @@ class AuthApiClient {
 
   Failure<T, Exception> formatExceptionFailure<T extends Object>(
     Object error,
-  ) => Failure<T, Exception>(FormatException('Failed to parse $error'));
+  ) =>
+      Failure<T, Exception>(FormatException('Failed to parse $error'));
+
+  AsyncResult<bool> checkUserStatus({required String deviceId}) async {
+    try {
+      final response = await _dio.get('$_baseUrl/auth/status/$deviceId');
+      if (response.statusCode != 200) {
+        Failure(Exception(false));
+      }
+      return Success(true);
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      return Failure(Exception(error));
+    }
+  }
 
   AsyncResult<AuthCheckPhone> checkPhone({required String number}) async {
     try {

@@ -64,13 +64,3 @@ class _SortCatalogState extends State<SortCatalog> {
     );
   }
 }
-// GestureDetector(
-//         child: Container(
-//       height: 56,
-//       padding: const EdgeInsetsGeometry.all(8),
-//       decoration: BoxDecoration(
-//         color: AppColors.customBlue2,
-//         borderRadius: BorderRadius.circular(10),
-//       ),
-//       child: Icon(Icons.sort_outlined),
-//     ))

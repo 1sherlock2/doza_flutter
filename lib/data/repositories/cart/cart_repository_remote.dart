@@ -1,6 +1,7 @@
 import 'package:doza_flutter/data/repositories/cart/cart_repository.dart';
 import 'package:doza_flutter/data/services/api_client.dart';
 import 'package:doza_flutter/data/services/models/cart_item/cart_item_api_model.dart';
+import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_api_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
 import 'package:logging/logging.dart';
 
@@ -75,6 +76,21 @@ class CartRepositoryRemote implements CartRepository {
     } catch (e) {
       _log.warning('Error $e');
       return false;
+    }
+  }
+
+  @override
+  Future<List<CityDeliveryApiModel>> getCityDelivery() async {
+    try {
+      final resultCityDelivery = await _apiClient.getCityDelivery();
+      if (resultCityDelivery.isError()) {
+        warningMessage(resultCityDelivery.exceptionOrNull());
+        return [];
+      }
+      return resultCityDelivery.getOrThrow();
+    } catch (e) {
+      _log.warning('Error $e');
+      return [];
     }
   }
 }

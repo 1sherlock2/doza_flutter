@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:doza_flutter/data/services/models/cart_item/cart_item_api_model.dart';
 import 'package:doza_flutter/data/services/models/categories/categories_api_model.dart';
+import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_api_model.dart';
 import 'package:doza_flutter/data/services/models/favorites_products/favorites_products_api_model.dart';
 import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
@@ -21,7 +22,7 @@ class ApiClient {
   final String _host = dotenv.env['SERVER_IP'] ?? '10.0.2.2';
   final int _port = dotenv.env['SERVER_PORT'] != null
       ? (int.tryParse(dotenv.env['SERVER_PORT']!) ?? 6000)
-      : 4000;
+      : 6000;
 
   String get _baseUrl => 'http://$_host:$_port';
 
@@ -245,6 +246,20 @@ class ApiClient {
       } else {
         return Failure(Exception('Failed request'));
       }
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<List<CityDeliveryApiModel>> getCityDelivery() async {
+    try {
+      final response = await _dio.get('$_baseUrl/cityDelivery');
+      final responseData = response.data as List<dynamic>;
+      return Success(responseData
+          .map((item) => CityDeliveryApiModel.fromJson(item))
+          .toList());
     } on DioException catch (error) {
       return Failure(Exception(error.message));
     } catch (error) {

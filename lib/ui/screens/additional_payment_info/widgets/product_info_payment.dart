@@ -89,21 +89,25 @@ class _ProductInfoPaymentState extends State<ProductInfoPayment> {
                         )
                       ],
                     ),
-                    _isExpandedProducts
-                        ? GestureDetector(
-                            onTap: toggleHideProducts,
-                            child: Icon(
-                              Icons.keyboard_arrow_up_outlined,
-                              color: AppColors.grey5,
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: toggleHideProducts,
-                            child: Icon(
-                              Icons.keyboard_arrow_down_outlined,
-                              color: AppColors.grey5,
-                            ),
-                          )
+                    widget._additionalPaymentInfoViewModel.selectedCartItems
+                                .length >
+                            3
+                        ? _isExpandedProducts
+                            ? GestureDetector(
+                                onTap: toggleHideProducts,
+                                child: Icon(
+                                  Icons.keyboard_arrow_up_outlined,
+                                  color: AppColors.grey5,
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: toggleHideProducts,
+                                child: Icon(
+                                  Icons.keyboard_arrow_down_outlined,
+                                  color: AppColors.grey5,
+                                ),
+                              )
+                        : SizedBox.shrink()
                   ],
                 ),
                 Divider(

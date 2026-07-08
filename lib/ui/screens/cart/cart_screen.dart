@@ -60,6 +60,15 @@ class _CartScreenState extends State<CartScreen> {
     return ListenableBuilder(
         listenable: widget._cartViewModel,
         builder: (context, state) {
+          if (widget._cartViewModel.cartItems.isEmpty) {
+            return const Center(
+              child: Text(
+                'В корзине нет товаров',
+                style: TextStyle(color: AppColors.black1),
+              ),
+            );
+          }
+
           return Skeletonizer(
               enabled: widget._cartViewModel.cartItems.isEmpty,
               child: Stack(

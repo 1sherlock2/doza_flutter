@@ -78,21 +78,3 @@ class _MainAppState extends State<MainApp> {
     );
   }
 }
-
-  // Widget build(BuildContext context) {
-  //   return FutureBuilder(
-  //     future: _routerFuture,
-  //     builder: (context, snapshot) {
-  //       if (snapshot.hasData) {
-  //         return MaterialApp.router(
-  //           routerConfig: snapshot.data,
-  //           themeMode: ThemeMode.system,
-  //           theme: AppTheme.lightTheme,
-  //         );
-  //       }
-  //       return const MaterialApp(
-  //         home: Scaffold(body: Center(child: CircularProgressIndicator())),
-  //       );
-  //     },
-  //   );
-  // }
