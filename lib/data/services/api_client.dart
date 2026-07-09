@@ -7,7 +7,9 @@ import 'package:doza_flutter/data/services/models/product_details/product_detail
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_plan_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_status_model.dart';
+import 'package:doza_flutter/data/services/models/user_balance/user_bonuses_api_model.dart';
 import 'package:doza_flutter/data/services/models/user_favorites/user_favorites_api_model.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logging/logging.dart';
@@ -260,6 +262,32 @@ class ApiClient {
       return Success(responseData
           .map((item) => CityDeliveryApiModel.fromJson(item))
           .toList());
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult createOrderApi(OrderInfoUiModel orderInfo) async {
+    try {
+      final response = await _dio.post('$_baseUrl/order', data: {orderInfo});
+      if (response.statusCode != 200) {
+        return Failure(Exception());
+      }
+      return Success(true);
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<UserBonusesApiModel> getUserBonusesApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/user/bonuses');
+      final responseData = response.data as Map<String, dynamic>;
+      return Success(UserBonusesApiModel.fromJson(responseData));
     } on DioException catch (error) {
       return Failure(Exception(error.message));
     } catch (error) {

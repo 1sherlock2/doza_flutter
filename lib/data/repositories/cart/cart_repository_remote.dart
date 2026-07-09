@@ -2,6 +2,8 @@ import 'package:doza_flutter/data/repositories/cart/cart_repository.dart';
 import 'package:doza_flutter/data/services/api_client.dart';
 import 'package:doza_flutter/data/services/models/cart_item/cart_item_api_model.dart';
 import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_api_model.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/models/additional_order_info_ui_model.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
 import 'package:logging/logging.dart';
 
@@ -76,6 +78,37 @@ class CartRepositoryRemote implements CartRepository {
     } catch (e) {
       _log.warning('Error $e');
       return false;
+    }
+  }
+
+  @override
+  Future<void> createOrder(
+      {required AdditionalOrderInfoUiModel additionalOrderInfo,
+      required List<CartItemApiModel> selectedCartItems}) async {
+    final AdditionalOrderInfoUiModel(
+      :secondName,
+      :firstName,
+      :city,
+      :street,
+      :house,
+      :apartment,
+    ) = additionalOrderInfo;
+
+    final combinedOrderInfo = OrderInfoUiModel(
+        city: city,
+        firstName: firstName,
+        house: house,
+        secondName: secondName,
+        street: street,
+        apartment: apartment,
+        orderItems: selectedCartItems);
+
+    try {
+      final resultCreateOrder =
+          await _apiClient.createOrderApi(combinedOrderInfo);
+    } catch (e) {
+      _log.warning('Error $e');
+      return;
     }
   }
 

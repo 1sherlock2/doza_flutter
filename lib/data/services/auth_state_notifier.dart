@@ -96,6 +96,7 @@ class AuthStateNotifier extends ChangeNotifier {
     _showSubscriptionBackButton = false;
     _pendingHomeRedirect = false;
     _storage.deleteAll();
+    notifyListeners();
   }
 
   /// Вызывается при получении 402 — подписка требуется

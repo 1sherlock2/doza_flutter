@@ -50,7 +50,7 @@ class _AddressDeliveryState extends State<AddressDelivery> {
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 20,
+        spacing: 12,
         children: [
           Row(
             spacing: 10,

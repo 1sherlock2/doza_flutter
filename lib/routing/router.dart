@@ -6,6 +6,7 @@ import 'package:doza_flutter/data/repositories/subscription/subscription_reposit
 import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/call_state_service.dart';
+import 'package:doza_flutter/data/services/subscription_state_notifier.dart';
 import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/core/widgets/navigation_bottom.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/additional_info_payment.dart';
@@ -24,6 +25,7 @@ import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
+import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -151,6 +153,10 @@ GoRouter router(
                   builder: ((context, state) {
                     final additionalPaymentInfoViewModel =
                         AdditionalPaymentInfoViewModel(
+                            subscriptionStateNotifier:
+                                context.read<SubscriptionStateNotifier>(),
+                            userInfoViewModel:
+                                context.read<UserInfoViewModel>(),
                             cartRepository: context.read<CartRepository>(),
                             cartStateNotifier:
                                 context.read<CartStateNotifier>());

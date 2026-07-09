@@ -1,5 +1,6 @@
 import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_api_model.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/models/additional_order_info_ui_model.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/view_models/additional_payment_info_view_model.dart';
 import 'package:doza_flutter/ui/widgets/box_shadow_custom.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,19 @@ class TotalPricePurchase extends StatefulWidget {
 }
 
 class _TotalPricePurchaseState extends State<TotalPricePurchase> {
+  void createOrder() {
+    if (widget._form.valid) {
+      final formValue = widget._form.rawValue;
+      final model = AdditionalOrderInfoUiModel(
+          secondName: formValue['secondName'] as String,
+          firstName: formValue['fitstName'] as String,
+          city: formValue['city'] as int,
+          apartment: formValue['apartment'] as String?,
+          street: formValue['street'] as String,
+          house: formValue['house'] as String);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,6 +52,15 @@ class _TotalPricePurchaseState extends State<TotalPricePurchase> {
                 Text('${widget._additionalPaymentInfoViewModel.productsPrice}₽')
               ],
             ),
+            if (widget._additionalPaymentInfoViewModel.isSpendBonuses)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Списание бонусов'),
+                  Text(
+                      '${widget._additionalPaymentInfoViewModel.spendBonuses}₽')
+                ],
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -74,7 +97,7 @@ class _TotalPricePurchaseState extends State<TotalPricePurchase> {
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  '${widget._additionalPaymentInfoViewModel.productsPrice + widget._additionalPaymentInfoViewModel.deliveryPrice}₽',
+                  '${widget._additionalPaymentInfoViewModel.totalPrice}₽',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 )
               ],
@@ -82,6 +105,7 @@ class _TotalPricePurchaseState extends State<TotalPricePurchase> {
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: GestureDetector(
+                onTap: createOrder,
                 child: Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(

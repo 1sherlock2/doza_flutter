@@ -13,13 +13,17 @@ import 'package:doza_flutter/data/repositories/products/products_repository.dart
 import 'package:doza_flutter/data/repositories/products/products_repository_remote.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository_remote.dart';
+import 'package:doza_flutter/data/repositories/user_info/user_info_repository.dart';
+import 'package:doza_flutter/data/repositories/user_info/user_info_repository_remote.dart';
 import 'package:doza_flutter/data/services/api_client.dart';
 import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_interceptor.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
+import 'package:doza_flutter/data/services/subscription_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
+import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -57,6 +61,16 @@ Future<List<SingleChildWidget>> get providers async {
         create: (_) => ProductDetailsRepositoryRemote(apiClient: apiClient)),
     Provider<CartRepository>(
         create: (_) => CartRepositoryRemote(apiClient: apiClient)),
+    Provider<UserInfoRepository>(
+        create: (_) => UserInfoRepositoryRemote(apiClient: apiClient)),
+    ChangeNotifierProvider<SubscriptionStateNotifier>(
+        create: (context) =>
+            SubscriptionStateNotifier(context.read<SubscriptionRepository>())),
+    ChangeNotifierProvider(
+        create: (context) => UserInfoViewModel(
+            userInfoRepository: context.read<UserInfoRepository>(),
+            subscriptionStateNotifier:
+                context.read<SubscriptionStateNotifier>())),
     ChangeNotifierProvider(
         create: (context) =>
             CartStateNotifier(cartRepository: context.read<CartRepository>())),

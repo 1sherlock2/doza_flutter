@@ -7,13 +7,14 @@ class SubscriptionStateNotifier extends ChangeNotifier {
   final SubscriptionRepository _repository;
 
   bool _hasActiveSubscription = false;
-  bool _isTrialActive = false;
+  bool get hasAccess => _hasActiveSubscription;
+
+  int _discountPercent = 0;
+  int get discountPercent => _discountPercent;
 
   bool get hasActiveSubscription => _hasActiveSubscription;
-  bool get isTrialActive => _isTrialActive;
 
-  /// true — если есть доступ (активная подписка или триал)
-  bool get hasAccess => _hasActiveSubscription || _isTrialActive;
+  /// true — если есть доступ (активная подписка)
 
   SubscriptionStateNotifier(this._repository);
 
@@ -24,7 +25,7 @@ class SubscriptionStateNotifier extends ChangeNotifier {
     result.fold(
       (status) {
         _hasActiveSubscription = status.hasActiveSubscription;
-        _isTrialActive = status.isTrialActive;
+        _discountPercent = status.discountPercent;
         notifyListeners();
       },
       (_) {
@@ -37,7 +38,6 @@ class SubscriptionStateNotifier extends ChangeNotifier {
   /// Сбросить кеш (например, после логаута)
   void reset() {
     _hasActiveSubscription = false;
-    _isTrialActive = false;
     notifyListeners();
   }
 }
