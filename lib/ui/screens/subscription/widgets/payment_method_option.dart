@@ -1,3 +1,4 @@
+import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethodOption extends StatelessWidget {
@@ -24,7 +25,7 @@ class PaymentMethodOption extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           border: Border.all(
-            color: isSelected ? const Color(0xFF4CAF50) : Colors.grey.shade300,
+            color: isSelected ? AppColors.customBlue8 : Colors.grey.shade300,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(12),
@@ -45,7 +46,7 @@ class PaymentMethodOption extends StatelessWidget {
               value: value,
               groupValue: isSelected ? value : null,
               onChanged: (_) => onTap(),
-              activeColor: const Color(0xFF4CAF50),
+              activeColor: AppColors.customBlue8,
             ),
           ],
         ),

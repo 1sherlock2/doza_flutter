@@ -20,6 +20,7 @@ import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_interceptor.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/subscription_state_notifier.dart';
+import 'package:doza_flutter/ui/screens/subscription/view_models/subscription_view_model.dart';
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
@@ -77,6 +78,10 @@ Future<List<SingleChildWidget>> get providers async {
     ChangeNotifierProvider(
         create: (context) => GeneralFavoritesViewModel(
             favoritesRepository: context.read<FavoritesRepository>())),
+    ChangeNotifierProvider<SubscriptionViewModel>(
+        create: (context) => SubscriptionViewModel(
+            subscriptionRepository: context.read<SubscriptionRepository>(),
+            authStateNotifier: context.read<AuthStateNotifier>())),
     ChangeNotifierProvider<CatalogViewModel>(
         create: (context) => CatalogViewModel(
             categoriesRepository: context.read<CategoriesRepository>(),

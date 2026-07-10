@@ -21,7 +21,9 @@ import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_mod
 import 'package:doza_flutter/ui/screens/product_details/product_details_screen.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
+import 'package:doza_flutter/ui/screens/subscription/subscription_screen.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
+import 'package:doza_flutter/ui/screens/subscription/view_models/subscription_view_model.dart';
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
@@ -71,6 +73,14 @@ GoRouter router(
                   builder: (context, state) => SubscriptionSelectScreen(
                     authStateNotifier: context.read<AuthStateNotifier>(),
                   ),
+                ),
+                GoRoute(
+                  path: Routes.subscription,
+                  builder: (context, state) {
+                    return SubscriptionScreen(
+                        viewModel: context.read<SubscriptionViewModel>(),
+                        authStateNotifier: authStateNotifier);
+                  },
                 ),
               ])
             ]),

@@ -14,4 +14,13 @@ class AdditionalOrderInfoUiModel {
     required this.house,
     this.apartment,
   });
+
+  Map<String, dynamic> toJson() => {
+        'secondName': secondName,
+        'firstName': firstName,
+        'city': city,
+        'street': street,
+        'house': house,
+        'apartment': apartment,
+      };
 }

@@ -4,7 +4,6 @@ import 'package:doza_flutter/routing/routes.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/subscription/view_models/subscription_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/widgets/active_subscription_card.dart';
-import 'package:doza_flutter/ui/screens/subscription/widgets/auto_renew_notice.dart';
 import 'package:doza_flutter/ui/screens/subscription/widgets/payment_checking_widget.dart';
 import 'package:doza_flutter/ui/screens/subscription/widgets/payment_method_section.dart';
 import 'package:doza_flutter/ui/screens/subscription/widgets/price_and_button.dart';
@@ -32,10 +31,10 @@ class SubscriptionScreen extends StatelessWidget {
     return ListenableBuilder(
       listenable: authStateNotifier,
       builder: (context, _) => Scaffold(
-        backgroundColor: AppColors.grey1,
+        backgroundColor: AppColors.white2,
         appBar: AppBar(
           title: const Text('Подписка'),
-          backgroundColor: AppColors.grey1,
+          backgroundColor: AppColors.white1,
           automaticallyImplyLeading: false,
           leading: context.canPop()
               ? IconButton(
@@ -96,7 +95,7 @@ class SubscriptionScreen extends StatelessWidget {
                     onRetryCheckStatus: viewModel.retryCheckStatus,
                   ),
                   const SizedBox(height: 20),
-                  const AutoRenewNotice(),
+                  // const AutoRenewNotice(),
                 ],
               ),
             );
@@ -133,7 +132,7 @@ class _BenefitsCard extends StatelessWidget {
                       padding: EdgeInsets.only(top: 2, right: 12),
                       child: Icon(
                         Icons.check_circle,
-                        color: Color(0xFF4CAF50),
+                        color: AppColors.customBlue8,
                         size: 20,
                       ),
                     ),
@@ -167,114 +166,121 @@ class _SelectPlanSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Выберите план',
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 12),
-        ...plans.where((p) => p.isActive).map((plan) {
-          final isSelected = selectedPlanId == plan.id;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: GestureDetector(
-              onTap: () => onSelectPlan(plan.id),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: isSelected
-                            ? const Color(0xFF4CAF50)
-                            : Colors.grey.shade300,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                plan.displayName,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Выберите план',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            ...plans.where((p) => p.isActive).map((plan) {
+              final isSelected = selectedPlanId == plan.id;
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: GestureDetector(
+                  onTap: () => onSelectPlan(plan.id),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.customBlue8
+                                : Colors.grey.shade300,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    plan.subtitle,
+                                    plan.displayName,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(color: Colors.grey.shade700),
+                                        .titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.w600),
                                   ),
-                                  if (plan.originalPrice != null) ...[
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      '${plan.originalPrice} ₽',
-                                      style: TextStyle(
-                                        decoration: TextDecoration.lineThrough,
-                                        color: Colors.grey.shade500,
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        plan.subtitle,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                                color: Colors.grey.shade700),
                                       ),
-                                    ),
-                                  ],
+                                      if (plan.originalPrice != null) ...[
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          '${plan.originalPrice} ₽',
+                                          style: TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            color: Colors.grey.shade500,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Radio<int>(
-                          value: plan.id,
-                          groupValue: selectedPlanId,
-                          onChanged: (value) {
-                            if (value != null) onSelectPlan(value);
-                          },
-                          activeColor: const Color(0xFF4CAF50),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (plan.discount != null)
-                    Positioned(
-                      top: 0,
-                      right: 12,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFD4EDDA),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          '-${plan.discount}%',
-                          style: const TextStyle(
-                            color: Color(0xFF4CAF50),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
+                            ),
+                            Radio<int>(
+                              value: plan.id,
+                              groupValue: selectedPlanId,
+                              onChanged: (value) {
+                                if (value != null) onSelectPlan(value);
+                              },
+                              activeColor: AppColors.customBlue8,
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                ],
-              ),
-            ),
-          );
-        }),
-      ],
+                      if (plan.discount != null)
+                        Positioned(
+                          top: 0,
+                          right: 12,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.customBlue8,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '-${plan.discount}%',
+                              style: const TextStyle(
+                                color: AppColors.white2,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
     );
   }
 }

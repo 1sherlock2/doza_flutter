@@ -16,7 +16,9 @@ class SubscriptionStateNotifier extends ChangeNotifier {
 
   /// true — если есть доступ (активная подписка)
 
-  SubscriptionStateNotifier(this._repository);
+  SubscriptionStateNotifier(this._repository) {
+    refresh();
+  }
 
   /// Загружает статус подписки с сервера и кеширует его.
   /// Вызывается один раз при инициализации или после оплаты.

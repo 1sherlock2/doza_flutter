@@ -5,6 +5,7 @@ import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/bonus_sp
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/product_info_payment.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/recipient_info.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/total_price_purchase.dart';
+import 'package:doza_flutter/ui/screens/subscription/widgets/payment_method_section.dart';
 import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:doza_flutter/ui/widgets/arrow_left_icon.dart';
 import 'package:flutter/widgets.dart';
@@ -104,6 +105,13 @@ class _AdditionalInfoPaymentState extends State<AdditionalInfoPayment> {
                             BonusSpendAgreement(
                                 additionalPaymentInfoViewModel:
                                     widget._additionalPaymentInfoViewModel),
+                          PaymentMethodSection(
+                              selectedMethod: widget
+                                  ._additionalPaymentInfoViewModel
+                                  .selectedPaymentMethod,
+                              onSelectMethod: widget
+                                  ._additionalPaymentInfoViewModel
+                                  .selectPaymentMethod),
                           TotalPricePurchase(
                               form: form,
                               additionalPaymentInfoViewModel:

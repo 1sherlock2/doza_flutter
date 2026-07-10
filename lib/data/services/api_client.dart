@@ -269,15 +269,21 @@ class ApiClient {
     }
   }
 
-  AsyncResult createOrderApi(OrderInfoUiModel orderInfo) async {
+  AsyncResult<String> createOrderApi(OrderInfoUiModel orderInfo) async {
     try {
-      final response = await _dio.post('$_baseUrl/order', data: {orderInfo});
-      if (response.statusCode != 200) {
+      final response =
+          await _dio.post('$_baseUrl/order', data: orderInfo.toJson());
+      if (response.statusCode != 201) {
         return Failure(Exception());
       }
-      return Success(true);
+      final responseData = response.data as Map<String, dynamic>;
+      final url = responseData['confirmationUrl'] as String?;
+      if (url == null) {
+        return Failure(Exception('No confirmationUrl in response'));
+      }
+      return Success(url);
     } on DioException catch (error) {
-      return Failure(Exception(error.message));
+      return Failure(Exception(error.error.toString()));
     } catch (error) {
       throw FormatException('Failed to query $error');
     }

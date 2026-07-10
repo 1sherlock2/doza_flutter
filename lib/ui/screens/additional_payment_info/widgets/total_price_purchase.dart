@@ -22,15 +22,23 @@ class TotalPricePurchase extends StatefulWidget {
 
 class _TotalPricePurchaseState extends State<TotalPricePurchase> {
   void createOrder() {
+    if (widget._additionalPaymentInfoViewModel.selectedCartItems.isEmpty) {
+      return;
+    }
+
     if (widget._form.valid) {
       final formValue = widget._form.rawValue;
       final model = AdditionalOrderInfoUiModel(
           secondName: formValue['secondName'] as String,
-          firstName: formValue['fitstName'] as String,
+          firstName: formValue['firstName'] as String,
           city: formValue['city'] as int,
           apartment: formValue['apartment'] as String?,
           street: formValue['street'] as String,
           house: formValue['house'] as String);
+
+      widget._additionalPaymentInfoViewModel.sendOrderInfo(model);
+    } else {
+      widget._form.markAllAsTouched();
     }
   }
 
@@ -52,13 +60,25 @@ class _TotalPricePurchaseState extends State<TotalPricePurchase> {
                 Text('${widget._additionalPaymentInfoViewModel.productsPrice}₽')
               ],
             ),
-            if (widget._additionalPaymentInfoViewModel.isSpendBonuses)
+            if (widget._additionalPaymentInfoViewModel.isSpendBonuses &&
+                !widget._additionalPaymentInfoViewModel.hasSubscription)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Списание бонусов'),
                   Text(
                       '${widget._additionalPaymentInfoViewModel.spendBonuses}₽')
+                ],
+              ),
+            if (widget._additionalPaymentInfoViewModel.hasSubscription &&
+                widget._additionalPaymentInfoViewModel.subscriptionDiscount > 0)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                      'Скидка по подписке ${widget._additionalPaymentInfoViewModel.subscriptionPrecent}%'),
+                  Text(
+                      '${widget._additionalPaymentInfoViewModel.subscriptionDiscount}₽')
                 ],
               ),
             Row(
@@ -110,7 +130,9 @@ class _TotalPricePurchaseState extends State<TotalPricePurchase> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: widget._form.valid
+                      color: widget._form.valid ||
+                              widget._additionalPaymentInfoViewModel
+                                  .selectedCartItems.isNotEmpty
                           ? AppColors.customBlue
                           : AppColors.grey3),
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

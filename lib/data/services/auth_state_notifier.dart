@@ -57,6 +57,7 @@ class AuthStateNotifier extends ChangeNotifier {
 
   void login() {
     _isLogged = true;
+    _pendingHomeRedirect = true;
     notifyListeners();
   }
 

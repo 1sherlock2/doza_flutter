@@ -3,9 +3,11 @@ import 'package:doza_flutter/data/services/models/cart_item/cart_item_api_model.
 import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_api_model.dart';
 import 'package:doza_flutter/data/services/subscription_state_notifier.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/models/additional_order_info_ui_model.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdditionalPaymentInfoViewModel extends ChangeNotifier {
   AdditionalPaymentInfoViewModel(
@@ -16,7 +18,10 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier {
       : _cartRepository = cartRepository,
         _cartStateNotifier = cartStateNotifier,
         _subscriptionStateNotifier = subscriptionStateNotifier,
-        _userInfoViewModel = userInfoViewModel;
+        _userInfoViewModel = userInfoViewModel {
+    userInfoViewModel.addListener(_onUserInfoChanged);
+  }
+
   final SubscriptionStateNotifier _subscriptionStateNotifier;
   final CartRepository _cartRepository;
   final CartStateNotifier _cartStateNotifier;
@@ -37,6 +42,14 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier {
   bool _isSpendBonuses = false;
   bool get isSpendBonuses => _isSpendBonuses;
 
+  String _selectedPaymentMethod = 'bank_card'; // 'bank_card' | 'sbp'
+  String get selectedPaymentMethod => _selectedPaymentMethod;
+
+  void selectPaymentMethod(String method) {
+    _selectedPaymentMethod = method;
+    notifyListeners();
+  }
+
   int get bonusBalance {
     int price = _userInfoViewModel.userBonuses.balance;
     if (_isSpendBonuses) {
@@ -45,8 +58,27 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier {
     return price;
   }
 
+  int get subscriptionPrecent => _subscriptionStateNotifier.discountPercent;
+
+  int get subscriptionDiscount =>
+      (_productsPrice * _subscriptionStateNotifier.discountPercent) ~/ 100;
+
   int get spendBonuses {
     return (productsPrice * _userInfoViewModel.userBonuses.bonusPercent) ~/ 100;
+  }
+
+  bool _hasSubscription = false;
+  bool get hasSubscription => _hasSubscription;
+
+  bool _isCreatingPayment = false;
+  bool get isCreatingPayment => _isCreatingPayment;
+
+  bool _awaitingPaymentReturn = false;
+  bool get awaitingPaymentReturn => _awaitingPaymentReturn;
+
+  void _onUserInfoChanged() {
+    _hasSubscription = _userInfoViewModel.hasSubscription;
+    notifyListeners();
   }
 
   void changeSpendBonuses(bool? newValue) {
@@ -69,11 +101,42 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier {
     return totalPrice;
   }
 
-  void sendOrderInfo(AdditionalOrderInfoUiModel additionaOrderInfo) async {
-    final response = await _cartRepository.createOrder(
-        additionalOrderInfo: additionaOrderInfo,
-        selectedCartItems: _selectedCartItems);
-    final aaa = 1;
+  void sendOrderInfo(AdditionalOrderInfoUiModel additionalOrderInfo) async {
+    final AdditionalOrderInfoUiModel(
+      :secondName,
+      :firstName,
+      :city,
+      :street,
+      :house,
+      :apartment,
+    ) = additionalOrderInfo;
+
+    final combinedOrderInfo = OrderInfoUiModel(
+        city: city,
+        firstName: firstName,
+        house: house,
+        secondName: secondName,
+        street: street,
+        apartment: apartment,
+        paymentMethod: _selectedPaymentMethod,
+        orderItems: _selectedCartItems);
+
+    final url =
+        await _cartRepository.createOrder(combinedOrderInfo: combinedOrderInfo);
+    if (url == null) return;
+    _isCreatingPayment = true;
+    notifyListeners();
+
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      _awaitingPaymentReturn = true;
+      await launchUrl(
+        uri,
+        mode: await supportsLaunchMode(LaunchMode.inAppWebView)
+            ? LaunchMode.inAppBrowserView
+            : LaunchMode.externalApplication,
+      );
+    }
   }
 
   void selectedDeliveryCity(int cityId) {

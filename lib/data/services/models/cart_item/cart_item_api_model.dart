@@ -8,7 +8,7 @@ abstract class CartItemApiModel with _$CartItemApiModel {
   const factory CartItemApiModel(
       {required int cartItemId,
       required int quantity,
-      required String createdAt,
+      @JsonKey(includeToJson: false) required String createdAt,
       required int variantId,
       required int volumeMl,
       required int price,

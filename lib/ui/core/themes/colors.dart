@@ -28,6 +28,7 @@ final class AppColors {
   static const customBlue5 = Color.fromRGBO(223, 229, 233, 1);
   static const customBlue6 = Color.fromRGBO(245, 249, 252, 1);
   static const customBlue7 = Color.fromARGB(255, 163, 180, 191);
+  static const customBlue8 = Color.fromARGB(255, 136, 198, 239);
 
   static const red1 = Color(0xFFE74C3C);
   static const red2 = Color.fromARGB(255, 251, 242, 241);
