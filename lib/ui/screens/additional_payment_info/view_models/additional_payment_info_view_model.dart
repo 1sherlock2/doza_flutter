@@ -9,7 +9,8 @@ import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AdditionalPaymentInfoViewModel extends ChangeNotifier {
+class AdditionalPaymentInfoViewModel extends ChangeNotifier
+    with WidgetsBindingObserver {
   AdditionalPaymentInfoViewModel(
       {required SubscriptionStateNotifier subscriptionStateNotifier,
       required CartRepository cartRepository,
@@ -19,6 +20,7 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier {
         _cartStateNotifier = cartStateNotifier,
         _subscriptionStateNotifier = subscriptionStateNotifier,
         _userInfoViewModel = userInfoViewModel {
+    WidgetsBinding.instance.addObserver(this);
     userInfoViewModel.addListener(_onUserInfoChanged);
   }
 
@@ -75,6 +77,15 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier {
 
   bool _awaitingPaymentReturn = false;
   bool get awaitingPaymentReturn => _awaitingPaymentReturn;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _awaitingPaymentReturn) {
+      _awaitingPaymentReturn = false;
+      _isCreatingPayment = false;
+      notifyListeners();
+    }
+  }
 
   void _onUserInfoChanged() {
     _hasSubscription = _userInfoViewModel.hasSubscription;
@@ -163,5 +174,12 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier {
 
     _cityDelivery = response;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _userInfoViewModel.removeListener(_onUserInfoChanged);
+    super.dispose();
   }
 }

@@ -24,7 +24,6 @@ Map<String, dynamic> _$CartItemApiModelToJson(_CartItemApiModel instance) =>
     <String, dynamic>{
       'cartItemId': instance.cartItemId,
       'quantity': instance.quantity,
-      'createdAt': instance.createdAt,
       'variantId': instance.variantId,
       'volumeMl': instance.volumeMl,
       'price': instance.price,

@@ -17,6 +17,7 @@ mixin _$CityDeliveryApiModel {
   int get id;
   String get city;
   int get deliveryCost;
+  int get deliveryDays;
 
   /// Create a copy of CityDeliveryApiModel
   /// with the given fields replaced by the non-null parameter values.
@@ -37,16 +38,19 @@ mixin _$CityDeliveryApiModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.city, city) || other.city == city) &&
             (identical(other.deliveryCost, deliveryCost) ||
-                other.deliveryCost == deliveryCost));
+                other.deliveryCost == deliveryCost) &&
+            (identical(other.deliveryDays, deliveryDays) ||
+                other.deliveryDays == deliveryDays));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, city, deliveryCost);
+  int get hashCode =>
+      Object.hash(runtimeType, id, city, deliveryCost, deliveryDays);
 
   @override
   String toString() {
-    return 'CityDeliveryApiModel(id: $id, city: $city, deliveryCost: $deliveryCost)';
+    return 'CityDeliveryApiModel(id: $id, city: $city, deliveryCost: $deliveryCost, deliveryDays: $deliveryDays)';
   }
 }
 
@@ -56,7 +60,7 @@ abstract mixin class $CityDeliveryApiModelCopyWith<$Res> {
           $Res Function(CityDeliveryApiModel) _then) =
       _$CityDeliveryApiModelCopyWithImpl;
   @useResult
-  $Res call({int id, String city, int deliveryCost});
+  $Res call({int id, String city, int deliveryCost, int deliveryDays});
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$CityDeliveryApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? city = null,
     Object? deliveryCost = null,
+    Object? deliveryDays = null,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -88,6 +93,10 @@ class _$CityDeliveryApiModelCopyWithImpl<$Res>
       deliveryCost: null == deliveryCost
           ? _self.deliveryCost
           : deliveryCost // ignore: cast_nullable_to_non_nullable
+              as int,
+      deliveryDays: null == deliveryDays
+          ? _self.deliveryDays
+          : deliveryDays // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -186,13 +195,15 @@ extension CityDeliveryApiModelPatterns on CityDeliveryApiModel {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String city, int deliveryCost)? $default, {
+    TResult Function(int id, String city, int deliveryCost, int deliveryDays)?
+        $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _CityDeliveryApiModel() when $default != null:
-        return $default(_that.id, _that.city, _that.deliveryCost);
+        return $default(
+            _that.id, _that.city, _that.deliveryCost, _that.deliveryDays);
       case _:
         return orElse();
     }
@@ -213,12 +224,14 @@ extension CityDeliveryApiModelPatterns on CityDeliveryApiModel {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String city, int deliveryCost) $default,
+    TResult Function(int id, String city, int deliveryCost, int deliveryDays)
+        $default,
   ) {
     final _that = this;
     switch (_that) {
       case _CityDeliveryApiModel():
-        return $default(_that.id, _that.city, _that.deliveryCost);
+        return $default(
+            _that.id, _that.city, _that.deliveryCost, _that.deliveryDays);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -238,12 +251,14 @@ extension CityDeliveryApiModelPatterns on CityDeliveryApiModel {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String city, int deliveryCost)? $default,
+    TResult? Function(int id, String city, int deliveryCost, int deliveryDays)?
+        $default,
   ) {
     final _that = this;
     switch (_that) {
       case _CityDeliveryApiModel() when $default != null:
-        return $default(_that.id, _that.city, _that.deliveryCost);
+        return $default(
+            _that.id, _that.city, _that.deliveryCost, _that.deliveryDays);
       case _:
         return null;
     }
@@ -254,7 +269,10 @@ extension CityDeliveryApiModelPatterns on CityDeliveryApiModel {
 @JsonSerializable()
 class _CityDeliveryApiModel implements CityDeliveryApiModel {
   const _CityDeliveryApiModel(
-      {required this.id, required this.city, required this.deliveryCost});
+      {required this.id,
+      required this.city,
+      required this.deliveryCost,
+      required this.deliveryDays});
   factory _CityDeliveryApiModel.fromJson(Map<String, dynamic> json) =>
       _$CityDeliveryApiModelFromJson(json);
 
@@ -264,6 +282,8 @@ class _CityDeliveryApiModel implements CityDeliveryApiModel {
   final String city;
   @override
   final int deliveryCost;
+  @override
+  final int deliveryDays;
 
   /// Create a copy of CityDeliveryApiModel
   /// with the given fields replaced by the non-null parameter values.
@@ -289,16 +309,19 @@ class _CityDeliveryApiModel implements CityDeliveryApiModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.city, city) || other.city == city) &&
             (identical(other.deliveryCost, deliveryCost) ||
-                other.deliveryCost == deliveryCost));
+                other.deliveryCost == deliveryCost) &&
+            (identical(other.deliveryDays, deliveryDays) ||
+                other.deliveryDays == deliveryDays));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, city, deliveryCost);
+  int get hashCode =>
+      Object.hash(runtimeType, id, city, deliveryCost, deliveryDays);
 
   @override
   String toString() {
-    return 'CityDeliveryApiModel(id: $id, city: $city, deliveryCost: $deliveryCost)';
+    return 'CityDeliveryApiModel(id: $id, city: $city, deliveryCost: $deliveryCost, deliveryDays: $deliveryDays)';
   }
 }
 
@@ -310,7 +333,7 @@ abstract mixin class _$CityDeliveryApiModelCopyWith<$Res>
       __$CityDeliveryApiModelCopyWithImpl;
   @override
   @useResult
-  $Res call({int id, String city, int deliveryCost});
+  $Res call({int id, String city, int deliveryCost, int deliveryDays});
 }
 
 /// @nodoc
@@ -329,6 +352,7 @@ class __$CityDeliveryApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? city = null,
     Object? deliveryCost = null,
+    Object? deliveryDays = null,
   }) {
     return _then(_CityDeliveryApiModel(
       id: null == id
@@ -342,6 +366,10 @@ class __$CityDeliveryApiModelCopyWithImpl<$Res>
       deliveryCost: null == deliveryCost
           ? _self.deliveryCost
           : deliveryCost // ignore: cast_nullable_to_non_nullable
+              as int,
+      deliveryDays: null == deliveryDays
+          ? _self.deliveryDays
+          : deliveryDays // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }

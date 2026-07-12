@@ -12,6 +12,7 @@ _CityDeliveryApiModel _$CityDeliveryApiModelFromJson(
       id: (json['id'] as num).toInt(),
       city: json['city'] as String,
       deliveryCost: (json['deliveryCost'] as num).toInt(),
+      deliveryDays: (json['deliveryDays'] as num).toInt(),
     );
 
 Map<String, dynamic> _$CityDeliveryApiModelToJson(
@@ -20,4 +21,5 @@ Map<String, dynamic> _$CityDeliveryApiModelToJson(
       'id': instance.id,
       'city': instance.city,
       'deliveryCost': instance.deliveryCost,
+      'deliveryDays': instance.deliveryDays,
     };

@@ -16,6 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$CartItemApiModel {
   int get cartItemId;
   int get quantity;
+  @JsonKey(includeToJson: false)
   String get createdAt;
   int get variantId;
   int get volumeMl;
@@ -92,7 +93,7 @@ abstract mixin class $CartItemApiModelCopyWith<$Res> {
   $Res call(
       {int cartItemId,
       int quantity,
-      String createdAt,
+      @JsonKey(includeToJson: false) String createdAt,
       int variantId,
       int volumeMl,
       int price,
@@ -267,7 +268,7 @@ extension CartItemApiModelPatterns on CartItemApiModel {
     TResult Function(
             int cartItemId,
             int quantity,
-            String createdAt,
+            @JsonKey(includeToJson: false) String createdAt,
             int variantId,
             int volumeMl,
             int price,
@@ -315,7 +316,7 @@ extension CartItemApiModelPatterns on CartItemApiModel {
     TResult Function(
             int cartItemId,
             int quantity,
-            String createdAt,
+            @JsonKey(includeToJson: false) String createdAt,
             int variantId,
             int volumeMl,
             int price,
@@ -361,7 +362,7 @@ extension CartItemApiModelPatterns on CartItemApiModel {
     TResult? Function(
             int cartItemId,
             int quantity,
-            String createdAt,
+            @JsonKey(includeToJson: false) String createdAt,
             int variantId,
             int volumeMl,
             int price,
@@ -397,7 +398,7 @@ class _CartItemApiModel implements CartItemApiModel {
   const _CartItemApiModel(
       {required this.cartItemId,
       required this.quantity,
-      required this.createdAt,
+      @JsonKey(includeToJson: false) required this.createdAt,
       required this.variantId,
       required this.volumeMl,
       required this.price,
@@ -413,6 +414,7 @@ class _CartItemApiModel implements CartItemApiModel {
   @override
   final int quantity;
   @override
+  @JsonKey(includeToJson: false)
   final String createdAt;
   @override
   final int variantId;
@@ -502,7 +504,7 @@ abstract mixin class _$CartItemApiModelCopyWith<$Res>
   $Res call(
       {int cartItemId,
       int quantity,
-      String createdAt,
+      @JsonKey(includeToJson: false) String createdAt,
       int variantId,
       int volumeMl,
       int price,
