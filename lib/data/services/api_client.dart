@@ -5,10 +5,12 @@ import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_ap
 import 'package:doza_flutter/data/services/models/favorites_products/favorites_products_api_model.dart';
 import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
+import 'package:doza_flutter/data/services/models/spb_bank_list/spb_bank_list_api_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_plan_model.dart';
 import 'package:doza_flutter/data/services/models/subscription/subscription_status_model.dart';
 import 'package:doza_flutter/data/services/models/user_balance/user_bonuses_api_model.dart';
 import 'package:doza_flutter/data/services/models/user_favorites/user_favorites_api_model.dart';
+import 'package:doza_flutter/data/services/models/user_info/user_info_api_model.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -294,6 +296,30 @@ class ApiClient {
       final response = await _dio.get('$_baseUrl/user/bonuses');
       final responseData = response.data as Map<String, dynamic>;
       return Success(UserBonusesApiModel.fromJson(responseData));
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<SpbBankListApiModel> getBanksApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/cart/spbBanks');
+      final responseData = await response.data as Map<String, dynamic>;
+      return Success(SpbBankListApiModel.fromJson(responseData));
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<UserInfoApiModel> getUserInfoApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/user/info');
+      final responseData = await response.data as Map<String, dynamic>;
+      return Success(UserInfoApiModel.fromJson(responseData));
     } on DioException catch (error) {
       return Failure(Exception(error.message));
     } catch (error) {

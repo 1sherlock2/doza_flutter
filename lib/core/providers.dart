@@ -7,6 +7,8 @@ import 'package:doza_flutter/data/repositories/categories/categories_repository.
 import 'package:doza_flutter/data/repositories/categories/categories_repository.remote.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository_remote.dart';
+import 'package:doza_flutter/data/repositories/payment_method/payment_method_repository.dart';
+import 'package:doza_flutter/data/repositories/payment_method/payment_method_repository_remote.dart';
 import 'package:doza_flutter/data/repositories/product_details/product_details_repository.dart';
 import 'package:doza_flutter/data/repositories/product_details/product_details_repository_remote.dart';
 import 'package:doza_flutter/data/repositories/products/products_repository.dart';
@@ -20,6 +22,7 @@ import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_interceptor.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/subscription_state_notifier.dart';
+import 'package:doza_flutter/ui/payment_method_section/payment_method_section_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/view_models/subscription_view_model.dart';
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
@@ -64,6 +67,8 @@ Future<List<SingleChildWidget>> get providers async {
         create: (_) => CartRepositoryRemote(apiClient: apiClient)),
     Provider<UserInfoRepository>(
         create: (_) => UserInfoRepositoryRemote(apiClient: apiClient)),
+    Provider<PaymentMethodRepository>(
+        create: (_) => PaymentMethodRepositoryRemote(apiClient: apiClient)),
     ChangeNotifierProvider<SubscriptionStateNotifier>(
         create: (context) =>
             SubscriptionStateNotifier(context.read<SubscriptionRepository>())),
@@ -86,5 +91,12 @@ Future<List<SingleChildWidget>> get providers async {
         create: (context) => CatalogViewModel(
             categoriesRepository: context.read<CategoriesRepository>(),
             productsRepository: context.read<ProductsRepository>())),
+    ChangeNotifierProvider<PaymentMethodSectionViewModel>(
+        create: (context) => PaymentMethodSectionViewModel(
+            paymentMethodRepository: context.read<PaymentMethodRepository>())),
+    // ChangeNotifierProvider(create: (context) => ProfileViewModel( userInfoRepository: context.read<UserInfoRepository>(),
+    //                     subscriptionRepository:
+    //                         context.read<SubscriptionRepository>(),
+    //                     cartRepository: context.read<CartRepository>()))
   ];
 }

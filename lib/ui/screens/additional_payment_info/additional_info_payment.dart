@@ -1,11 +1,11 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
+import 'package:doza_flutter/ui/payment_method_section/payment_method_section.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/view_models/additional_payment_info_view_model.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/address_delivery.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/bonus_spend_agreement.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/product_info_payment.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/recipient_info.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/widgets/total_price_purchase.dart';
-import 'package:doza_flutter/ui/screens/subscription/widgets/payment_method_section.dart';
 import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:doza_flutter/ui/widgets/arrow_left_icon.dart';
 import 'package:flutter/widgets.dart';
@@ -115,7 +115,14 @@ class _AdditionalInfoPaymentState extends State<AdditionalInfoPayment> {
                           TotalPricePurchase(
                               form: form,
                               additionalPaymentInfoViewModel:
-                                  widget._additionalPaymentInfoViewModel)
+                                  widget._additionalPaymentInfoViewModel),
+                          if (widget._additionalPaymentInfoViewModel
+                              .errorByCreateOrder)
+                            Text(
+                              'Не удалось совершить платеж. Пожалуйста проверьте данные или свяжитесь с поддержкой в разделе (Обратная связь)',
+                              style: TextStyle(
+                                  color: AppColors.red1, fontSize: 12),
+                            )
                         ],
                       )),
                 ),

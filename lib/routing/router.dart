@@ -3,6 +3,7 @@ import 'package:doza_flutter/data/repositories/cart/cart_repository.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository.dart';
 import 'package:doza_flutter/data/repositories/product_details/product_details_repository.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository.dart';
+import 'package:doza_flutter/data/repositories/user_info/user_info_repository.dart';
 import 'package:doza_flutter/data/services/auth_api_client.dart';
 import 'package:doza_flutter/data/services/auth_state_notifier.dart';
 import 'package:doza_flutter/data/services/call_state_service.dart';
@@ -21,6 +22,8 @@ import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_mod
 import 'package:doza_flutter/ui/screens/product_details/product_details_screen.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
+import 'package:doza_flutter/ui/screens/profile/profile_screen.dart';
+import 'package:doza_flutter/ui/screens/profile/profile_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_screen.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
 import 'package:doza_flutter/ui/screens/subscription/view_models/subscription_view_model.dart';
@@ -175,6 +178,20 @@ GoRouter router(
                           additionalPaymentInfoViewModel,
                     );
                   }))
+            ]),
+            StatefulShellBranch(routes: [
+              GoRoute(
+                  path: Routes.profile,
+                  builder: (context, state) {
+                    final profileViewModel = ProfileViewModel(
+                        userInfoRepository: context.read<UserInfoRepository>(),
+                        subscriptionRepository:
+                            context.read<SubscriptionRepository>(),
+                        cartRepository: context.read<CartRepository>());
+                    return ProfileScreen(
+                      profileViewModel: profileViewModel,
+                    );
+                  })
             ])
           ],
         ),

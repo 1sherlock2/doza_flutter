@@ -23,7 +23,6 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
     WidgetsBinding.instance.addObserver(this);
     userInfoViewModel.addListener(_onUserInfoChanged);
   }
-
   final SubscriptionStateNotifier _subscriptionStateNotifier;
   final CartRepository _cartRepository;
   final CartStateNotifier _cartStateNotifier;
@@ -49,6 +48,7 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
 
   void selectPaymentMethod(String method) {
     _selectedPaymentMethod = method;
+
     notifyListeners();
   }
 
@@ -112,7 +112,12 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
     return totalPrice;
   }
 
+  bool _errorByCreateOrder = false;
+  bool get errorByCreateOrder => _errorByCreateOrder;
+
   void sendOrderInfo(AdditionalOrderInfoUiModel additionalOrderInfo) async {
+    _errorByCreateOrder = false;
+    notifyListeners();
     final AdditionalOrderInfoUiModel(
       :secondName,
       :firstName,
@@ -134,7 +139,13 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
 
     final url =
         await _cartRepository.createOrder(combinedOrderInfo: combinedOrderInfo);
-    if (url == null) return;
+
+    if (url == null) {
+      _errorByCreateOrder = true;
+      notifyListeners();
+      return;
+    }
+
     _isCreatingPayment = true;
     notifyListeners();
 
