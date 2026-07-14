@@ -38,10 +38,10 @@ class UserInfoRepositoryRemote implements UserInfoRepository {
         warningMessage(response.exceptionOrNull());
         return null;
       }
+      return response.getOrNull();
     } catch (e) {
       _log.warning('Error $e');
       return null;
     }
-    return null;
   }
 }

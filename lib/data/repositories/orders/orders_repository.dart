@@ -1,0 +1,7 @@
+import 'package:doza_flutter/data/services/models/orders_list/orders_list_api_model.dart';
+import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
+
+abstract class OrdersRepository {
+  Future<List<OrdersListApiModel>> getOrders();
+  Future<String?> createOrder({required OrderInfoUiModel combinedOrderInfo});
+}

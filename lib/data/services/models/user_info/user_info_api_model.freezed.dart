@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$UserInfoApiModel {
   int get id;
   String get phone;
-  int? get balance;
+  int get balance;
   int get bonusBalance;
 
   /// Create a copy of UserInfoApiModel
@@ -59,7 +59,7 @@ abstract mixin class $UserInfoApiModelCopyWith<$Res> {
           UserInfoApiModel value, $Res Function(UserInfoApiModel) _then) =
       _$UserInfoApiModelCopyWithImpl;
   @useResult
-  $Res call({int id, String phone, int? balance, int bonusBalance});
+  $Res call({int id, String phone, int balance, int bonusBalance});
 }
 
 /// @nodoc
@@ -77,7 +77,7 @@ class _$UserInfoApiModelCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? phone = null,
-    Object? balance = freezed,
+    Object? balance = null,
     Object? bonusBalance = null,
   }) {
     return _then(_self.copyWith(
@@ -89,10 +89,10 @@ class _$UserInfoApiModelCopyWithImpl<$Res>
           ? _self.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
-      balance: freezed == balance
+      balance: null == balance
           ? _self.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       bonusBalance: null == bonusBalance
           ? _self.bonusBalance
           : bonusBalance // ignore: cast_nullable_to_non_nullable
@@ -194,7 +194,7 @@ extension UserInfoApiModelPatterns on UserInfoApiModel {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String phone, int? balance, int bonusBalance)?
+    TResult Function(int id, String phone, int balance, int bonusBalance)?
         $default, {
     required TResult orElse(),
   }) {
@@ -223,7 +223,7 @@ extension UserInfoApiModelPatterns on UserInfoApiModel {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String phone, int? balance, int bonusBalance)
+    TResult Function(int id, String phone, int balance, int bonusBalance)
         $default,
   ) {
     final _that = this;
@@ -250,7 +250,7 @@ extension UserInfoApiModelPatterns on UserInfoApiModel {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String phone, int? balance, int bonusBalance)?
+    TResult? Function(int id, String phone, int balance, int bonusBalance)?
         $default,
   ) {
     final _that = this;
@@ -280,7 +280,7 @@ class _UserInfoApiModel implements UserInfoApiModel {
   @override
   final String phone;
   @override
-  final int? balance;
+  final int balance;
   @override
   final int bonusBalance;
 
@@ -330,7 +330,7 @@ abstract mixin class _$UserInfoApiModelCopyWith<$Res>
       __$UserInfoApiModelCopyWithImpl;
   @override
   @useResult
-  $Res call({int id, String phone, int? balance, int bonusBalance});
+  $Res call({int id, String phone, int balance, int bonusBalance});
 }
 
 /// @nodoc
@@ -348,7 +348,7 @@ class __$UserInfoApiModelCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? phone = null,
-    Object? balance = freezed,
+    Object? balance = null,
     Object? bonusBalance = null,
   }) {
     return _then(_UserInfoApiModel(
@@ -360,10 +360,10 @@ class __$UserInfoApiModelCopyWithImpl<$Res>
           ? _self.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
-      balance: freezed == balance
+      balance: null == balance
           ? _self.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       bonusBalance: null == bonusBalance
           ? _self.bonusBalance
           : bonusBalance // ignore: cast_nullable_to_non_nullable

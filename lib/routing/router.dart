@@ -1,6 +1,7 @@
 import 'package:doza_flutter/data/repositories/auth/auth_repository.dart';
 import 'package:doza_flutter/data/repositories/cart/cart_repository.dart';
 import 'package:doza_flutter/data/repositories/favorites/favorites_repository.dart';
+import 'package:doza_flutter/data/repositories/orders/orders_repository.dart';
 import 'package:doza_flutter/data/repositories/product_details/product_details_repository.dart';
 import 'package:doza_flutter/data/repositories/subscription/subscription_repository.dart';
 import 'package:doza_flutter/data/repositories/user_info/user_info_repository.dart';
@@ -23,13 +24,14 @@ import 'package:doza_flutter/ui/screens/product_details/product_details_screen.d
 import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
 import 'package:doza_flutter/ui/screens/profile/profile_screen.dart';
-import 'package:doza_flutter/ui/screens/profile/profile_view_model.dart';
+import 'package:doza_flutter/ui/screens/profile/view_models/profile_view_model.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_screen.dart';
 import 'package:doza_flutter/ui/screens/subscription/subscription_select_screen.dart';
 import 'package:doza_flutter/ui/screens/subscription/view_models/subscription_view_model.dart';
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
 import 'package:doza_flutter/ui/view_models/general_favorites_view_model.dart';
+import 'package:doza_flutter/ui/view_models/orders_view_model.dart';
 import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -166,13 +168,15 @@ GoRouter router(
                   builder: ((context, state) {
                     final additionalPaymentInfoViewModel =
                         AdditionalPaymentInfoViewModel(
+                            ordersRepository: context.read<OrdersRepository>(),
                             subscriptionStateNotifier:
                                 context.read<SubscriptionStateNotifier>(),
                             userInfoViewModel:
                                 context.read<UserInfoViewModel>(),
                             cartRepository: context.read<CartRepository>(),
                             cartStateNotifier:
-                                context.read<CartStateNotifier>());
+                                context.read<CartStateNotifier>(),
+                            ordersViewModel: context.read<OrdersViewModel>());
                     return AdditionalInfoPayment(
                       additionalPaymentInfoViewModel:
                           additionalPaymentInfoViewModel,
@@ -188,7 +192,10 @@ GoRouter router(
                         subscriptionRepository:
                             context.read<SubscriptionRepository>(),
                         cartRepository: context.read<CartRepository>());
+                    final ordersViewModel = OrdersViewModel(
+                        ordersRepository: context.read<OrdersRepository>());
                     return ProfileScreen(
+                      ordersViewModel: ordersViewModel,
                       profileViewModel: profileViewModel,
                     );
                   })

@@ -73,10 +73,11 @@ class _ProductInfoPaymentState extends State<ProductInfoPayment> {
                                 ),
                                 Text('-'),
                                 Text(
-                                  pluralize(
-                                      widget._additionalPaymentInfoViewModel
-                                          .selectedCartItems.length,
-                                      ['позиция', 'позиции', 'позиций']),
+                                  '${widget._additionalPaymentInfoViewModel.selectedCartItems.length} ${pluralize(widget._additionalPaymentInfoViewModel.selectedCartItems.length, [
+                                        'позиция',
+                                        'позиции',
+                                        'позиций'
+                                      ])}',
                                   style: TextStyle(color: AppColors.customBlue),
                                 )
                               ],
@@ -177,7 +178,7 @@ class _ProductInfoPaymentState extends State<ProductInfoPayment> {
           Padding(
             padding: EdgeInsets.only(top: 4),
             child: Text(
-                '+ еще ${pluralize(widget._additionalPaymentInfoViewModel.selectedCartItems.length - _countByHide, [
+                '+ еще ${widget._additionalPaymentInfoViewModel.selectedCartItems.length - _countByHide} ${pluralize(widget._additionalPaymentInfoViewModel.selectedCartItems.length - _countByHide, [
                   'позиция',
                   'позиции',
                   'позиций'

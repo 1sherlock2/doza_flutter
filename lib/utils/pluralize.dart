@@ -17,8 +17,8 @@ String pluralize(int count, List<String> forms) {
   final num = count.abs() % 100;
   final num1 = num % 10;
 
-  if (num > 10 && num < 20) return '$count ${forms[2]}';
-  if (num1 > 1 && num1 < 5) return '$count ${forms[1]}';
-  if (num1 == 1) return '$count ${forms[0]}';
-  return '$count ${forms[2]}';
+  if (num > 10 && num < 20) return forms[2];
+  if (num1 > 1 && num1 < 5) return forms[1];
+  if (num1 == 1) return forms[0];
+  return forms[2];
 }

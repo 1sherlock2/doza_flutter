@@ -10,7 +10,7 @@ _UserInfoApiModel _$UserInfoApiModelFromJson(Map<String, dynamic> json) =>
     _UserInfoApiModel(
       id: (json['id'] as num).toInt(),
       phone: json['phone'] as String,
-      balance: (json['balance'] as num?)?.toInt(),
+      balance: (json['balance'] as num).toInt(),
       bonusBalance: (json['bonusBalance'] as num).toInt(),
     );
 

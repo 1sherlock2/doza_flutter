@@ -16,6 +16,7 @@ class NavigationBottom extends StatefulWidget {
 class _NavigationBottomState extends State<NavigationBottom> {
   int _getSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
+    HapticFeedback.vibrate();
     switch (location) {
       case Routes.home:
         return 0;

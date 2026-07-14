@@ -3,6 +3,7 @@ import 'package:doza_flutter/data/services/models/cart_item/cart_item_api_model.
 import 'package:doza_flutter/data/services/models/categories/categories_api_model.dart';
 import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_api_model.dart';
 import 'package:doza_flutter/data/services/models/favorites_products/favorites_products_api_model.dart';
+import 'package:doza_flutter/data/services/models/orders_list/orders_list_api_model.dart';
 import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
 import 'package:doza_flutter/data/services/models/products/products_api_model.dart';
 import 'package:doza_flutter/data/services/models/spb_bank_list/spb_bank_list_api_model.dart';
@@ -320,6 +321,20 @@ class ApiClient {
       final response = await _dio.get('$_baseUrl/user/info');
       final responseData = await response.data as Map<String, dynamic>;
       return Success(UserInfoApiModel.fromJson(responseData));
+    } on DioException catch (error) {
+      return Failure(Exception(error.message));
+    } catch (error) {
+      throw FormatException('Failed to query $error');
+    }
+  }
+
+  AsyncResult<List<OrdersListApiModel>> getOrdersApi() async {
+    try {
+      final response = await _dio.get('$_baseUrl/order/all');
+      final responseData = response.data as List<dynamic>;
+      return Success(responseData
+          .map((item) => OrdersListApiModel.fromJson(item))
+          .toList());
     } on DioException catch (error) {
       return Failure(Exception(error.message));
     } catch (error) {

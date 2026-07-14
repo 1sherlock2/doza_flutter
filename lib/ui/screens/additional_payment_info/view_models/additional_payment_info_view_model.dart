@@ -1,10 +1,12 @@
 import 'package:doza_flutter/data/repositories/cart/cart_repository.dart';
+import 'package:doza_flutter/data/repositories/orders/orders_repository.dart';
 import 'package:doza_flutter/data/services/models/cart_item/cart_item_api_model.dart';
 import 'package:doza_flutter/data/services/models/city_delivery/city_delivery_api_model.dart';
 import 'package:doza_flutter/data/services/subscription_state_notifier.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/models/additional_order_info_ui_model.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
 import 'package:doza_flutter/ui/view_models/cart_state_notifier.dart';
+import 'package:doza_flutter/ui/view_models/orders_view_model.dart';
 import 'package:doza_flutter/ui/view_models/user_info_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,19 +16,26 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
   AdditionalPaymentInfoViewModel(
       {required SubscriptionStateNotifier subscriptionStateNotifier,
       required CartRepository cartRepository,
+      required OrdersRepository ordersRepository,
       required CartStateNotifier cartStateNotifier,
-      required UserInfoViewModel userInfoViewModel})
+      required UserInfoViewModel userInfoViewModel,
+      required OrdersViewModel ordersViewModel})
       : _cartRepository = cartRepository,
+        _ordersRepository = ordersRepository,
         _cartStateNotifier = cartStateNotifier,
         _subscriptionStateNotifier = subscriptionStateNotifier,
-        _userInfoViewModel = userInfoViewModel {
+        _userInfoViewModel = userInfoViewModel,
+        _ordersViewModel = ordersViewModel {
     WidgetsBinding.instance.addObserver(this);
     userInfoViewModel.addListener(_onUserInfoChanged);
   }
+
+  final OrdersRepository _ordersRepository;
   final SubscriptionStateNotifier _subscriptionStateNotifier;
   final CartRepository _cartRepository;
   final CartStateNotifier _cartStateNotifier;
   final UserInfoViewModel _userInfoViewModel;
+  final OrdersViewModel _ordersViewModel;
 
   List<CartItemApiModel> _selectedCartItems = [];
   List<CartItemApiModel> get selectedCartItems => _selectedCartItems;
@@ -137,14 +146,16 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
         paymentMethod: _selectedPaymentMethod,
         orderItems: _selectedCartItems);
 
-    final url =
-        await _cartRepository.createOrder(combinedOrderInfo: combinedOrderInfo);
+    final url = await _ordersRepository.createOrder(
+        combinedOrderInfo: combinedOrderInfo);
 
     if (url == null) {
       _errorByCreateOrder = true;
       notifyListeners();
       return;
     }
+
+    _ordersViewModel.refreshOrders();
 
     _isCreatingPayment = true;
     notifyListeners();

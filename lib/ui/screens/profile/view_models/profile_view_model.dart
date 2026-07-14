@@ -12,7 +12,10 @@ class ProfileViewModel extends ChangeNotifier {
       required CartRepository cartRepository})
       : _cartRepository = cartRepository,
         _subscriptionRepository = subscriptionRepository,
-        _userInfoRepository = userInfoRepository;
+        _userInfoRepository = userInfoRepository {
+    getUserInfo();
+    getSubscriptionStatus();
+  }
 
   final UserInfoRepository _userInfoRepository;
   final SubscriptionRepository _subscriptionRepository;
