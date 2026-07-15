@@ -14,9 +14,11 @@ import 'package:doza_flutter/data/services/models/user_favorites/user_favorites_
 import 'package:doza_flutter/data/services/models/user_info/user_info_api_model.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/card_item_request.dart';
+import 'package:doza_flutter/utils/get_auth_payload.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logging/logging.dart';
 import 'package:result_dart/result_dart.dart';
+import 'package:socket_io_client/socket_io_client.dart' as client_socket;
 
 class ApiClient {
   ApiClient(this._dio);
@@ -29,12 +31,39 @@ class ApiClient {
       ? (int.tryParse(dotenv.env['SERVER_PORT']!) ?? 6000)
       : 6000;
 
+  client_socket.Socket? _socket;
+
   String get _baseUrl => 'http://$_host:$_port';
 
   Failure<T, Exception> formatExceptionFailure<T extends Object>(
     Object error,
   ) =>
       Failure<T, Exception>(FormatException('Failed to parse $error'));
+
+  Future<client_socket.Socket?>? getSocket() async {
+    final authPayload = await getAuthPayload();
+    if (authPayload == null) {
+      _log.warning('Not found auth data during get socket');
+      return null;
+    }
+    final (:accessToken, :refreshToken) = authPayload;
+
+    if (_socket != null) return _socket;
+    _socket = client_socket.io(
+      'http://${dotenv.env['SERVER_IP']}:6000/orders',
+      client_socket.OptionBuilder()
+          .setTransports(['websocket'])
+          .enableAutoConnect()
+          .setExtraHeaders({'Authorization': accessToken})
+          .enableReconnection()
+          .setReconnectionDelay(1000)
+          .build(),
+    );
+    _socket!.onConnect((_) => _log.fine('Socket connected'));
+    _socket!.onDisconnect((_) => _log.warning('Socket disconnected'));
+    _socket!.onError((data) => _log.warning('🔌 Socket error: $data'));
+    return _socket;
+  }
 
   // ─── Subscription endpoints ───────────────────────────────────────────────
   AsyncResult<SubscriptionStatusModel> getSubscriptionStatus() async {

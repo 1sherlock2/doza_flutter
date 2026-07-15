@@ -1790,11 +1790,33 @@ class __$OrdersListDeliveryCopyWithImpl<$Res>
   }
 }
 
+enum PreparationStatus {
+  processing,
+  shipped,
+  delivered;
+
+  String get displayName {
+    return switch (this) {
+      PreparationStatus.processing => 'Обрабатывается',
+      PreparationStatus.shipped => 'В доставке',
+      PreparationStatus.delivered => 'Доставлен',
+    };
+  }
+
+  static PreparationStatus fromString(String value) {
+    return PreparationStatus.values.firstWhere(
+      (status) => status.name == value,
+      orElse: () => throw ArgumentError('Unknown status: $value'),
+    );
+  }
+}
+
 /// @nodoc
 mixin _$OrdersListApiModel {
   int get id;
   int get finalPrice;
   String get status;
+  String get preparationStatus;
   List<OrdersListItemApiModel> get orderItems;
   OrdersListDelivery get delivery;
 
@@ -1818,6 +1840,8 @@ mixin _$OrdersListApiModel {
             (identical(other.finalPrice, finalPrice) ||
                 other.finalPrice == finalPrice) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.preparationStatus, preparationStatus) ||
+                other.preparationStatus == preparationStatus) &&
             const DeepCollectionEquality()
                 .equals(other.orderItems, orderItems) &&
             (identical(other.delivery, delivery) ||
@@ -1826,12 +1850,18 @@ mixin _$OrdersListApiModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, finalPrice, status,
-      const DeepCollectionEquality().hash(orderItems), delivery);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      finalPrice,
+      status,
+      preparationStatus,
+      const DeepCollectionEquality().hash(orderItems),
+      delivery);
 
   @override
   String toString() {
-    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, orderItems: $orderItems, delivery: $delivery)';
+    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, preparationStatus: $preparationStatus, orderItems: $orderItems, delivery: $delivery)';
   }
 }
 
@@ -1845,6 +1875,7 @@ abstract mixin class $OrdersListApiModelCopyWith<$Res> {
       {int id,
       int finalPrice,
       String status,
+      String preparationStatus,
       List<OrdersListItemApiModel> orderItems,
       OrdersListDelivery delivery});
 
@@ -1867,6 +1898,7 @@ class _$OrdersListApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? finalPrice = null,
     Object? status = null,
+    Object? preparationStatus = null,
     Object? orderItems = null,
     Object? delivery = null,
   }) {
@@ -1882,6 +1914,10 @@ class _$OrdersListApiModelCopyWithImpl<$Res>
       status: null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      preparationStatus: null == preparationStatus
+          ? _self.preparationStatus
+          : preparationStatus // ignore: cast_nullable_to_non_nullable
               as String,
       orderItems: null == orderItems
           ? _self.orderItems
@@ -2002,6 +2038,7 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
             int id,
             int finalPrice,
             String status,
+            String preparationStatus,
             List<OrdersListItemApiModel> orderItems,
             OrdersListDelivery delivery)?
         $default, {
@@ -2011,7 +2048,7 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
     switch (_that) {
       case _OrdersListApiModel() when $default != null:
         return $default(_that.id, _that.finalPrice, _that.status,
-            _that.orderItems, _that.delivery);
+            _that.preparationStatus, _that.orderItems, _that.delivery);
       case _:
         return orElse();
     }
@@ -2036,6 +2073,7 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
             int id,
             int finalPrice,
             String status,
+            String preparationStatus,
             List<OrdersListItemApiModel> orderItems,
             OrdersListDelivery delivery)
         $default,
@@ -2044,7 +2082,7 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
     switch (_that) {
       case _OrdersListApiModel():
         return $default(_that.id, _that.finalPrice, _that.status,
-            _that.orderItems, _that.delivery);
+            _that.preparationStatus, _that.orderItems, _that.delivery);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -2068,6 +2106,7 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
             int id,
             int finalPrice,
             String status,
+            String preparationStatus,
             List<OrdersListItemApiModel> orderItems,
             OrdersListDelivery delivery)?
         $default,
@@ -2076,7 +2115,7 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
     switch (_that) {
       case _OrdersListApiModel() when $default != null:
         return $default(_that.id, _that.finalPrice, _that.status,
-            _that.orderItems, _that.delivery);
+            _that.preparationStatus, _that.orderItems, _that.delivery);
       case _:
         return null;
     }
@@ -2090,6 +2129,7 @@ class _OrdersListApiModel implements OrdersListApiModel {
       {required this.id,
       required this.finalPrice,
       required this.status,
+      required this.preparationStatus,
       required final List<OrdersListItemApiModel> orderItems,
       required this.delivery})
       : _orderItems = orderItems;
@@ -2102,6 +2142,8 @@ class _OrdersListApiModel implements OrdersListApiModel {
   final int finalPrice;
   @override
   final String status;
+  @override
+  final String preparationStatus;
   final List<OrdersListItemApiModel> _orderItems;
   @override
   List<OrdersListItemApiModel> get orderItems {
@@ -2137,6 +2179,8 @@ class _OrdersListApiModel implements OrdersListApiModel {
             (identical(other.finalPrice, finalPrice) ||
                 other.finalPrice == finalPrice) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.preparationStatus, preparationStatus) ||
+                other.preparationStatus == preparationStatus) &&
             const DeepCollectionEquality()
                 .equals(other._orderItems, _orderItems) &&
             (identical(other.delivery, delivery) ||
@@ -2145,12 +2189,18 @@ class _OrdersListApiModel implements OrdersListApiModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, finalPrice, status,
-      const DeepCollectionEquality().hash(_orderItems), delivery);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      finalPrice,
+      status,
+      preparationStatus,
+      const DeepCollectionEquality().hash(_orderItems),
+      delivery);
 
   @override
   String toString() {
-    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, orderItems: $orderItems, delivery: $delivery)';
+    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, preparationStatus: $preparationStatus, orderItems: $orderItems, delivery: $delivery)';
   }
 }
 
@@ -2166,6 +2216,7 @@ abstract mixin class _$OrdersListApiModelCopyWith<$Res>
       {int id,
       int finalPrice,
       String status,
+      String preparationStatus,
       List<OrdersListItemApiModel> orderItems,
       OrdersListDelivery delivery});
 
@@ -2189,6 +2240,7 @@ class __$OrdersListApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? finalPrice = null,
     Object? status = null,
+    Object? preparationStatus = null,
     Object? orderItems = null,
     Object? delivery = null,
   }) {
@@ -2204,6 +2256,10 @@ class __$OrdersListApiModelCopyWithImpl<$Res>
       status: null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      preparationStatus: null == preparationStatus
+          ? _self.preparationStatus
+          : preparationStatus // ignore: cast_nullable_to_non_nullable
               as String,
       orderItems: null == orderItems
           ? _self._orderItems

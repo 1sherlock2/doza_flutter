@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:doza_flutter/data/repositories/orders/orders_repository.dart';
 import 'package:doza_flutter/data/services/api_client.dart';
 import 'package:doza_flutter/data/services/models/orders_list/orders_list_api_model.dart';
 import 'package:doza_flutter/ui/screens/additional_payment_info/models/order_info_ui_model.dart';
 import 'package:logging/logging.dart';
+import 'package:socket_io_client/socket_io_client.dart' as client_socket;
 
 class OrdersRepositoryRemote implements OrdersRepository {
   OrdersRepositoryRemote({required ApiClient apiClient})
@@ -10,6 +14,13 @@ class OrdersRepositoryRemote implements OrdersRepository {
 
   final ApiClient _apiClient;
   final _log = Logger('OrdersRepositoryRemote');
+
+  client_socket.Socket? _ordersSocket;
+  final _ordersSocketController =
+      StreamController<List<OrdersListApiModel>>.broadcast();
+  @override
+  Stream<List<OrdersListApiModel>> get getOrdersChanges =>
+      _ordersSocketController.stream;
 
   @override
   Future<String?> createOrder(
@@ -25,16 +36,43 @@ class OrdersRepositoryRemote implements OrdersRepository {
   }
 
   @override
-  Future<List<OrdersListApiModel>> getOrders() async {
-    try {
-      final response = await _apiClient.getOrdersApi();
-      if (response.isError()) {
-        _log.warning('Error get all orders ${response.exceptionOrNull()}');
-      }
-      return response.getOrThrow();
-    } catch (e) {
-      _log.warning('Error: $e');
-      return [];
+  Future<void> initOrdersChanges() async {
+    final String eventPath = 'events/orders/all';
+    if (_ordersSocket != null) return;
+
+    final socket = await _apiClient.getSocket();
+
+    if (socket == null) {
+      throw SocketException('Socket is not found');
     }
+
+    _ordersSocket = socket;
+
+    _ordersSocket!.on(eventPath, (data) {
+      try {
+        if (data is List) {
+          final ordersResponse = data
+              .map((orderItem) => OrdersListApiModel.fromJson(orderItem))
+              .toList();
+          _ordersSocketController.add(ordersResponse);
+        }
+      } catch (error) {
+        _log.warning('Error handle $eventPath data $error');
+      }
+    });
+
+    if (_ordersSocket!.connected) {
+      _log.info('✅ Socket already connected, subscribing...');
+      _ordersSocket!.emit(eventPath);
+    }
+
+    _ordersSocket!.onConnect((_) {
+      _log.info('✅ events/map connected');
+      _ordersSocket!.emit(eventPath);
+    });
+
+    _ordersSocket!.onDisconnect((_) {
+      _log.info('🔴 $eventPath disconnected');
+    });
   }
 }

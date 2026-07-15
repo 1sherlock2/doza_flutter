@@ -155,8 +155,6 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
       return;
     }
 
-    _ordersViewModel.refreshOrders();
-
     _isCreatingPayment = true;
     notifyListeners();
 

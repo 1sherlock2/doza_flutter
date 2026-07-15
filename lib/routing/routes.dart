@@ -9,4 +9,5 @@ abstract final class Routes {
   static const subscription = '/subscription';
   static const subscriptionSelect = '/subscription_select';
   static const support = '/support';
+  static const ordersDetails = '/orders_details';
 }

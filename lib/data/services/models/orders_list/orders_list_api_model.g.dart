@@ -88,6 +88,7 @@ _OrdersListApiModel _$OrdersListApiModelFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       finalPrice: (json['finalPrice'] as num).toInt(),
       status: json['status'] as String,
+      preparationStatus: json['preparationStatus'] as String,
       orderItems: (json['orderItems'] as List<dynamic>)
           .map(
               (e) => OrdersListItemApiModel.fromJson(e as Map<String, dynamic>))
@@ -101,6 +102,7 @@ Map<String, dynamic> _$OrdersListApiModelToJson(_OrdersListApiModel instance) =>
       'id': instance.id,
       'finalPrice': instance.finalPrice,
       'status': instance.status,
+      'preparationStatus': instance.preparationStatus,
       'orderItems': instance.orderItems,
       'delivery': instance.delivery,
     };

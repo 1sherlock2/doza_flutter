@@ -65,6 +65,7 @@ abstract class OrdersListApiModel with _$OrdersListApiModel {
       {required int id,
       required int finalPrice,
       required String status,
+      required String preparationStatus,
       required List<OrdersListItemApiModel> orderItems,
       required OrdersListDelivery delivery}) = _OrdersListApiModel;
 

@@ -20,6 +20,7 @@ import 'package:doza_flutter/ui/screens/cart/view_models/cart_view_model.dart';
 import 'package:doza_flutter/ui/screens/catalog/catalog_screen.dart';
 import 'package:doza_flutter/ui/screens/favorites/favorites_screen.dart';
 import 'package:doza_flutter/ui/screens/favorites/view_models/favorites_view_model.dart';
+import 'package:doza_flutter/ui/screens/orders_details/orders_details_screen.dart';
 import 'package:doza_flutter/ui/screens/product_details/product_details_screen.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/card_items_view_model.dart';
 import 'package:doza_flutter/ui/screens/product_details/view_models/product_details_view_model.dart';
@@ -185,20 +186,28 @@ GoRouter router(
             ]),
             StatefulShellBranch(routes: [
               GoRoute(
-                  path: Routes.profile,
-                  builder: (context, state) {
-                    final profileViewModel = ProfileViewModel(
-                        userInfoRepository: context.read<UserInfoRepository>(),
-                        subscriptionRepository:
-                            context.read<SubscriptionRepository>(),
-                        cartRepository: context.read<CartRepository>());
-                    final ordersViewModel = OrdersViewModel(
-                        ordersRepository: context.read<OrdersRepository>());
-                    return ProfileScreen(
-                      ordersViewModel: ordersViewModel,
-                      profileViewModel: profileViewModel,
-                    );
-                  })
+                path: Routes.profile,
+                builder: (context, state) {
+                  final profileViewModel = ProfileViewModel(
+                      userInfoRepository: context.read<UserInfoRepository>(),
+                      subscriptionRepository:
+                          context.read<SubscriptionRepository>(),
+                      cartRepository: context.read<CartRepository>());
+                  return ProfileScreen(
+                    ordersViewModel: context.read<OrdersViewModel>(),
+                    profileViewModel: profileViewModel,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: Routes.ordersDetails,
+                    builder: (context, state) {
+                      return OrdersDetailsScreen(
+                          ordersViewModel: context.read<OrdersViewModel>());
+                    },
+                  )
+                ],
+              ),
             ])
           ],
         ),
