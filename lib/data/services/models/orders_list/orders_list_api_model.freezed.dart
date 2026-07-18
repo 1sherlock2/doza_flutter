@@ -707,6 +707,7 @@ class __$OrdersListProductVariantApiModelCopyWithImpl<$Res>
 mixin _$OrdersListItemApiModel {
   OrdersListProductVariantApiModel get productVariant;
   int get quantity;
+  int get pricePerUnit;
   int get subtotal;
 
   /// Create a copy of OrdersListItemApiModel
@@ -729,18 +730,20 @@ mixin _$OrdersListItemApiModel {
                 other.productVariant == productVariant) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
+            (identical(other.pricePerUnit, pricePerUnit) ||
+                other.pricePerUnit == pricePerUnit) &&
             (identical(other.subtotal, subtotal) ||
                 other.subtotal == subtotal));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, productVariant, quantity, subtotal);
+  int get hashCode => Object.hash(
+      runtimeType, productVariant, quantity, pricePerUnit, subtotal);
 
   @override
   String toString() {
-    return 'OrdersListItemApiModel(productVariant: $productVariant, quantity: $quantity, subtotal: $subtotal)';
+    return 'OrdersListItemApiModel(productVariant: $productVariant, quantity: $quantity, pricePerUnit: $pricePerUnit, subtotal: $subtotal)';
   }
 }
 
@@ -753,6 +756,7 @@ abstract mixin class $OrdersListItemApiModelCopyWith<$Res> {
   $Res call(
       {OrdersListProductVariantApiModel productVariant,
       int quantity,
+      int pricePerUnit,
       int subtotal});
 
   $OrdersListProductVariantApiModelCopyWith<$Res> get productVariant;
@@ -773,6 +777,7 @@ class _$OrdersListItemApiModelCopyWithImpl<$Res>
   $Res call({
     Object? productVariant = null,
     Object? quantity = null,
+    Object? pricePerUnit = null,
     Object? subtotal = null,
   }) {
     return _then(_self.copyWith(
@@ -783,6 +788,10 @@ class _$OrdersListItemApiModelCopyWithImpl<$Res>
       quantity: null == quantity
           ? _self.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      pricePerUnit: null == pricePerUnit
+          ? _self.pricePerUnit
+          : pricePerUnit // ignore: cast_nullable_to_non_nullable
               as int,
       subtotal: null == subtotal
           ? _self.subtotal
@@ -897,14 +906,15 @@ extension OrdersListItemApiModelPatterns on OrdersListItemApiModel {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(OrdersListProductVariantApiModel productVariant,
-            int quantity, int subtotal)?
+            int quantity, int pricePerUnit, int subtotal)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _OrdersListItemApiModel() when $default != null:
-        return $default(_that.productVariant, _that.quantity, _that.subtotal);
+        return $default(_that.productVariant, _that.quantity,
+            _that.pricePerUnit, _that.subtotal);
       case _:
         return orElse();
     }
@@ -926,13 +936,14 @@ extension OrdersListItemApiModelPatterns on OrdersListItemApiModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(OrdersListProductVariantApiModel productVariant,
-            int quantity, int subtotal)
+            int quantity, int pricePerUnit, int subtotal)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _OrdersListItemApiModel():
-        return $default(_that.productVariant, _that.quantity, _that.subtotal);
+        return $default(_that.productVariant, _that.quantity,
+            _that.pricePerUnit, _that.subtotal);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -953,13 +964,14 @@ extension OrdersListItemApiModelPatterns on OrdersListItemApiModel {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(OrdersListProductVariantApiModel productVariant,
-            int quantity, int subtotal)?
+            int quantity, int pricePerUnit, int subtotal)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _OrdersListItemApiModel() when $default != null:
-        return $default(_that.productVariant, _that.quantity, _that.subtotal);
+        return $default(_that.productVariant, _that.quantity,
+            _that.pricePerUnit, _that.subtotal);
       case _:
         return null;
     }
@@ -972,6 +984,7 @@ class _OrdersListItemApiModel implements OrdersListItemApiModel {
   const _OrdersListItemApiModel(
       {required this.productVariant,
       required this.quantity,
+      required this.pricePerUnit,
       required this.subtotal});
   factory _OrdersListItemApiModel.fromJson(Map<String, dynamic> json) =>
       _$OrdersListItemApiModelFromJson(json);
@@ -980,6 +993,8 @@ class _OrdersListItemApiModel implements OrdersListItemApiModel {
   final OrdersListProductVariantApiModel productVariant;
   @override
   final int quantity;
+  @override
+  final int pricePerUnit;
   @override
   final int subtotal;
 
@@ -1008,18 +1023,20 @@ class _OrdersListItemApiModel implements OrdersListItemApiModel {
                 other.productVariant == productVariant) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
+            (identical(other.pricePerUnit, pricePerUnit) ||
+                other.pricePerUnit == pricePerUnit) &&
             (identical(other.subtotal, subtotal) ||
                 other.subtotal == subtotal));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, productVariant, quantity, subtotal);
+  int get hashCode => Object.hash(
+      runtimeType, productVariant, quantity, pricePerUnit, subtotal);
 
   @override
   String toString() {
-    return 'OrdersListItemApiModel(productVariant: $productVariant, quantity: $quantity, subtotal: $subtotal)';
+    return 'OrdersListItemApiModel(productVariant: $productVariant, quantity: $quantity, pricePerUnit: $pricePerUnit, subtotal: $subtotal)';
   }
 }
 
@@ -1034,6 +1051,7 @@ abstract mixin class _$OrdersListItemApiModelCopyWith<$Res>
   $Res call(
       {OrdersListProductVariantApiModel productVariant,
       int quantity,
+      int pricePerUnit,
       int subtotal});
 
   @override
@@ -1055,6 +1073,7 @@ class __$OrdersListItemApiModelCopyWithImpl<$Res>
   $Res call({
     Object? productVariant = null,
     Object? quantity = null,
+    Object? pricePerUnit = null,
     Object? subtotal = null,
   }) {
     return _then(_OrdersListItemApiModel(
@@ -1065,6 +1084,10 @@ class __$OrdersListItemApiModelCopyWithImpl<$Res>
       quantity: null == quantity
           ? _self.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      pricePerUnit: null == pricePerUnit
+          ? _self.pricePerUnit
+          : pricePerUnit // ignore: cast_nullable_to_non_nullable
               as int,
       subtotal: null == subtotal
           ? _self.subtotal
@@ -1790,24 +1813,307 @@ class __$OrdersListDeliveryCopyWithImpl<$Res>
   }
 }
 
-enum PreparationStatus {
-  processing,
-  shipped,
-  delivered;
+/// @nodoc
+mixin _$OrderPaymentInfoApiModel {
+  String get confirmedUrl;
 
-  String get displayName {
-    return switch (this) {
-      PreparationStatus.processing => 'Обрабатывается',
-      PreparationStatus.shipped => 'В доставке',
-      PreparationStatus.delivered => 'Доставлен',
-    };
+  /// Create a copy of OrderPaymentInfoApiModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $OrderPaymentInfoApiModelCopyWith<OrderPaymentInfoApiModel> get copyWith =>
+      _$OrderPaymentInfoApiModelCopyWithImpl<OrderPaymentInfoApiModel>(
+          this as OrderPaymentInfoApiModel, _$identity);
+
+  /// Serializes this OrderPaymentInfoApiModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is OrderPaymentInfoApiModel &&
+            (identical(other.confirmedUrl, confirmedUrl) ||
+                other.confirmedUrl == confirmedUrl));
   }
 
-  static PreparationStatus fromString(String value) {
-    return PreparationStatus.values.firstWhere(
-      (status) => status.name == value,
-      orElse: () => throw ArgumentError('Unknown status: $value'),
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, confirmedUrl);
+
+  @override
+  String toString() {
+    return 'OrderPaymentInfoApiModel(confirmedUrl: $confirmedUrl)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $OrderPaymentInfoApiModelCopyWith<$Res> {
+  factory $OrderPaymentInfoApiModelCopyWith(OrderPaymentInfoApiModel value,
+          $Res Function(OrderPaymentInfoApiModel) _then) =
+      _$OrderPaymentInfoApiModelCopyWithImpl;
+  @useResult
+  $Res call({String confirmedUrl});
+}
+
+/// @nodoc
+class _$OrderPaymentInfoApiModelCopyWithImpl<$Res>
+    implements $OrderPaymentInfoApiModelCopyWith<$Res> {
+  _$OrderPaymentInfoApiModelCopyWithImpl(this._self, this._then);
+
+  final OrderPaymentInfoApiModel _self;
+  final $Res Function(OrderPaymentInfoApiModel) _then;
+
+  /// Create a copy of OrderPaymentInfoApiModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? confirmedUrl = null,
+  }) {
+    return _then(_self.copyWith(
+      confirmedUrl: null == confirmedUrl
+          ? _self.confirmedUrl
+          : confirmedUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [OrderPaymentInfoApiModel].
+extension OrderPaymentInfoApiModelPatterns on OrderPaymentInfoApiModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_OrderPaymentInfoApiModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _OrderPaymentInfoApiModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_OrderPaymentInfoApiModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _OrderPaymentInfoApiModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_OrderPaymentInfoApiModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _OrderPaymentInfoApiModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String confirmedUrl)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _OrderPaymentInfoApiModel() when $default != null:
+        return $default(_that.confirmedUrl);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String confirmedUrl) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _OrderPaymentInfoApiModel():
+        return $default(_that.confirmedUrl);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String confirmedUrl)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _OrderPaymentInfoApiModel() when $default != null:
+        return $default(_that.confirmedUrl);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _OrderPaymentInfoApiModel implements OrderPaymentInfoApiModel {
+  _OrderPaymentInfoApiModel({required this.confirmedUrl});
+  factory _OrderPaymentInfoApiModel.fromJson(Map<String, dynamic> json) =>
+      _$OrderPaymentInfoApiModelFromJson(json);
+
+  @override
+  final String confirmedUrl;
+
+  /// Create a copy of OrderPaymentInfoApiModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$OrderPaymentInfoApiModelCopyWith<_OrderPaymentInfoApiModel> get copyWith =>
+      __$OrderPaymentInfoApiModelCopyWithImpl<_OrderPaymentInfoApiModel>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$OrderPaymentInfoApiModelToJson(
+      this,
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _OrderPaymentInfoApiModel &&
+            (identical(other.confirmedUrl, confirmedUrl) ||
+                other.confirmedUrl == confirmedUrl));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, confirmedUrl);
+
+  @override
+  String toString() {
+    return 'OrderPaymentInfoApiModel(confirmedUrl: $confirmedUrl)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$OrderPaymentInfoApiModelCopyWith<$Res>
+    implements $OrderPaymentInfoApiModelCopyWith<$Res> {
+  factory _$OrderPaymentInfoApiModelCopyWith(_OrderPaymentInfoApiModel value,
+          $Res Function(_OrderPaymentInfoApiModel) _then) =
+      __$OrderPaymentInfoApiModelCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String confirmedUrl});
+}
+
+/// @nodoc
+class __$OrderPaymentInfoApiModelCopyWithImpl<$Res>
+    implements _$OrderPaymentInfoApiModelCopyWith<$Res> {
+  __$OrderPaymentInfoApiModelCopyWithImpl(this._self, this._then);
+
+  final _OrderPaymentInfoApiModel _self;
+  final $Res Function(_OrderPaymentInfoApiModel) _then;
+
+  /// Create a copy of OrderPaymentInfoApiModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? confirmedUrl = null,
+  }) {
+    return _then(_OrderPaymentInfoApiModel(
+      confirmedUrl: null == confirmedUrl
+          ? _self.confirmedUrl
+          : confirmedUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
@@ -1815,9 +2121,13 @@ enum PreparationStatus {
 mixin _$OrdersListApiModel {
   int get id;
   int get finalPrice;
-  String get status;
+  PaymentStatus get status;
+  @JsonKey(name: 'created_at')
+  DateTime get createdAt;
+  DateTime get expiresAt;
   String get preparationStatus;
   List<OrdersListItemApiModel> get orderItems;
+  OrderPaymentInfoApiModel get payments;
   OrdersListDelivery get delivery;
 
   /// Create a copy of OrdersListApiModel
@@ -1840,10 +2150,16 @@ mixin _$OrdersListApiModel {
             (identical(other.finalPrice, finalPrice) ||
                 other.finalPrice == finalPrice) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.expiresAt, expiresAt) ||
+                other.expiresAt == expiresAt) &&
             (identical(other.preparationStatus, preparationStatus) ||
                 other.preparationStatus == preparationStatus) &&
             const DeepCollectionEquality()
                 .equals(other.orderItems, orderItems) &&
+            (identical(other.payments, payments) ||
+                other.payments == payments) &&
             (identical(other.delivery, delivery) ||
                 other.delivery == delivery));
   }
@@ -1855,13 +2171,16 @@ mixin _$OrdersListApiModel {
       id,
       finalPrice,
       status,
+      createdAt,
+      expiresAt,
       preparationStatus,
       const DeepCollectionEquality().hash(orderItems),
+      payments,
       delivery);
 
   @override
   String toString() {
-    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, preparationStatus: $preparationStatus, orderItems: $orderItems, delivery: $delivery)';
+    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, createdAt: $createdAt, expiresAt: $expiresAt, preparationStatus: $preparationStatus, orderItems: $orderItems, payments: $payments, delivery: $delivery)';
   }
 }
 
@@ -1874,11 +2193,15 @@ abstract mixin class $OrdersListApiModelCopyWith<$Res> {
   $Res call(
       {int id,
       int finalPrice,
-      String status,
+      PaymentStatus status,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      DateTime expiresAt,
       String preparationStatus,
       List<OrdersListItemApiModel> orderItems,
+      OrderPaymentInfoApiModel payments,
       OrdersListDelivery delivery});
 
+  $OrderPaymentInfoApiModelCopyWith<$Res> get payments;
   $OrdersListDeliveryCopyWith<$Res> get delivery;
 }
 
@@ -1898,8 +2221,11 @@ class _$OrdersListApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? finalPrice = null,
     Object? status = null,
+    Object? createdAt = null,
+    Object? expiresAt = null,
     Object? preparationStatus = null,
     Object? orderItems = null,
+    Object? payments = null,
     Object? delivery = null,
   }) {
     return _then(_self.copyWith(
@@ -1914,7 +2240,15 @@ class _$OrdersListApiModelCopyWithImpl<$Res>
       status: null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as PaymentStatus,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      expiresAt: null == expiresAt
+          ? _self.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       preparationStatus: null == preparationStatus
           ? _self.preparationStatus
           : preparationStatus // ignore: cast_nullable_to_non_nullable
@@ -1923,11 +2257,25 @@ class _$OrdersListApiModelCopyWithImpl<$Res>
           ? _self.orderItems
           : orderItems // ignore: cast_nullable_to_non_nullable
               as List<OrdersListItemApiModel>,
+      payments: null == payments
+          ? _self.payments
+          : payments // ignore: cast_nullable_to_non_nullable
+              as OrderPaymentInfoApiModel,
       delivery: null == delivery
           ? _self.delivery
           : delivery // ignore: cast_nullable_to_non_nullable
               as OrdersListDelivery,
     ));
+  }
+
+  /// Create a copy of OrdersListApiModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $OrderPaymentInfoApiModelCopyWith<$Res> get payments {
+    return $OrderPaymentInfoApiModelCopyWith<$Res>(_self.payments, (value) {
+      return _then(_self.copyWith(payments: value));
+    });
   }
 
   /// Create a copy of OrdersListApiModel
@@ -2037,9 +2385,12 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
     TResult Function(
             int id,
             int finalPrice,
-            String status,
+            PaymentStatus status,
+            @JsonKey(name: 'created_at') DateTime createdAt,
+            DateTime expiresAt,
             String preparationStatus,
             List<OrdersListItemApiModel> orderItems,
+            OrderPaymentInfoApiModel payments,
             OrdersListDelivery delivery)?
         $default, {
     required TResult orElse(),
@@ -2047,8 +2398,16 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
     final _that = this;
     switch (_that) {
       case _OrdersListApiModel() when $default != null:
-        return $default(_that.id, _that.finalPrice, _that.status,
-            _that.preparationStatus, _that.orderItems, _that.delivery);
+        return $default(
+            _that.id,
+            _that.finalPrice,
+            _that.status,
+            _that.createdAt,
+            _that.expiresAt,
+            _that.preparationStatus,
+            _that.orderItems,
+            _that.payments,
+            _that.delivery);
       case _:
         return orElse();
     }
@@ -2072,17 +2431,28 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
     TResult Function(
             int id,
             int finalPrice,
-            String status,
+            PaymentStatus status,
+            @JsonKey(name: 'created_at') DateTime createdAt,
+            DateTime expiresAt,
             String preparationStatus,
             List<OrdersListItemApiModel> orderItems,
+            OrderPaymentInfoApiModel payments,
             OrdersListDelivery delivery)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _OrdersListApiModel():
-        return $default(_that.id, _that.finalPrice, _that.status,
-            _that.preparationStatus, _that.orderItems, _that.delivery);
+        return $default(
+            _that.id,
+            _that.finalPrice,
+            _that.status,
+            _that.createdAt,
+            _that.expiresAt,
+            _that.preparationStatus,
+            _that.orderItems,
+            _that.payments,
+            _that.delivery);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -2105,17 +2475,28 @@ extension OrdersListApiModelPatterns on OrdersListApiModel {
     TResult? Function(
             int id,
             int finalPrice,
-            String status,
+            PaymentStatus status,
+            @JsonKey(name: 'created_at') DateTime createdAt,
+            DateTime expiresAt,
             String preparationStatus,
             List<OrdersListItemApiModel> orderItems,
+            OrderPaymentInfoApiModel payments,
             OrdersListDelivery delivery)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _OrdersListApiModel() when $default != null:
-        return $default(_that.id, _that.finalPrice, _that.status,
-            _that.preparationStatus, _that.orderItems, _that.delivery);
+        return $default(
+            _that.id,
+            _that.finalPrice,
+            _that.status,
+            _that.createdAt,
+            _that.expiresAt,
+            _that.preparationStatus,
+            _that.orderItems,
+            _that.payments,
+            _that.delivery);
       case _:
         return null;
     }
@@ -2129,8 +2510,11 @@ class _OrdersListApiModel implements OrdersListApiModel {
       {required this.id,
       required this.finalPrice,
       required this.status,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      required this.expiresAt,
       required this.preparationStatus,
       required final List<OrdersListItemApiModel> orderItems,
+      required this.payments,
       required this.delivery})
       : _orderItems = orderItems;
   factory _OrdersListApiModel.fromJson(Map<String, dynamic> json) =>
@@ -2141,7 +2525,12 @@ class _OrdersListApiModel implements OrdersListApiModel {
   @override
   final int finalPrice;
   @override
-  final String status;
+  final PaymentStatus status;
+  @override
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
+  @override
+  final DateTime expiresAt;
   @override
   final String preparationStatus;
   final List<OrdersListItemApiModel> _orderItems;
@@ -2152,6 +2541,8 @@ class _OrdersListApiModel implements OrdersListApiModel {
     return EqualUnmodifiableListView(_orderItems);
   }
 
+  @override
+  final OrderPaymentInfoApiModel payments;
   @override
   final OrdersListDelivery delivery;
 
@@ -2179,10 +2570,16 @@ class _OrdersListApiModel implements OrdersListApiModel {
             (identical(other.finalPrice, finalPrice) ||
                 other.finalPrice == finalPrice) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.expiresAt, expiresAt) ||
+                other.expiresAt == expiresAt) &&
             (identical(other.preparationStatus, preparationStatus) ||
                 other.preparationStatus == preparationStatus) &&
             const DeepCollectionEquality()
                 .equals(other._orderItems, _orderItems) &&
+            (identical(other.payments, payments) ||
+                other.payments == payments) &&
             (identical(other.delivery, delivery) ||
                 other.delivery == delivery));
   }
@@ -2194,13 +2591,16 @@ class _OrdersListApiModel implements OrdersListApiModel {
       id,
       finalPrice,
       status,
+      createdAt,
+      expiresAt,
       preparationStatus,
       const DeepCollectionEquality().hash(_orderItems),
+      payments,
       delivery);
 
   @override
   String toString() {
-    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, preparationStatus: $preparationStatus, orderItems: $orderItems, delivery: $delivery)';
+    return 'OrdersListApiModel(id: $id, finalPrice: $finalPrice, status: $status, createdAt: $createdAt, expiresAt: $expiresAt, preparationStatus: $preparationStatus, orderItems: $orderItems, payments: $payments, delivery: $delivery)';
   }
 }
 
@@ -2215,11 +2615,16 @@ abstract mixin class _$OrdersListApiModelCopyWith<$Res>
   $Res call(
       {int id,
       int finalPrice,
-      String status,
+      PaymentStatus status,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      DateTime expiresAt,
       String preparationStatus,
       List<OrdersListItemApiModel> orderItems,
+      OrderPaymentInfoApiModel payments,
       OrdersListDelivery delivery});
 
+  @override
+  $OrderPaymentInfoApiModelCopyWith<$Res> get payments;
   @override
   $OrdersListDeliveryCopyWith<$Res> get delivery;
 }
@@ -2240,8 +2645,11 @@ class __$OrdersListApiModelCopyWithImpl<$Res>
     Object? id = null,
     Object? finalPrice = null,
     Object? status = null,
+    Object? createdAt = null,
+    Object? expiresAt = null,
     Object? preparationStatus = null,
     Object? orderItems = null,
+    Object? payments = null,
     Object? delivery = null,
   }) {
     return _then(_OrdersListApiModel(
@@ -2256,7 +2664,15 @@ class __$OrdersListApiModelCopyWithImpl<$Res>
       status: null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as PaymentStatus,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      expiresAt: null == expiresAt
+          ? _self.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       preparationStatus: null == preparationStatus
           ? _self.preparationStatus
           : preparationStatus // ignore: cast_nullable_to_non_nullable
@@ -2265,11 +2681,25 @@ class __$OrdersListApiModelCopyWithImpl<$Res>
           ? _self._orderItems
           : orderItems // ignore: cast_nullable_to_non_nullable
               as List<OrdersListItemApiModel>,
+      payments: null == payments
+          ? _self.payments
+          : payments // ignore: cast_nullable_to_non_nullable
+              as OrderPaymentInfoApiModel,
       delivery: null == delivery
           ? _self.delivery
           : delivery // ignore: cast_nullable_to_non_nullable
               as OrdersListDelivery,
     ));
+  }
+
+  /// Create a copy of OrdersListApiModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $OrderPaymentInfoApiModelCopyWith<$Res> get payments {
+    return $OrderPaymentInfoApiModelCopyWith<$Res>(_self.payments, (value) {
+      return _then(_self.copyWith(payments: value));
+    });
   }
 
   /// Create a copy of OrdersListApiModel

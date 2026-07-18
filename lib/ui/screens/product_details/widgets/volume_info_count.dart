@@ -1,7 +1,7 @@
 import 'package:doza_flutter/data/services/models/product_details/product_details_api_model.dart';
+import 'package:doza_flutter/enums/constants.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/product_details/models/volume_card_item_ui_model.dart';
-import 'package:doza_flutter/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class VolumeInfoCount extends StatefulWidget {

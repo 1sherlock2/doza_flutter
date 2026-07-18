@@ -1,3 +1,4 @@
+import 'package:doza_flutter/enums/payment_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'orders_list_api_model.freezed.dart';
@@ -31,6 +32,7 @@ abstract class OrdersListItemApiModel with _$OrdersListItemApiModel {
   const factory OrdersListItemApiModel(
       {required OrdersListProductVariantApiModel productVariant,
       required int quantity,
+      required int pricePerUnit,
       required int subtotal}) = _OrdersListItemApiModel;
 
   factory OrdersListItemApiModel.fromJson(Map<String, dynamic> json) =>
@@ -60,13 +62,28 @@ abstract class OrdersListDelivery with _$OrdersListDelivery {
 }
 
 @freezed
+abstract class OrderPaymentInfoApiModel with _$OrderPaymentInfoApiModel {
+  factory OrderPaymentInfoApiModel({required String confirmedUrl}) =
+      _OrderPaymentInfoApiModel;
+
+  factory OrderPaymentInfoApiModel.fromJson(Map<String, dynamic> json) =>
+      _$OrderPaymentInfoApiModelFromJson(json);
+}
+
+@freezed
 abstract class OrdersListApiModel with _$OrdersListApiModel {
   const factory OrdersListApiModel(
       {required int id,
       required int finalPrice,
-      required String status,
+      required PaymentStatus status,
+      @JsonKey(
+        name: 'created_at',
+      )
+      required DateTime createdAt,
+      required DateTime expiresAt,
       required String preparationStatus,
       required List<OrdersListItemApiModel> orderItems,
+      required OrderPaymentInfoApiModel payments,
       required OrdersListDelivery delivery}) = _OrdersListApiModel;
 
   factory OrdersListApiModel.fromJson(Map<String, dynamic> json) =>

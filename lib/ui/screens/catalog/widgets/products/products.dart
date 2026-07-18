@@ -1,7 +1,7 @@
+import 'package:doza_flutter/enums/constants.dart';
 import 'package:doza_flutter/ui/core/themes/colors.dart';
 import 'package:doza_flutter/ui/screens/catalog/widgets/products/product_card.dart';
 import 'package:doza_flutter/ui/view_models/catalog_view_model.dart';
-import 'package:doza_flutter/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class Products extends StatefulWidget {

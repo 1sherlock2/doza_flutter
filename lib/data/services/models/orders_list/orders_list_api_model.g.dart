@@ -43,6 +43,7 @@ _OrdersListItemApiModel _$OrdersListItemApiModelFromJson(
       productVariant: OrdersListProductVariantApiModel.fromJson(
           json['productVariant'] as Map<String, dynamic>),
       quantity: (json['quantity'] as num).toInt(),
+      pricePerUnit: (json['pricePerUnit'] as num).toInt(),
       subtotal: (json['subtotal'] as num).toInt(),
     );
 
@@ -51,6 +52,7 @@ Map<String, dynamic> _$OrdersListItemApiModelToJson(
     <String, dynamic>{
       'productVariant': instance.productVariant,
       'quantity': instance.quantity,
+      'pricePerUnit': instance.pricePerUnit,
       'subtotal': instance.subtotal,
     };
 
@@ -83,16 +85,32 @@ Map<String, dynamic> _$OrdersListDeliveryToJson(_OrdersListDelivery instance) =>
       'deliveryDate': instance.deliveryDate.toIso8601String(),
     };
 
+_OrderPaymentInfoApiModel _$OrderPaymentInfoApiModelFromJson(
+        Map<String, dynamic> json) =>
+    _OrderPaymentInfoApiModel(
+      confirmedUrl: json['confirmedUrl'] as String,
+    );
+
+Map<String, dynamic> _$OrderPaymentInfoApiModelToJson(
+        _OrderPaymentInfoApiModel instance) =>
+    <String, dynamic>{
+      'confirmedUrl': instance.confirmedUrl,
+    };
+
 _OrdersListApiModel _$OrdersListApiModelFromJson(Map<String, dynamic> json) =>
     _OrdersListApiModel(
       id: (json['id'] as num).toInt(),
       finalPrice: (json['finalPrice'] as num).toInt(),
-      status: json['status'] as String,
+      status: $enumDecode(_$PaymentStatusEnumMap, json['status']),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      expiresAt: DateTime.parse(json['expiresAt'] as String),
       preparationStatus: json['preparationStatus'] as String,
       orderItems: (json['orderItems'] as List<dynamic>)
           .map(
               (e) => OrdersListItemApiModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      payments: OrderPaymentInfoApiModel.fromJson(
+          json['payments'] as Map<String, dynamic>),
       delivery:
           OrdersListDelivery.fromJson(json['delivery'] as Map<String, dynamic>),
     );
@@ -101,8 +119,18 @@ Map<String, dynamic> _$OrdersListApiModelToJson(_OrdersListApiModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'finalPrice': instance.finalPrice,
-      'status': instance.status,
+      'status': _$PaymentStatusEnumMap[instance.status]!,
+      'created_at': instance.createdAt.toIso8601String(),
+      'expiresAt': instance.expiresAt.toIso8601String(),
       'preparationStatus': instance.preparationStatus,
       'orderItems': instance.orderItems,
+      'payments': instance.payments,
       'delivery': instance.delivery,
     };
+
+const _$PaymentStatusEnumMap = {
+  PaymentStatus.pending: 'pending',
+  PaymentStatus.succeeded: 'succeeded',
+  PaymentStatus.cancelled: 'cancelled',
+  PaymentStatus.failed: 'failed',
+};

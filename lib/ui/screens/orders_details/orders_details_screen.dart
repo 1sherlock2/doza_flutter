@@ -1,5 +1,5 @@
 import 'package:doza_flutter/ui/core/themes/colors.dart';
-import 'package:doza_flutter/ui/screens/orders_details/widgets/order_item.dart';
+import 'package:doza_flutter/ui/screens/orders_details/widgets/order_item/order_item.dart';
 import 'package:doza_flutter/ui/view_models/orders_view_model.dart';
 import 'package:doza_flutter/ui/widgets/arrow_left_icon.dart';
 import 'package:doza_flutter/ui/widgets/scroll_bar_custom.dart';
@@ -18,6 +18,12 @@ class OrdersDetailsScreen extends StatefulWidget {
 }
 
 class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget._ordersViewModel.refreshOrders();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,7 +59,10 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   child: MediaQuery.removePadding(
                       removeTop: true,
                       context: context,
-                      child: ListView.builder(
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 20,
+                        ),
                         itemCount: widget._ordersViewModel.orders.length,
                         itemBuilder: (context, index) {
                           final orderItem =

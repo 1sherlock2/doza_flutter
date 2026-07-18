@@ -4,6 +4,7 @@ import 'package:doza_flutter/ui/screens/additional_payment_info/models/additiona
 import 'package:doza_flutter/ui/screens/additional_payment_info/view_models/additional_payment_info_view_model.dart';
 import 'package:doza_flutter/ui/widgets/box_shadow_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class TotalPricePurchase extends StatefulWidget {
@@ -22,7 +23,8 @@ class TotalPricePurchase extends StatefulWidget {
 
 class _TotalPricePurchaseState extends State<TotalPricePurchase> {
   void createOrder() {
-    if (widget._additionalPaymentInfoViewModel.selectedCartItems.isEmpty) {
+    if (widget._additionalPaymentInfoViewModel.selectedCartItems.isEmpty ||
+        widget._additionalPaymentInfoViewModel.isCreatingPayment) {
       return;
     }
 
@@ -36,7 +38,8 @@ class _TotalPricePurchaseState extends State<TotalPricePurchase> {
           street: formValue['street'] as String,
           house: formValue['house'] as String);
 
-      widget._additionalPaymentInfoViewModel.sendOrderInfo(model);
+      widget._additionalPaymentInfoViewModel
+          .sendOrderInfo(model, () => context.pop());
     } else {
       widget._form.markAllAsTouched();
     }
@@ -136,10 +139,13 @@ class _TotalPricePurchaseState extends State<TotalPricePurchase> {
                           ? AppColors.customBlue
                           : AppColors.grey3),
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Text(
-                    'Подтвердить заказ',
-                    style: TextStyle(color: AppColors.white1),
-                  ),
+                  child:
+                      widget._additionalPaymentInfoViewModel.isCreatingPayment
+                          ? CircularProgressIndicator(color: AppColors.white1)
+                          : Text(
+                              'Подтвердить заказ',
+                              style: TextStyle(color: AppColors.white1),
+                            ),
                 ),
               ),
             )

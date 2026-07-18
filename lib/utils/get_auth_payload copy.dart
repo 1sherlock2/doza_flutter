@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:doza_flutter/utils/constants.dart';
+import 'package:doza_flutter/enums/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 Future<({String accessToken, String refreshToken})?> getAuthPayload() async {

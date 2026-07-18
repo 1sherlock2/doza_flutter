@@ -5,6 +5,7 @@ import 'additional_order_info_ui_model.dart';
 class OrderInfoUiModel extends AdditionalOrderInfoUiModel {
   final List<CartItemApiModel> orderItems;
   final String paymentMethod;
+  final bool useBonuses;
 
   OrderInfoUiModel(
       {required super.secondName,
@@ -13,6 +14,7 @@ class OrderInfoUiModel extends AdditionalOrderInfoUiModel {
       required super.street,
       required super.house,
       super.apartment,
+      required this.useBonuses,
       required this.orderItems,
       required this.paymentMethod});
 

@@ -62,11 +62,15 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
   }
 
   int get bonusBalance {
-    int price = _userInfoViewModel.userBonuses.balance;
+    int balance = _userInfoViewModel.userBonuses.balance;
     if (_isSpendBonuses) {
-      price -= spendBonuses;
+      if (spendBonuses > balance) {
+        balance = 0;
+      } else {
+        balance -= spendBonuses;
+      }
     }
-    return price;
+    return balance;
   }
 
   int get subscriptionPrecent => _subscriptionStateNotifier.discountPercent;
@@ -93,6 +97,14 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
       _awaitingPaymentReturn = false;
       _isCreatingPayment = false;
       notifyListeners();
+
+      // После возврата из оплаты обновляем данные заказов и профиля
+      _ordersViewModel.refreshOrders();
+      _userInfoViewModel.getUserBonuses();
+      if (_cartStateNotifier.selectedCartByPayment.isNotEmpty) {
+        _cartStateNotifier.fetchCart();
+        _cartStateNotifier.handleSelectedCartByPayment({});
+      }
     }
   }
 
@@ -124,9 +136,12 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
   bool _errorByCreateOrder = false;
   bool get errorByCreateOrder => _errorByCreateOrder;
 
-  void sendOrderInfo(AdditionalOrderInfoUiModel additionalOrderInfo) async {
+  void sendOrderInfo(AdditionalOrderInfoUiModel additionalOrderInfo,
+      VoidCallback callToBack) async {
+    _isCreatingPayment = true;
     _errorByCreateOrder = false;
     notifyListeners();
+
     final AdditionalOrderInfoUiModel(
       :secondName,
       :firstName,
@@ -143,6 +158,7 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
         secondName: secondName,
         street: street,
         apartment: apartment,
+        useBonuses: _isSpendBonuses,
         paymentMethod: _selectedPaymentMethod,
         orderItems: _selectedCartItems);
 
@@ -155,7 +171,7 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
       return;
     }
 
-    _isCreatingPayment = true;
+    _isCreatingPayment = false;
     notifyListeners();
 
     final uri = Uri.parse(url);
@@ -167,6 +183,7 @@ class AdditionalPaymentInfoViewModel extends ChangeNotifier
             ? LaunchMode.inAppBrowserView
             : LaunchMode.externalApplication,
       );
+      callToBack();
     }
   }
 

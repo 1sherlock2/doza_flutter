@@ -44,4 +44,11 @@ class ProfileViewModel extends ChangeNotifier {
         (error) => _errorSubscription = error.toString());
     notifyListeners();
   }
+
+  Future<void> refresh() async {
+    await Future.wait([
+      getUserInfo(),
+      getSubscriptionStatus(),
+    ]);
+  }
 }

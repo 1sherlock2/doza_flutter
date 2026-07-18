@@ -54,6 +54,7 @@ class ApiClient {
       client_socket.OptionBuilder()
           .setTransports(['websocket'])
           .enableAutoConnect()
+          .setAuth({'token': accessToken})
           .setExtraHeaders({'Authorization': accessToken})
           .enableReconnection()
           .setReconnectionDelay(1000)
